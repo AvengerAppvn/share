@@ -542,6 +542,7 @@ return array(
     'elFinderAbortException' => $vendorDir . '/studio-42/elfinder/php/elFinder.class.php',
     'elFinderConnector' => $vendorDir . '/studio-42/elfinder/php/elFinderConnector.class.php',
     'elFinderEditor' => $vendorDir . '/studio-42/elfinder/php/editors/editor.php',
+    'elFinderEditorZipArchive' => $vendorDir . '/studio-42/elfinder/php/editors/ZipArchive/editor.php',
     'elFinderEditorZohoOffice' => $vendorDir . '/studio-42/elfinder/php/editors/ZohoOffice/editor.php',
     'elFinderLibGdBmp' => $vendorDir . '/studio-42/elfinder/php/libs/GdBmp.php',
     'elFinderPlugin' => $vendorDir . '/studio-42/elfinder/php/elFinderPlugin.php',
@@ -565,4 +566,5 @@ return array(
     'elFinderVolumeMySQL' => $vendorDir . '/studio-42/elfinder/php/elFinderVolumeMySQL.class.php',
     'elFinderVolumeOneDrive' => $vendorDir . '/studio-42/elfinder/php/elFinderVolumeOneDrive.class.php',
     'elFinderVolumeTrash' => $vendorDir . '/studio-42/elfinder/php/elFinderVolumeTrash.class.php',
+    'elFinderVolumeTrashMySQL' => $vendorDir . '/studio-42/elfinder/php/elFinderVolumeTrashMySQL.class.php',
 );

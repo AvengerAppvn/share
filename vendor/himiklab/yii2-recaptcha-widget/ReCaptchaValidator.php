@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://github.com/himiklab/yii2-recaptcha-widget
- * @copyright Copyright (c) 2014-2017 HimikLab
+ * @copyright Copyright (c) 2014-2018 HimikLab
  * @license http://opensource.org/licenses/MIT MIT
  */
 
@@ -10,7 +10,6 @@ namespace himiklab\yii2\recaptcha;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
-use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\validators\Validator;
 
@@ -26,7 +25,6 @@ class ReCaptchaValidator extends Validator
     const GRABBER_CURL = 2; // CURL, because sometimes file_get_contents is deprecated
 
     const SITE_VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify';
-    const CAPTCHA_RESPONSE_FIELD = 'g-recaptcha-response';
 
     /** @var boolean Whether to skip this validator if the input is empty. */
     public $skipOnEmpty = false;
@@ -49,10 +47,11 @@ class ReCaptchaValidator extends Validator
     public function init()
     {
         parent::init();
+
         if (empty($this->secret)) {
             /** @var ReCaptcha $reCaptcha */
             $reCaptcha = Yii::$app->reCaptcha;
-            if (!empty($reCaptcha->secret)) {
+            if ($reCaptcha && !empty($reCaptcha->secret)) {
                 $this->secret = $reCaptcha->secret;
             } else {
                 throw new InvalidConfigException('Required `secret` param isn\'t set.');
@@ -77,10 +76,12 @@ class ReCaptchaValidator extends Validator
             '{attribute} cannot be blank.',
             ['attribute' => $model->getAttributeLabel($attribute)]
         ));
-        $recaptchaId = Html::getInputId($model, $attribute) . '-recaptcha';
 
-        return '(function(messages){if(!grecaptcha.getResponse(' .
-            "jQuery('#{$recaptchaId}').data('recaptcha-client-id'))){messages.push('{$message}');}})(messages);";
+        return <<<JS
+if (!value) {
+     messages.push("{$message}");
+}
+JS;
     }
 
     /**
@@ -91,24 +92,22 @@ class ReCaptchaValidator extends Validator
      */
     protected function validateValue($value)
     {
-        if (empty($value)) {
-            if (!($value = Yii::$app->request->post(self::CAPTCHA_RESPONSE_FIELD))) {
-                return [$this->message, []];
-            }
-        }
-
         if (!$this->isValid) {
-            $request = self::SITE_VERIFY_URL . '?' . http_build_query([
-                    'secret' => $this->secret,
-                    'response' => $value,
-                    'remoteip' => Yii::$app->request->userIP
-                ]);
-            $response = $this->getResponse($request);
-            if (!isset($response['success'])) {
-                throw new Exception('Invalid recaptcha verify response.');
-            }
+            if (!empty($value)) {
+                $request = self::SITE_VERIFY_URL . '?' . http_build_query([
+                        'secret' => $this->secret,
+                        'response' => $value,
+                        'remoteip' => Yii::$app->request->userIP
+                    ]);
+                $response = $this->getResponse($request);
+                if (!isset($response['success'])) {
+                    throw new Exception('Invalid recaptcha verify response.');
+                }
 
-            $this->isValid = (boolean)$response['success'];
+                $this->isValid = (boolean)$response['success'];
+            } else {
+                $this->isValid = false;
+            }
         }
 
         return $this->isValid ? null : [$this->message, []];
@@ -130,37 +129,32 @@ class ReCaptchaValidator extends Validator
             }
         } else {
             $options = array(
-                CURLOPT_CUSTOMREQUEST => 'GET',     //set request type post or get
-                CURLOPT_POST => false,              //set to GET
-                CURLOPT_RETURNTRANSFER => true,     // return web page
-                CURLOPT_HEADER => false,            // don't return headers
-                CURLOPT_FOLLOWLOCATION => true,     // follow redirects
-                CURLOPT_ENCODING => '',             // handle all encodings
-                CURLOPT_AUTOREFERER => true,        // set referer on redirect
-                CURLOPT_CONNECTTIMEOUT => 120,      // timeout on connect
-                CURLOPT_TIMEOUT => 120,             // timeout on response
-                CURLOPT_MAXREDIRS => 10,            // stop after 10 redirects
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_POST => false,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HEADER => false,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_AUTOREFERER => true,
+                CURLOPT_CONNECTTIMEOUT => 120,
+                CURLOPT_TIMEOUT => 120,
+                CURLOPT_MAXREDIRS => 10,
             );
 
-            $ch = curl_init($request);
-            curl_setopt_array($ch, $options);
-            $content = curl_exec($ch);
-            $errno = curl_errno($ch);
-            $errmsg = curl_error($ch);
-            $header = curl_getinfo($ch);
-            curl_close($ch);
+            $curlResource = curl_init($request);
+            curl_setopt_array($curlResource, $options);
+            $response = curl_exec($curlResource);
+            $errno = curl_errno($curlResource);
+            $errmsg = curl_error($curlResource);
+            curl_close($curlResource);
 
-            $header['errno'] = $errno;
-            $header['errmsg'] = $errmsg;
-            $response = $content;
-
-            if ($header['errno'] !== 0) {
+            if ($errno !== 0) {
                 throw new Exception(
-                    'Unable connection to the captcha server. Curl error #' . $header['errno'] . ' ' . $header['errmsg']
+                    'Unable connection to the captcha server. Curl error #' . $errno . ' ' . $errmsg
                 );
             }
         }
 
-        return Json::decode($response, true);
+        return Json::decode($response);
     }
 }

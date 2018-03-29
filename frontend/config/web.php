@@ -1,4 +1,5 @@
 <?php
+$params = require(__DIR__ . '/params.php');
 $config = [
     'homeUrl'=>Yii::getAlias('@frontendUrl'),
     'controllerNamespace' => 'frontend\controllers',
@@ -22,6 +23,7 @@ $config = [
             'class' => 'nostop8\yii2\rest_api_doc\Module',
         ]
     ],
+    'params' => $params,
     'components' => [
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',

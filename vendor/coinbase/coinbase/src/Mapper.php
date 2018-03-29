@@ -14,6 +14,8 @@ use Coinbase\Wallet\Resource\Checkout;
 use Coinbase\Wallet\Resource\CurrentUser;
 use Coinbase\Wallet\Resource\Deposit;
 use Coinbase\Wallet\Resource\Email;
+use Coinbase\Wallet\Resource\EthereumNetwork;
+use Coinbase\Wallet\Resource\LitecoinNetwork;
 use Coinbase\Wallet\Resource\Merchant;
 use Coinbase\Wallet\Resource\Order;
 use Coinbase\Wallet\Resource\PaymentMethod;
@@ -25,10 +27,12 @@ use Coinbase\Wallet\Resource\User;
 use Coinbase\Wallet\Resource\Withdrawal;
 use Coinbase\Wallet\Resource\Notification;
 use Coinbase\Wallet\Resource\BitcoinNetwork;
+use Coinbase\Wallet\Resource\BitcoinCashNetwork;
 use Coinbase\Wallet\Value\Fee;
 use Coinbase\Wallet\Value\Money;
 use Coinbase\Wallet\Value\Network;
 use Psr\Http\Message\ResponseInterface;
+
 
 class Mapper
 {
@@ -486,10 +490,14 @@ class Mapper
     {
         $data = $this->decode($response);
 
-        $coll = new ResourceCollection(
-            $data['pagination']['previous_uri'],
-            $data['pagination']['next_uri']
-        );
+        if (isset($data['pagination'])) {
+            $coll = new ResourceCollection(
+                $data['pagination']['previous_uri'],
+                $data['pagination']['next_uri']
+            );
+        } else {
+            $coll = new ResourceCollection();
+        }
 
         foreach ($data['data'] as $resource) {
             $coll->add($this->$method($resource));
@@ -654,7 +662,7 @@ class Mapper
 
         if ('network' === $key && isset($value['status'])) {
             // network
-            return new Network($value['status'], isset($value['hash']) ? $value['hash'] : null);
+            return new Network($value['status'], isset($value['hash']) ? $value['hash'] : null, isset($value['transaction_fee']) ? $value['transaction_fee'] : null);
         }
 
         if (isset($value['type']) && isset($value['amount']) && isset($value['amount']['amount']) && isset($value['amount']['currency'])) {
@@ -790,6 +798,18 @@ class Mapper
                 return $expanded ? $this->injectNotification($data) : new Notification($data['resource_path']);
             case ResourceType::BITCOIN_NETWORK:
                 return new BitcoinNetwork();
+            case ResourceType::BITCOIN_CASH_NETWORK:
+                return new BitcoinCashNetwork();
+            case ResourceType::LITECOIN_NETWORK:
+                return new LitecoinNetwork();
+            case ResourceType::ETHEREUM_NETWORK:
+                return new EthereumNetwork();
+            case ResourceType::LITECOIN_ADDRESS:
+                return $expanded ? $this->injectAddress($data) : new Address($data['resource_path']);
+            case ResourceType::ETHEREUM_ADDRESS:
+                return $expanded ? $this->injectAddress($data) : new Address($data['resource_path']);
+            case ResourceType::BITCOIN_CASH_ADDRESS:
+                return $expanded ? $this->injectAddress($data) : new Address($data['resource_path']);
             default:
                 throw new RuntimeException('Unrecognized resource type: '.$type);
         }

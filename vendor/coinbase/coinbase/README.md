@@ -43,7 +43,7 @@ $client = Client::create($configuration);
 Use OAuth2 authentication to access a user's account other than your own. This
 library does not handle the handshake process, and assumes you have an access
 token when it's initialized. You can handle the handshake process using an
-[OAuth2 client][6] such as [league/oauth2-client][7].
+[OAuth2 client][5] such as [league/oauth2-client][6].
 
 ```php
 use Coinbase\Wallet\Client;
@@ -86,22 +86,9 @@ try {
 }
 ```
 
-### Sandbox support
-
-You can easily configure the client to use the [Coinbase Sandbox][4].
-
-```php
-use Coinbase\Wallet\Client;
-use Coinbase\Wallet\Configuration;
-
-$configuration = Configuration::apiKey($apiKey, $apiSecret);
-$configuration->setApiUrl(Configuration::SANDBOX_API_URL);
-$client = Client::create($configuration);
-```
-
 ### Pagination
 
-Several endpoints are [paginated][5]. By default, the library will only fetch
+Several endpoints are [paginated][4]. By default, the library will only fetch
 the first page of data for a given request. You can easily load more than just
 the first page of results.
 
@@ -139,8 +126,8 @@ $client = Client::create($configuration);
 
 ### Resource references
 
-In some cases the API will return resource references in place of exanded
-resource objects. This references can be expanded by refreshing them.
+In some cases the API will return resource references in place of expanded
+resource objects. These references can be expanded by refreshing them.
 
 ```php
 $deposit = $this->client->getAccountDeposit($account, $depositId);
@@ -150,7 +137,7 @@ if (!$transaction->isExpanded()) {
 }
 ```
 
-You can also request that the API return an expanded resource in the intial
+You can also request that the API return an expanded resource in the initial
 request by using the `expand` parameter.
 
 ```php
@@ -219,7 +206,7 @@ This is not intended to provide complete documentation of the API. For more
 detail, please refer to the
 [official documentation](https://developers.coinbase.com/api/v2).
 
-###[Market Data](https://developers.coinbase.com/api/v2#data-api)
+### [Market Data](https://developers.coinbase.com/api/v2#data-api)
 
 **List supported native currencies**
 
@@ -257,7 +244,7 @@ $spotPrice = $client->getSpotPrice('BTC-USD');
 $time = $client->getTime();
 ```
 
-###[Users](https://developers.coinbase.com/api/v2#users)
+### [Users](https://developers.coinbase.com/api/v2#users)
 
 **Get authorization info**
 
@@ -284,7 +271,7 @@ $user->setName('New Name');
 $client->updateCurrentUser($user);
 ```
 
-###[Accounts](https://developers.coinbase.com/api/v2#accounts)
+### [Accounts](https://developers.coinbase.com/api/v2#accounts)
 
 **List all accounts**
 
@@ -334,7 +321,7 @@ $client->updateAccount($account):
 $client->deleteAccount($account);
 ```
 
-###[Addresses](https://developers.coinbase.com/api/v2#addresses)
+### [Addresses](https://developers.coinbase.com/api/v2#addresses)
 
 **List receive addresses for account**
 
@@ -365,7 +352,7 @@ $address = new Address([
 $client->createAccountAddress($account, $address);
 ```
 
-###[Transactions](https://developers.coinbase.com/api/v2#transactions)
+### [Transactions](https://developers.coinbase.com/api/v2#transactions)
 
 **List transactions**
 
@@ -451,7 +438,7 @@ $account->cancelTransaction($transaction);
 $account->completeTransaction($transaction);
 ```
 
-###[Buys](https://developers.coinbase.com/api/v2#buys)
+### [Buys](https://developers.coinbase.com/api/v2#buys)
 
 **List buys**
 
@@ -488,7 +475,7 @@ $client->createAccountBuy($account, $buy, [Param::COMMIT => false]);
 $client->commitBuy($buy);
 ```
 
-###[Sells](https://developers.coinbase.com/api/v2#sells)
+### [Sells](https://developers.coinbase.com/api/v2#sells)
 
 **List sells**
 
@@ -525,7 +512,7 @@ $client->createAccountSell($account, $sell, [Param::COMMIT => false]);
 $client->commitSell($sell);
 ```
 
-###[Deposit](https://developers.coinbase.com/api/v2#deposits)
+### [Deposit](https://developers.coinbase.com/api/v2#deposits)
 
 **List deposits**
 
@@ -536,7 +523,7 @@ $deposits = $client->getAccountDeposits($account);
 **Get deposit info**
 
 ```php
-$deposit = $client->getDeposit($account, $depositId);
+$deposit = $client->getAccountDeposit($account, $depositId);
 ```
 
 **Deposit funds**
@@ -564,7 +551,7 @@ $client->createAccountDeposit($account, $deposit, [Param::COMMIT => false]);
 $client->commitDeposit($deposit);
 ```
 
-###[Withdrawals](https://developers.coinbase.com/api/v2#withdrawals)
+### [Withdrawals](https://developers.coinbase.com/api/v2#withdrawals)
 
 **List withdrawals**
 
@@ -603,7 +590,7 @@ $client->createAccountWithdrawal($account, $withdrawal, [Param::COMMIT => false]
 $client->commitWithdrawal($withdrawal);
 ```
 
-###[Payment Methods](https://developers.coinbase.com/api/v2#payment-methods)
+### [Payment Methods](https://developers.coinbase.com/api/v2#payment-methods)
 
 **List payment methods**
 
@@ -617,7 +604,7 @@ $paymentMethods = $client->getPaymentMethods();
 $paymentMethod = $client->getPaymentMethod($paymentMethodId);
 ```
 
-###[Merchants](https://developers.coinbase.com/api/v2#merchants)
+### [Merchants](https://developers.coinbase.com/api/v2#merchants)
 
 #### Get merchant
 
@@ -625,7 +612,7 @@ $paymentMethod = $client->getPaymentMethod($paymentMethodId);
 $merchant = $client->getMerchant($merchantId);
 ```
 
-###[Orders](https://developers.coinbase.com/api/v2#orders)
+### [Orders](https://developers.coinbase.com/api/v2#orders)
 
 #### List orders
 
@@ -683,13 +670,7 @@ $params = array(
 $checkout = new Checkout($params);
 $client->createCheckout($checkout);
 $code = $checkout->getEmbedCode();
-$redirect_url = "https://www.coinbase.com/checkouts/$code"; 
-```
-
-Note : If you use sandbox mode then you should use the sandbox url like this:
-
-```php
-$redirect_url = "https://sandbox.coinbase.com/checkouts/$code"; 
+$redirect_url = "https://www.coinbase.com/checkouts/$code";
 ```
 
 #### Get checkout
@@ -711,8 +692,6 @@ $order = $client->createNewCheckoutOrder($checkout);
 ```
 
 ### [Notifications webhook and verification](https://developers.coinbase.com/docs/wallet/notifications)
-
-Note: Only production notifications can be verified. Notifications issued by the sandbox will always return false below.
 
 ```php
 $raw_body = file_get_contents('php://input');
@@ -742,7 +721,6 @@ phpunit --group integration
 [1]: https://developers.coinbase.com/api/v2
 [2]: https://packagist.org/packages/coinbase/coinbase
 [3]: https://developers.coinbase.com/docs/wallet/coinbase-connect#two-factor-authentication
-[4]: https://developers.coinbase.com/api/v2#sandbox
-[5]: https://developers.coinbase.com/api/v2#pagination
-[6]: https://packagist.org/search/?q=oauth2%20client
-[7]: https://packagist.org/packages/league/oauth2-client
+[4]: https://developers.coinbase.com/api/v2#pagination
+[5]: https://packagist.org/search/?q=oauth2%20client
+[6]: https://packagist.org/packages/league/oauth2-client

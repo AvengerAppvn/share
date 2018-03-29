@@ -3,6 +3,7 @@ namespace common\models;
 
 use common\commands\AddToTimelineCommand;
 use common\models\query\UserQuery;
+use Firebase\JWT\JWT;
 use Yii;
 use yii\behaviors\AttributeBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -401,7 +402,7 @@ class User extends ActiveRecord implements IdentityInterface
             case self::ROLE_MANAGER:
                 $roleLabel = Yii::t('common', 'Manager');
                 break;
-            case self::ROLE_ADMIN:
+            case self::ROLE_ADMINISTRATOR:
                 $roleLabel = Yii::t('common', 'Administrator');
                 break;
         }
@@ -423,5 +424,26 @@ class User extends ActiveRecord implements IdentityInterface
     protected static function getHeaderToken()
     {
         return [];
+    }
+
+
+    /**
+     * Getter for encryption algorytm used in JWT generation and decoding
+     * Override this method to set up other algorytm.
+     * @return string needed algorytm
+     */
+    public static function getAlgo()
+    {
+        return 'HS256';
+    }
+
+    /**
+     * Returns some 'id' to encode to token. By default is current model id.
+     * If you override this method, be sure that findByJTI is updated too
+     * @return integer any unique integer identifier of user
+     */
+    public function getJTI()
+    {
+        return $this->getId();
     }
 }

@@ -100,7 +100,6 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
             'Symfony\\Component\\BrowserKit\\' => 29,
-            'Stecman\\Component\\Symfony\\Console\\BashCompletion\\' => 49,
         ),
         'P' => 
         array (
@@ -127,6 +126,7 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         ),
         'F' => 
         array (
+            'Firebase\\JWT\\' => 13,
             'Faker\\' => 6,
             'Facebook\\WebDriver\\' => 19,
         ),
@@ -145,6 +145,7 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         'C' => 
         array (
             'Coinbase\\Wallet\\' => 16,
+            'Codeception\\PHPUnit\\' => 20,
             'Codeception\\Extension\\' => 22,
             'Codeception\\' => 12,
         ),
@@ -161,7 +162,7 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         ),
         'yii\\httpclient\\' => 
         array (
-            0 => __DIR__ . '/..' . '/yiisoft/yii2-httpclient',
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-httpclient/src',
         ),
         'yii\\gii\\' => 
         array (
@@ -181,11 +182,11 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         ),
         'yii\\bootstrap\\' => 
         array (
-            0 => __DIR__ . '/..' . '/yiisoft/yii2-bootstrap',
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-bootstrap/src',
         ),
         'yii\\authclient\\' => 
         array (
-            0 => __DIR__ . '/..' . '/yiisoft/yii2-authclient',
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-authclient/src',
         ),
         'yii\\' => 
         array (
@@ -309,10 +310,6 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         array (
             0 => __DIR__ . '/..' . '/symfony/browser-kit',
         ),
-        'Stecman\\Component\\Symfony\\Console\\BashCompletion\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/stecman/symfony-console-completion/src',
-        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
@@ -357,6 +354,10 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         array (
             0 => __DIR__ . '/..' . '/giggsey/locale/src',
         ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
         'Faker\\' => 
         array (
             0 => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker',
@@ -393,6 +394,10 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         array (
             0 => __DIR__ . '/..' . '/coinbase/coinbase/src',
         ),
+        'Codeception\\PHPUnit\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/codeception/phpunit-wrapper/src',
+        ),
         'Codeception\\Extension\\' => 
         array (
             0 => __DIR__ . '/..' . '/codeception/codeception/ext',
@@ -400,6 +405,7 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         'Codeception\\' => 
         array (
             0 => __DIR__ . '/..' . '/codeception/codeception/src/Codeception',
+            1 => __DIR__ . '/..' . '/codeception/stub/src',
         ),
     );
 
@@ -993,6 +999,7 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         'elFinderAbortException' => __DIR__ . '/..' . '/studio-42/elfinder/php/elFinder.class.php',
         'elFinderConnector' => __DIR__ . '/..' . '/studio-42/elfinder/php/elFinderConnector.class.php',
         'elFinderEditor' => __DIR__ . '/..' . '/studio-42/elfinder/php/editors/editor.php',
+        'elFinderEditorZipArchive' => __DIR__ . '/..' . '/studio-42/elfinder/php/editors/ZipArchive/editor.php',
         'elFinderEditorZohoOffice' => __DIR__ . '/..' . '/studio-42/elfinder/php/editors/ZohoOffice/editor.php',
         'elFinderLibGdBmp' => __DIR__ . '/..' . '/studio-42/elfinder/php/libs/GdBmp.php',
         'elFinderPlugin' => __DIR__ . '/..' . '/studio-42/elfinder/php/elFinderPlugin.php',
@@ -1016,6 +1023,7 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         'elFinderVolumeMySQL' => __DIR__ . '/..' . '/studio-42/elfinder/php/elFinderVolumeMySQL.class.php',
         'elFinderVolumeOneDrive' => __DIR__ . '/..' . '/studio-42/elfinder/php/elFinderVolumeOneDrive.class.php',
         'elFinderVolumeTrash' => __DIR__ . '/..' . '/studio-42/elfinder/php/elFinderVolumeTrash.class.php',
+        'elFinderVolumeTrashMySQL' => __DIR__ . '/..' . '/studio-42/elfinder/php/elFinderVolumeTrashMySQL.class.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

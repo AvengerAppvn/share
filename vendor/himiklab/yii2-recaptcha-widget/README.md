@@ -2,6 +2,8 @@ Google reCAPTCHA widget for Yii2
 ================================
 Based on reCaptcha API 2.0.
 
+[![Packagist](https://img.shields.io/packagist/dt/himiklab/yii2-recaptcha-widget.svg)]() [![Packagist](https://img.shields.io/packagist/v/himiklab/yii2-recaptcha-widget.svg)]()  [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+
 Installation
 ------------
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
@@ -89,6 +91,12 @@ For example:
 or
 
 ```php
+<?= $form->field($model, 'reCaptcha')->widget(\himiklab\yii2\recaptcha\ReCaptcha::className()) ?>
+```
+
+or
+
+```php
 <?= \himiklab\yii2\recaptcha\ReCaptcha::widget([
     'name' => 'reCaptcha',
     'siteKey' => 'your siteKey',
@@ -96,41 +104,11 @@ or
 ]) ?>
 ```
 
-or
-
-```php
-<?= $form->field($model, 'reCaptcha')->widget(\himiklab\yii2\recaptcha\ReCaptcha::className()) ?>
-```
-
 or simply
 
 ```php
 <?= \himiklab\yii2\recaptcha\ReCaptcha::widget(['name' => 'reCaptcha']) ?>
 ```
-
-Multiple reCaptcha on a one page
------
-Each the reCaptcha instance must have unique id
-```php
-<?= $form1->field($modelForm1, 'reCaptcha')
-    ->widget(\himiklab\yii2\recaptcha\ReCaptcha::className(), [
-        'widgetOptions' => [
-            'id' => 're-captcha-form1',
-        ]
-    ]) ?>
-
-<?= $form2->field($modelForm2, 'reCaptcha')
-    ->widget(\himiklab\yii2\recaptcha\ReCaptcha::className(), [
-        'widgetOptions' => [
-            'id' => 're-captcha-form2',
-        ]
-    ]) ?>
-```
-If you use one model in a few forms (ex. feedback form) must use unique ids.
-
-Notes
------
-Exclude a reCaptcha field from ajax validation. It creates problem.
 
 Resources
 ---------
