@@ -75,6 +75,7 @@ class SignupForm extends Model
      */
     public function signup()
     {
+        $this->username = $this->email;
         if ($this->validate()) {
             $shouldBeActivated = $this->shouldBeActivated();
             $user = new User();
