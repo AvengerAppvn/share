@@ -29,6 +29,8 @@ class SignupForm extends Model
      */
     public $password;
 
+    /** @var User */
+    private $_user = false;
     /**
      * @inheritdoc
      */
@@ -36,7 +38,7 @@ class SignupForm extends Model
     {
         return [
             ['username', 'filter', 'filter' => 'trim'],
-            ['username', 'required'],
+            //['username', 'required'],
             ['username', 'unique',
                 'targetClass'=>'\common\models\User',
                 'message' => Yii::t('frontend', 'This username has already been taken.')
@@ -67,13 +69,42 @@ class SignupForm extends Model
             'password'=>Yii::t('frontend', 'Password'),
         ];
     }
+    /**
+     * Signs user up.
+     *
+     * @return boolean the saved model or null if saving fails
+     */
+    public function signup()
+    {
+        if ($this->validate()) {
 
+            $user = new User();
+            $user->username = strtolower($this->username);
+            $user->email = $this->email;
+            // TODO Zing thêm field này vào migrate cho bảng User
+            //$user->unconfirmed_email = $this->email;
+            $user->role = User::ROLE_USER;
+            $user->status = User::STATUS_PENDING;
+            $user->setPassword($this->password);
+            $user->generateAuthKey();
+
+            $user->registration_ip = Yii::$app->request->userIP;
+
+            if($user->save(false)) {
+                $this->_user = $user;
+                return true;
+            }
+
+            return false;
+        }
+        return false;
+    }
     /**
      * Signs user up.
      *
      * @return User|null the saved model or null if saving fails
      */
-    public function signup()
+    public function signup1()
     {
         $this->username = $this->email;
         if ($this->validate()) {
@@ -122,5 +153,35 @@ class SignupForm extends Model
         } else {
             return false;
         }
+    }
+
+    /**
+     * Return User object
+     *
+     * @return User
+     */
+    public function getUser(){
+        return $this->_user;
+    }
+
+
+    public function sendConfirmationEmail(){
+
+        $confirmURL = \Yii::getAlias('@frontendUrl').'#/confirm?id='.$this->_user->id.'&auth_key='.$this->_user->auth_key;
+
+        $email = \Yii::$app->mailer
+            ->compose(
+                ['html' =>  'signup-confirmation-html'],
+                [
+                    'appName'       =>  \Yii::$app->name,
+                    'confirmURL'    =>  $confirmURL,
+                ]
+            )
+            ->setTo($this->email)
+            ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name])
+            ->setSubject('Signup confirmation');
+            //->send(); TODO REMOVE
+
+        return $email;
     }
 }

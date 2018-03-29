@@ -168,7 +168,7 @@ class UserController extends ActiveController
     {
         $model = new SignupForm();
 
-        $model->load(Yii::$app->request->post());
+        $model->load(\Yii::$app->request->post(),'');
 
         if ($model->validate() && $model->signup()) {
             // Send confirmation email
