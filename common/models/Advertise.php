@@ -5,27 +5,31 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "transaction".
+ * This is the model class for table "advertise".
  *
  * @property integer $id
  * @property integer $user_id
- * @property string $amount
+ * @property integer $cat_id
+ * @property string $title
+ * @property string $slug
+ * @property string $content
  * @property string $description
- * @property integer $type
+ * @property string $message
+ * @property integer $share
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $created_by
  * @property integer $updated_by
  */
-class Transaction extends \yii\db\ActiveRecord
+class Advertise extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'transaction';
+        return 'advertise';
     }
 
     /**
@@ -34,10 +38,10 @@ class Transaction extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'description', 'type'], 'required'],
-            [['user_id', 'type', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['amount'], 'number'],
-            [['description'], 'string', 'max' => 255],
+            [['user_id', 'cat_id', 'title'], 'required'],
+            [['user_id', 'cat_id', 'share', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['content'], 'string'],
+            [['title', 'slug', 'description', 'message'], 'string', 'max' => 255],
         ];
     }
 
@@ -48,10 +52,14 @@ class Transaction extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => Yii::t('common', 'User ID'),
-            'amount' => Yii::t('common', 'Amount'),
+            'user_id' => Yii::t('common', 'User Id'),
+            'cat_id' => Yii::t('common', 'Danh mục'),
+            'title' => Yii::t('common', 'Tiêu đề'),
+            'slug' => 'Slug',
+            'content' => Yii::t('common', 'Nội dung'),
             'description' => Yii::t('common', 'Mô tả'),
-            'type' => Yii::t('common', 'Loại giao dịch'),
+            'message' => Yii::t('common', 'Thông điệp'),
+            'share' => Yii::t('common', 'Share'),
             'status' => Yii::t('common', 'Trạng thái'),
             'created_at' => Yii::t('common', 'Ngày tạo'),
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),
@@ -62,10 +70,7 @@ class Transaction extends \yii\db\ActiveRecord
 
     /**
      * @inheritdoc
-     * @return \common\models\query\TransactionQuery the active query used by this AR class.
+     * @return AdvertiseQuery the active query used by this AR class.
      */
-    public static function find()
-    {
-        return new \common\models\query\TransactionQuery(get_called_class());
-    }
+
 }

@@ -29,7 +29,7 @@ class m180329_050649_advertise extends Migration
             'updated_by' => $this->integer(),
         ], $tableOptions);
 
-        $this->createTable('{{%ads_advertise}}', [
+        $this->createTable('{{%advertise}}', [
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
             'cat_id' => $this->integer()->notNull(),
@@ -46,7 +46,7 @@ class m180329_050649_advertise extends Migration
             'updated_by' => $this->integer(),
         ], $tableOptions);
 
-        $this->addForeignKey('fk_cat', '{{%ads_advertise}}', 'cat_id', '{{%ads_category}}', 'id', 'cascade', 'cascade');
+        $this->addForeignKey('fk_cat', '{{%advertise}}', 'cat_id', '{{%ads_category}}', 'id', 'cascade', 'cascade');
 
         $this->createTable('{{%ads_advertise_image}}', [
             'id' => $this->primaryKey(),
@@ -61,7 +61,7 @@ class m180329_050649_advertise extends Migration
             'updated_by' => $this->integer(),
         ], $tableOptions);
 
-        $this->addForeignKey('fk_ads_image', '{{%ads_advertise_image}}', 'ads_id', '{{%ads_advertise}}', 'id', 'cascade', 'cascade');
+        $this->addForeignKey('fk_ads_image', '{{%ads_advertise_image}}', 'ads_id', '{{%advertise}}', 'id', 'cascade', 'cascade');
 
         $this->createTable('{{%ads_advertise_share}}', [
             'id' => $this->primaryKey(),
@@ -76,17 +76,17 @@ class m180329_050649_advertise extends Migration
             'updated_by' => $this->integer(),
         ], $tableOptions);
 
-        $this->addForeignKey('fk_ads_share', '{{%ads_advertise_share}}', 'ads_id', '{{%ads_advertise}}', 'id', 'cascade', 'cascade');
+        $this->addForeignKey('fk_ads_share', '{{%ads_advertise_share}}', 'ads_id', '{{%advertise}}', 'id', 'cascade', 'cascade');
     }
 
     public function down()
     {
         $this->dropForeignKey('fk_ads_share', '{{%ads_advertise_share}}');
         $this->dropForeignKey('fk_ads_image', '{{%ads_advertise_image}}');
-        $this->dropForeignKey('fk_cat', '{{%ads_advertise}}');
+        $this->dropForeignKey('fk_cat', '{{%advertise}}');
         $this->dropTable('{{%ads_advertise_share}}');
         $this->dropTable('{{%ads_advertise_image}}');
-        $this->dropTable('{{%ads_advertise}}');
+        $this->dropTable('{{%advertise}}');
         $this->dropTable('{{%ads_category}}');
 
     }

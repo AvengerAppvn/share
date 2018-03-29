@@ -5,27 +5,29 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "transaction".
+ * This is the model class for table "ads_category".
  *
  * @property integer $id
- * @property integer $user_id
- * @property string $amount
+ * @property string $name
+ * @property string $slug
  * @property string $description
- * @property integer $type
+ * @property string $image_base_url
+ * @property string $image_path
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $created_by
  * @property integer $updated_by
  */
-class Transaction extends \yii\db\ActiveRecord
+class AdsCategory extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
+
     public static function tableName()
     {
-        return 'transaction';
+        return 'ads_category';
     }
 
     /**
@@ -34,10 +36,10 @@ class Transaction extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'description', 'type'], 'required'],
-            [['user_id', 'type', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['amount'], 'number'],
-            [['description'], 'string', 'max' => 255],
+            [['name'], 'required'],
+            [['status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['name', 'slug', 'description'], 'string', 'max' => 255],
+            [['image_base_url', 'image_path'], 'string', 'max' => 1024],
         ];
     }
 
@@ -48,10 +50,11 @@ class Transaction extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => Yii::t('common', 'User ID'),
-            'amount' => Yii::t('common', 'Amount'),
-            'description' => Yii::t('common', 'Mô tả'),
-            'type' => Yii::t('common', 'Loại giao dịch'),
+            'name' => Yii::t('common', 'Tên danh mục'),
+            'slug' => 'Slug',
+            'description' =>  Yii::t('common', 'Mô tả'),
+            'image_base_url' => 'Image Base Url',
+            'image_path' => 'Image Path',
             'status' => Yii::t('common', 'Trạng thái'),
             'created_at' => Yii::t('common', 'Ngày tạo'),
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),
@@ -62,10 +65,7 @@ class Transaction extends \yii\db\ActiveRecord
 
     /**
      * @inheritdoc
-     * @return \common\models\query\TransactionQuery the active query used by this AR class.
+     * @return AdsCategoryQuery the active query used by this AR class.
      */
-    public static function find()
-    {
-        return new \common\models\query\TransactionQuery(get_called_class());
-    }
+
 }

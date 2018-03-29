@@ -3,28 +3,18 @@
 namespace common\models;
 
 use Yii;
-use yii\behaviors\TimestampBehavior;
+
 /**
  * This is the model class for table "wallet".
  *
  * @property integer $id
  * @property integer $user_id
- * @property string $wallet_btc
- * @property string $wallet_eth
- * @property string $wallet_coin
- * @property double $amount_btc
- * @property double $bonus_btc
- * @property double $amount_eth
- * @property double $bonus_eth
- * @property double $amount_coin
- * @property double $bonus_coin
- * @property double $amount_bonus
- * @property double $amount_ico
+ * @property string $amount
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
- *
- * @property User $user
+ * @property integer $created_by
+ * @property integer $updated_by
  */
 class Wallet extends \yii\db\ActiveRecord
 {
@@ -42,11 +32,9 @@ class Wallet extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'wallet_btc', 'wallet_eth', 'wallet_coin'], 'required'],
-            [['user_id', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['amount_btc', 'amount_eth', 'amount_coin', 'amount_bonus', 'amount_ico','bonus_btc','bonus_eth'], 'number'],
-            [['wallet_btc', 'wallet_eth', 'wallet_coin'], 'string', 'max' => 100],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id'], 'required'],
+            [['user_id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['amount'], 'number'],
         ];
     }
 
@@ -57,38 +45,14 @@ class Wallet extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
-            'wallet_btc' => 'Wallet Btc',
-            'wallet_eth' => 'Wallet Eth',
-            'wallet_coin' => 'Wallet Coin',
-            'amount_btc' => 'Amount Btc',
-            'bonus_btc' => 'Amount Btc',
-            'amount_eth' => 'Amount Eth',
-            'bonus_eth' => 'Amount Eth',
-            'amount_coin' => 'Amount Coin',
-            'amount_bonus' => 'Amount Bonus',
-            'amount_ico' => 'Amount Ico',
-            'status' => 'Status',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'user_id' => Yii::t('common', 'User ID'),
+            'amount' => Yii::t('common', 'Amount'),
+            'status' => Yii::t('common', 'Trạng thái'),
+            'created_at' => Yii::t('common', 'Ngày tạo'),
+            'updated_at' => Yii::t('common', 'Ngày cập nhật'),
+            'created_by' => Yii::t('common', 'Người tạo'),
+            'updated_by' => Yii::t('common', 'Người cập nhật'),
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className(),
-        ];
-    }
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUser()
-    {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
     /**
