@@ -29,6 +29,16 @@ class SignupForm extends Model
      */
     public $password;
 
+    /**
+     * @var
+     */
+    public $customer;
+
+    /**
+     * @var
+     */
+    public $advertiser;
+
     /** @var User */
     private $_user = false;
     /**
@@ -84,7 +94,9 @@ class SignupForm extends Model
             // TODO Zing thêm field này vào migrate cho bảng User
             //$user->unconfirmed_email = $this->email;
             $user->role = User::ROLE_USER;
-            $user->status = User::STATUS_PENDING;
+
+            $user->status = User::STATUS_ACTIVE;
+            //$user->status = User::STATUS_PENDING;
             $user->setPassword($this->password);
             $user->generateAuthKey();
 
