@@ -26,7 +26,16 @@ class UserController extends ActiveController
      * @var string
      */
     public $modelClass = 'frontend\modules\api\v1\resources\User';
+    public function __construct($id, $module, $config = [])
+    {
+        parent::__construct($id, $module, $config);
 
+    }
+
+    public function actions()
+    {
+        return [];
+    }
     /**
      * @return array
      */
@@ -81,7 +90,7 @@ class UserController extends ActiveController
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['index', 'view', 'create', 'update', 'delete'], //only be applied to
+            'only' => ['index', 'view', 'create', 'update', 'delete','me'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
@@ -97,27 +106,6 @@ class UserController extends ActiveController
         ];
 
         return $behaviors;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function actions()
-    {
-        return [
-            'index' => [
-                'class' => 'yii\rest\IndexAction',
-                'modelClass' => $this->modelClass
-            ],
-            'view' => [
-                'class' => 'yii\rest\ViewAction',
-                'modelClass' => $this->modelClass,
-                'findModel' => [$this, 'findModel']
-            ],
-            'options' => [
-                'class' => 'yii\rest\OptionsAction'
-            ]
-        ];
     }
 
     public function actionCreate()
@@ -290,17 +278,18 @@ class UserController extends ActiveController
         if ($user) {
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(200);
+            $strengths = ['Thời trang','Điện tử','Du lịch'];
 
-            return [
-                'full_name' => $user->getFullName(),
-                'address' => $user->getAddress(),
-                'username' => $user->username,
+            return array(
+                'fullname' => $user->userProfile->fullName,
+                'address' => $user->userProfile->address? :'',
                 'email' => $user->email,
-                'phone' => $user->getPhoneNumber(),
-                'avatar_url' => $user->getAvatarUrl(),
-                //'last_login_at' =>  $user->last_login_at,
-                //'last_login_ip' =>  $user->last_login_ip,
-            ];
+                'phone' => $user->phone,
+                'avatar' => $user->userProfile->avatar?  : '',
+                'is_confirmed' => $user->is_confirmed ?  : false,
+                'birthday'=> $user->userProfile->birthday?  :'',
+                'strengths'=>$strengths
+            );
         } else {
             // Validation error
             throw new NotFoundHttpException("Object not found");
