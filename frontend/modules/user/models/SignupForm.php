@@ -112,7 +112,8 @@ class SignupForm extends Model
 
             if($user->save(false)) {
                 $this->_user = $user;
-                return true;
+                $user->afterSignup();
+                return $user->id;
             }
 
             return false;

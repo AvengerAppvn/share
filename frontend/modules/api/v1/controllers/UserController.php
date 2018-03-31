@@ -172,14 +172,20 @@ class UserController extends ActiveController
         $model->load(\Yii::$app->request->post(),'');
         $model->username = $model->email;
 
-        if ($model->validate() && $model->signup()) {
+        if ($model->validate() && ($result = $model->signup())) {
             // Send confirmation email
             $model->sendConfirmationEmail();
 
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(200);
 
-            $responseData = "true";
+            $user = User::findOne($result);
+            $responseData = array(
+                'id'=> $user->id,
+                'email'=> $user->email,
+                'created_at'=> date('Y-m-d H:i:s',$user->created_at),
+                'status'=> $user->status,
+            );
 
             return $responseData;
         } else {
