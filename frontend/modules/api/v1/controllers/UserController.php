@@ -283,7 +283,7 @@ class UserController extends ActiveController
 
             return array(
                 'fullname' => $user->userProfile->fullName,
-                'address' => $user->userProfile['address'] ?: '',
+                'address' => $user->userProfile->address ?: '',
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'avatar' => $user->userProfile->avatar ?: '',
