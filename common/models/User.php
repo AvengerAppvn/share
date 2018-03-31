@@ -42,9 +42,9 @@ use yii\db\Expression;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_NOT_ACTIVE = 0;
-    const STATUS_ACTIVE = 1;
-    const STATUS_PENDING = 2;
+    const STATUS_PENDING = 0;
+    const STATUS_NOT_ACTIVE = 1;
+    const STATUS_ACTIVE = 2;
     const STATUS_DELETED = 3;
 
     const ROLE_USER = 'user';
