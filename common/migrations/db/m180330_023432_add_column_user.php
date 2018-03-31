@@ -11,11 +11,13 @@ class m180330_023432_add_column_user extends Migration
     {
         $this->addColumn('user', 'is_customer', $this->boolean()->after('status'));
         $this->addColumn('user', 'is_advertiser', $this->boolean()->after('is_customer'));
+        $this->addColumn('user', 'unconfirmed_email', $this->boolean()->after('is_advertiser'));
     }
 
     public function down()
     {
-        $this->dropColumn('user', 'is_customer');
+        $this->dropColumn('user', 'unconfirmed_email');
         $this->dropColumn('user', 'is_advertiser');
+        $this->dropColumn('user', 'is_customer');
     }
 }
