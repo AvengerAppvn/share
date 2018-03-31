@@ -53,7 +53,10 @@ class User extends ActiveRecord implements IdentityInterface
 
     const EVENT_AFTER_SIGNUP = 'afterSignup';
     const EVENT_AFTER_LOGIN = 'afterLogin';
-    
+
+    /** @var  string to store JSON web token */
+    public $access_token;
+
     public $authen_2fa;
     /**
      * Store JWT token header items.
@@ -131,6 +134,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => array_keys(self::statuses())],
             [['username'], 'filter', 'filter' => '\yii\helpers\Html::encode'],
             [['referrer','has2fa','twofa_ex_create_order','twofa_ex_cancel_order','twofa_lending','twofa_withdraw'], 'integer'],
+            [['access_token'], 'safe'],
         ];
     }
 
@@ -179,14 +183,55 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * Logins user by given JWT encoded string. If string is correctly decoded
+     * - array (token) must contain 'jti' param - the id of existing user
+     * @param  string $accessToken access token to decode
+     * @return mixed|null          User model or null if there's no user
+     * @throws \yii\web\ForbiddenHttpException if anything went wrong
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::find()
-            ->active()
-            ->andWhere(['access_token' => $token])
-            ->one();
+        $secret = static::getSecretKey();
+
+        // Decode token and transform it into array.
+        // Firebase\JWT\JWT throws exception if token can not be decoded
+        try {
+            $decoded = JWT::decode($token, $secret, [static::getAlgo()]);
+
+        } catch (\Exception $e) {
+            return false;
+        }
+        static::$decodedToken = (array) $decoded;
+        // If there's no jti param - exception
+        if (!isset(static::$decodedToken['jti'])) {
+            return false;
+        }
+        // JTI is unique identifier of user.
+        // For more details: https://tools.ietf.org/html/rfc7519#section-4.1.7
+        $id = static::$decodedToken['jti'];
+        return static::findByJTI($id);
+    }
+
+    /**
+     * Finds User model using static method findOne
+     * Override this method in model if you need to complicate id-management
+     * @param  string $id if of user to search
+     * @return mixed       User model
+     */
+    public static function findByJTI($id)
+    {
+        /** @var User $user */
+        $user = static::find()->where([
+            '=', 'id', $id
+        ])
+            ->andWhere([
+                '=', 'status',  self::STATUS_ACTIVE
+            ])
+            ->andWhere([
+                '>', 'access_token_expired_at', new Expression('NOW()')
+            ])->one();
+
+        return $user;
     }
 
     /**
@@ -456,4 +501,6 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
+
+
 }

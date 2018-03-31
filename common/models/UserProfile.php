@@ -20,6 +20,8 @@ use yii\db\ActiveRecord;
  * @property string $avatar_base_url
  * @property integer $gender
  * @property integer $country_id
+ * @property string $address
+ * @property date $birthday
  *
  * @property User $user
  * @property Country $country
@@ -32,6 +34,7 @@ class UserProfile extends ActiveRecord
     /**
      * @var
      */
+    public $address;
     public $picture;
 
     /**
@@ -70,7 +73,8 @@ class UserProfile extends ActiveRecord
             [['firstname', 'middlename', 'lastname', 'avatar_path', 'avatar_base_url'], 'string', 'max' => 255],
             ['locale', 'default', 'value' => Yii::$app->language],
             ['locale', 'in', 'range' => array_keys(Yii::$app->params['availableLocales'])],
-            ['picture', 'safe']
+            ['picture', 'safe'],
+            ['birthday', 'date']
         ];
     }
 
@@ -88,6 +92,7 @@ class UserProfile extends ActiveRecord
             'country_id' => Yii::t('common', 'Country'),
             'picture' => Yii::t('common', 'Picture'),
             'gender' => Yii::t('common', 'Gender'),
+            'address' => Yii::t('common', 'Address'),
         ];
     }
 
@@ -127,5 +132,13 @@ class UserProfile extends ActiveRecord
         return $this->avatar_path
             ? Yii::getAlias($this->avatar_base_url . '/' . $this->avatar_path)
             : $default;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 }
