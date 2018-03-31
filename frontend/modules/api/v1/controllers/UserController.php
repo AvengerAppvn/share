@@ -9,9 +9,7 @@ use frontend\modules\user\models\SignupConfirmForm;
 use frontend\modules\user\models\SignupForm;
 use yii\filters\AccessControl;
 use yii\filters\auth\CompositeAuth;
-use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
-use yii\filters\auth\QueryParamAuth;
 use yii\helpers\Url;
 use yii\rest\ActiveController;
 use yii\web\HttpException;
@@ -26,6 +24,7 @@ class UserController extends ActiveController
      * @var string
      */
     public $modelClass = 'frontend\modules\api\v1\resources\User';
+
     public function __construct($id, $module, $config = [])
     {
         parent::__construct($id, $module, $config);
@@ -36,6 +35,7 @@ class UserController extends ActiveController
     {
         return [];
     }
+
     /**
      * @return array
      */
@@ -90,7 +90,7 @@ class UserController extends ActiveController
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['index', 'view', 'create', 'update', 'delete','me'], //only be applied to
+            'only' => ['index', 'view', 'create', 'update', 'delete', 'me'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
@@ -157,7 +157,7 @@ class UserController extends ActiveController
     {
         $model = new SignupForm();
 
-        $model->load(\Yii::$app->request->post(),'');
+        $model->load(\Yii::$app->request->post(), '');
         $model->username = $model->email;
 
         if ($model->validate() && ($result = $model->signup())) {
@@ -169,10 +169,10 @@ class UserController extends ActiveController
 
             $user = User::findOne($result);
             $responseData = array(
-                'id'=> $user->id,
-                'email'=> $user->email,
-                'created_at'=> date('Y-m-d H:i:s',$user->created_at),
-                'status'=> $user->status,
+                'id' => $user->id,
+                'email' => $user->email,
+                'created_at' => date('Y-m-d H:i:s', $user->created_at),
+                'status' => $user->status,
             );
 
             return $responseData;
@@ -265,6 +265,7 @@ class UserController extends ActiveController
             throw new HttpException(422, json_encode($model->errors));
         }
     }
+
     /**
      * Rest Description: Your endpoint description.
      * Rest Fields: ['field1', 'field2'].
@@ -278,17 +279,17 @@ class UserController extends ActiveController
         if ($user) {
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(200);
-            $strengths = ['Thời trang','Điện tử','Du lịch'];
+            $strengths = ['Thời trang', 'Điện tử', 'Du lịch'];
 
             return array(
                 'fullname' => $user->userProfile->fullName,
-                'address' => $user->userProfile->address? :'',
+                'address' => $user->userProfile->address ?: '',
                 'email' => $user->email,
                 'phone' => $user->phone,
-                'avatar' => $user->userProfile->avatar?  : '',
-                'is_confirmed' => $user->is_confirmed ?  : false,
-                'birthday'=> $user->userProfile->birthday?  :'',
-                'strengths'=>$strengths
+                'avatar' => $user->userProfile->avatar ?: '',
+                'is_confirmed' => $user->is_confirmed ?: false,
+                'birthday' => $user->userProfile->birthday ?: '',
+                'strengths' => $strengths
             );
         } else {
             // Validation error
@@ -303,7 +304,7 @@ class UserController extends ActiveController
         if ($user) {
 
             $model = new UserEditForm();
-            $model->load(Yii::$app->request->post(),'');
+            $model->load(Yii::$app->request->post(), '');
             $model->id = $user->id;
 
             if ($model->validate() && $model->save()) {
@@ -350,6 +351,7 @@ class UserController extends ActiveController
     {
         return "ok";
     }
+
     /**
      * @param $id
      * @return null|static
