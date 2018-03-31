@@ -20,7 +20,6 @@ class BackendAsset extends AssetBundle
     ];
     public $js = [
         'js/app.js',
-        'js/clipboard.min.js',
     ];
 
     public $depends = [
