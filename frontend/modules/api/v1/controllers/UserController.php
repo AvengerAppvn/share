@@ -168,11 +168,14 @@ class UserController extends ActiveController
             $response->setStatusCode(200);
 
             $user = User::findOne($result);
+            $user->generateAccessTokenAfterUpdatingClientInfo(true);
+
             $responseData = array(
                 'id' => $user->id,
+                'access_token' => $user->access_token,
                 'email' => $user->email,
                 'created_at' => date('Y-m-d H:i:s', $user->created_at),
-                'status' => $user->status,
+                //'status' => $user->status,
             );
 
             return $responseData;
@@ -279,8 +282,9 @@ class UserController extends ActiveController
         if ($user) {
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(200);
+            // TODO get from profile
             $strengths = ['Thời trang', 'Điện tử', 'Du lịch'];
-
+            $coin = 0;
             return array(
                 'fullname' => $user->userProfile->fullName,
                 'address' => $user->userProfile->address ?: '',
@@ -289,7 +293,8 @@ class UserController extends ActiveController
                 'avatar' => $user->userProfile->avatar ?: '',
                 'is_confirmed' => $user->is_confirmed ?: false,
                 'birthday' => $user->userProfile->birthday ?: '',
-                'strengths' => $strengths
+                'strengths' => $strengths,
+                'coin' => $coin,
             );
         } else {
             // Validation error

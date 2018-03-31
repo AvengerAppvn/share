@@ -23,6 +23,10 @@ $this->title = Yii::t('frontend', 'User Settings')
             'url' => ['avatar-upload']
         ]
     )?>
+    <?php echo $form->field($model, 'picture')
+        ->widget(\trntv\filekit\widget\Upload::classname(), [
+            'url'=>['avatar-upload']
+        ]) ?>
 
     <?php echo $form->field($model->getModel('profile'), 'firstname')->textInput(['maxlength' => 255]) ?>
 
