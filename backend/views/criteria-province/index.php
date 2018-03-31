@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
+use common\components\helper\CUtils;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\CriteriaProvinceSearch */
@@ -12,7 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="criteria-province-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
@@ -27,8 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'slug',
-            'description',
-            'status',
+            [
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    return $model->status == 1 ? "Mở" : "Đóng";
+                },
+                'filter' => ArrayHelper::map(CUtils::status(), 'id', 'name'),
+            ],
             // 'created_at',
             // 'updated_at',
             // 'created_by',

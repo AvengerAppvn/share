@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\CriteriaProvince */
+/* @var $model common\models\AdsShare */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Criteria Provinces', 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Ads Shares', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="criteria-province-view">
+<div class="ads-share-view">
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -27,9 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'name',
-            'slug',
-            'status',
+            'ads_id',
+            'user_id',
             'created_at',
             'updated_at',
             'created_by',

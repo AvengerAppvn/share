@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
 
 /**
  * This is the model class for table "criteria_province".
@@ -35,7 +37,7 @@ class CriteriaProvince extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['name', 'slug', 'description'], 'string', 'max' => 255],
+            [['name', 'slug'], 'string', 'max' => 255],
         ];
     }
 
@@ -46,9 +48,8 @@ class CriteriaProvince extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => Yii::t('common', 'Tên khu vực'),
-            'slug' => Yii::t('common', 'Slug'),
-            'description' => Yii::t('common', 'Mô tả'),
+            'name' => Yii::t('common', 'Tên Thành phố'),
+            'slug' => Yii::t('common', 'Tên Thành phố'),
             'status' => Yii::t('common', 'Trạng thái'),
             'created_at' => Yii::t('common', 'Ngày tạo'),
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),
@@ -57,6 +58,23 @@ class CriteriaProvince extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+            BlameableBehavior::className(),
+        ];
+    }
+
+    public function getAuthor()
+    {
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
+    }
+
+    public function getUpdater()
+    {
+        return $this->hasOne(User::className(), ['id' => 'updated_by']);
+    }
     /**
      * @inheritdoc
      * @return \common\models\query\CriteriaProvinceQuery the active query used by this AR class.

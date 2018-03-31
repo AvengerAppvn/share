@@ -63,6 +63,8 @@ class m180329_050649_advertise extends Migration
 
         $this->addForeignKey('fk_ads_image', '{{%ads_advertise_image}}', 'ads_id', '{{%advertise}}', 'id', 'cascade', 'cascade');
 
+
+        //tiêu chí share quảng cáo
         $this->createTable('{{%ads_advertise_share}}', [
             'id' => $this->primaryKey(),
             'ads_id' => $this->integer()->notNull()->comment('ID quảng cáo'),
@@ -77,13 +79,29 @@ class m180329_050649_advertise extends Migration
         ], $tableOptions);
 
         $this->addForeignKey('fk_ads_share', '{{%ads_advertise_share}}', 'ads_id', '{{%advertise}}', 'id', 'cascade', 'cascade');
+
+        // Quảng cáo đã được share
+        $this->createTable('{{%ads_share}}', [
+            'id' => $this->primaryKey(),
+            'ads_id' => $this->integer()->notNull()->comment('ID quảng cáo'),
+            'user_id' => $this->integer()->comment('ID Người share'),
+            'created_at' => $this->integer(),
+            'updated_at' => $this->integer(),
+            'created_by' => $this->integer(),
+            'updated_by' => $this->integer(),
+        ], $tableOptions);
+
+        $this->addForeignKey('fk_share', '{{%ads_share}}', 'ads_id', '{{%advertise}}', 'id', 'cascade', 'cascade');
+
     }
 
     public function down()
     {
+        $this->dropForeignKey('fk_share', '{{%ads_share}}');
         $this->dropForeignKey('fk_ads_share', '{{%ads_advertise_share}}');
         $this->dropForeignKey('fk_ads_image', '{{%ads_advertise_image}}');
         $this->dropForeignKey('fk_cat', '{{%advertise}}');
+        $this->dropTable('{{%ads_share}}');
         $this->dropTable('{{%ads_advertise_share}}');
         $this->dropTable('{{%ads_advertise_image}}');
         $this->dropTable('{{%advertise}}');

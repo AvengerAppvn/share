@@ -4,6 +4,10 @@ namespace common\models;
 
 use Yii;
 
+use trntv\filekit\behaviors\UploadBehavior;
+use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
+
 /**
  * This is the model class for table "ads_category".
  *
@@ -21,6 +25,8 @@ use Yii;
  */
 class AdsCategory extends \yii\db\ActiveRecord
 {
+    public $image;
+
     /**
      * @inheritdoc
      */
@@ -40,6 +46,7 @@ class AdsCategory extends \yii\db\ActiveRecord
             [['status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['name', 'slug', 'description'], 'string', 'max' => 255],
             [['image_base_url', 'image_path'], 'string', 'max' => 1024],
+            ['image', 'safe']
         ];
     }
 
@@ -51,10 +58,11 @@ class AdsCategory extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => Yii::t('common', 'Tên danh mục'),
-            'slug' => 'Slug',
-            'description' =>  Yii::t('common', 'Mô tả'),
-            'image_base_url' => 'Image Base Url',
-            'image_path' => 'Image Path',
+            'slug' => Yii::t('common', 'Tên danh mục(ASCII)'),
+            'description' => Yii::t('common', 'Mô tả'),
+            'image_base_url' => Yii::t('common', 'Đường dẫn ảnh'),
+            'image_path' => Yii::t('common', 'Tên ảnh'),
+            'image' => Yii::t('common', 'Ảnh'),
             'status' => Yii::t('common', 'Trạng thái'),
             'created_at' => Yii::t('common', 'Ngày tạo'),
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),
@@ -63,9 +71,36 @@ class AdsCategory extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+            BlameableBehavior::className(),
+            [
+                'class' => UploadBehavior::className(),
+                'attribute' => 'image',
+                'pathAttribute' => 'image_path',
+                'baseUrlAttribute' => 'image_base_url'
+            ],
+        ];
+    }
+
+    public function getAuthor()
+    {
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
+    }
+
+    public function getUpdater()
+    {
+        return $this->hasOne(User::className(), ['id' => 'updated_by']);
+    }
+
+    public function getUrl()
+    {
+        return '/share'.$this->image_base_url . '/' . $this->image_path;
+    }
     /**
      * @inheritdoc
      * @return AdsCategoryQuery the active query used by this AR class.
      */
-
 }

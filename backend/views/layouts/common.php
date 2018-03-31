@@ -164,6 +164,27 @@ $bundle = BackendAsset::register($this);
                         'options' => ['class' => 'header']
                     ],
                     [
+                        'label' => Yii::t('backend', 'Ads'),
+                        'url' => '#',
+                        'icon' => '<i class="fa fa-edit"></i>',
+                        'options' => ['class' => 'treeview'],
+                        'items' => [
+                            ['label' => Yii::t('backend', 'Ads Category'), 'url' => ['/ads-category/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Advertise'), 'url' => ['/advertise/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                           ]
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Share Criteria'),
+                        'url' => '#',
+                        'icon' => '<i class="fa fa-address-book"></i>',
+                        'options' => ['class' => 'treeview'],
+                        'items' => [
+                            ['label' => Yii::t('backend', 'Criteria Province'), 'url' => ['/criteria-province/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Criteria Age'), 'url' => ['/criteria-age/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Criteria Speciality'), 'url' => ['/criteria-speciality/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                        ]
+                    ],
+                    [
                         'label' => Yii::t('backend', 'Users'),
                         'icon' => '<i class="fa fa-users"></i>',
                         'url' => ['/user/index'],

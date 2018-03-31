@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
 
 /**
  * This is the model class for table "criteria_speciality".
@@ -35,7 +37,7 @@ class CriteriaSpeciality extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['name', 'slug', 'description'], 'string', 'max' => 255],
+            [['name', 'slug'], 'string', 'max' => 255],
         ];
     }
 
@@ -48,13 +50,30 @@ class CriteriaSpeciality extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => Yii::t('common', 'Tên chuyên ngành'),
             'slug' => Yii::t('common', 'Slug'),
-            'description' => Yii::t('common', 'Mô tả'),
             'status' => Yii::t('common', 'Trạng thái'),
             'created_at' => Yii::t('common', 'Ngày tạo'),
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),
             'created_by' => Yii::t('common', 'Người tạo'),
             'updated_by' => Yii::t('common', 'Người cập nhật'),
         ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+            BlameableBehavior::className(),
+        ];
+    }
+
+    public function getAuthor()
+    {
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
+    }
+
+    public function getUpdater()
+    {
+        return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
 
     /**

@@ -8,6 +8,7 @@ use common\models\search\CriteriaAgeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\components\helper\CVietnameseTools;
 
 /**
  * CriteriaAgeController implements the CRUD actions for CriteriaAge model.
@@ -65,8 +66,17 @@ class CriteriaAgeController extends Controller
     {
         $model = new CriteriaAge();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model->status = 1;
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model->slug = CVietnameseTools::removeSigns($model->name);
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }else{
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -84,8 +94,15 @@ class CriteriaAgeController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->slug = CVietnameseTools::removeSigns($model->name);
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }else{
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,

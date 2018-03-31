@@ -3,17 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\AdsCategory;
-use common\models\search\AdsCategorySearch;
+use common\models\AdsShare;
+use common\models\search\AdsShareSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use common\components\helper\CVietnameseTools;
 
 /**
- * AdsCategoryController implements the CRUD actions for AdsCategory model.
+ * AdsShareController implements the CRUD actions for AdsShare model.
  */
-class AdsCategoryController extends Controller
+class AdsShareController extends Controller
 {
     /**
      * @inheritdoc
@@ -31,12 +30,12 @@ class AdsCategoryController extends Controller
     }
 
     /**
-     * Lists all AdsCategory models.
+     * Lists all AdsShare models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new AdsCategorySearch();
+        $searchModel = new AdsShareSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,7 +45,7 @@ class AdsCategoryController extends Controller
     }
 
     /**
-     * Displays a single AdsCategory model.
+     * Displays a single AdsShare model.
      * @param integer $id
      * @return mixed
      */
@@ -58,24 +57,16 @@ class AdsCategoryController extends Controller
     }
 
     /**
-     * Creates a new AdsCategory model.
+     * Creates a new AdsShare model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new AdsCategory();
-        $model->status = 1;
+        $model = new AdsShare();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->slug = CVietnameseTools::removeSigns($model->name);
-            if($model->save()){
-                return $this->redirect(['view', 'id' => $model->id]);
-            }else{
-                return $this->render('create', [
-                    'model' => $model,
-                ]);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -84,7 +75,7 @@ class AdsCategoryController extends Controller
     }
 
     /**
-     * Updates an existing AdsCategory model.
+     * Updates an existing AdsShare model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -93,15 +84,8 @@ class AdsCategoryController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->slug = CVietnameseTools::removeSigns($model->name);
-            if($model->save()){
-                return $this->redirect(['view', 'id' => $model->id]);
-            }else{
-                return $this->render('update', [
-                    'model' => $model,
-                ]);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -110,7 +94,7 @@ class AdsCategoryController extends Controller
     }
 
     /**
-     * Deletes an existing AdsCategory model.
+     * Deletes an existing AdsShare model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -123,15 +107,15 @@ class AdsCategoryController extends Controller
     }
 
     /**
-     * Finds the AdsCategory model based on its primary key value.
+     * Finds the AdsShare model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return AdsCategory the loaded model
+     * @return AdsShare the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = AdsCategory::findOne($id)) !== null) {
+        if (($model = AdsShare::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
