@@ -34,6 +34,7 @@ class UserProfile extends ActiveRecord
     /**
      * @var
      */
+    public $address;
     public $picture;
 
     /**
