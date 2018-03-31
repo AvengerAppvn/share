@@ -5,6 +5,7 @@ namespace frontend\modules\api\v1\controllers;
 use backend\models\LoginForm;
 use common\models\User;
 use frontend\modules\api\v1\resources\User as UserResource;
+use frontend\modules\user\models\SignupConfirmForm;
 use frontend\modules\user\models\SignupForm;
 use yii\filters\AccessControl;
 use yii\filters\auth\CompositeAuth;
@@ -169,13 +170,14 @@ class UserController extends ActiveController
         $model = new SignupForm();
 
         $model->load(\Yii::$app->request->post(),'');
+        $model->username = $model->email;
 
         if ($model->validate() && $model->signup()) {
             // Send confirmation email
             $model->sendConfirmationEmail();
 
             $response = \Yii::$app->getResponse();
-            $response->setStatusCode(201);
+            $response->setStatusCode(200);
 
             $responseData = "true";
 

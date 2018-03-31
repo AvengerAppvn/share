@@ -32,12 +32,12 @@ class SignupForm extends Model
     /**
      * @var
      */
-    public $customer;
+    public $is_customer;
 
     /**
      * @var
      */
-    public $advertiser;
+    public $is_advertiser;
 
     /** @var User */
     private $_user = false;
@@ -49,11 +49,11 @@ class SignupForm extends Model
         return [
             ['username', 'filter', 'filter' => 'trim'],
             //['username', 'required'],
-            ['username', 'unique',
-                'targetClass'=>'\common\models\User',
-                'message' => Yii::t('frontend', 'This username has already been taken.')
-            ],
-            ['username', 'string', 'min' => 2, 'max' => 255],
+//            ['username', 'unique',
+//                'targetClass'=>'\common\models\User',
+//                'message' => Yii::t('frontend', 'This username has already been taken.')
+//            ],
+            //['username', 'string', 'min' => 2, 'max' => 255],
 
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
@@ -62,9 +62,17 @@ class SignupForm extends Model
                 'targetClass'=> '\common\models\User',
                 'message' => Yii::t('frontend', 'This email address has already been taken.')
             ],
-
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+            [['is_advertiser', 'is_customer'], 'safe'],
+            [['is_advertiser', 'is_customer'], 'boolean'],
+
+            ['is_customer', function ($attribute, $params) {
+                if (!$this->is_customer && !$this->is_advertiser) {
+                    $this->addError($attribute, Yii::t('frontend', 'Missing field is_customer or is_advertiser.'));
+                }
+            }, 'skipOnEmpty' => false, 'skipOnError' => false],
+
         ];
     }
 
