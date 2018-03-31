@@ -130,10 +130,6 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
             'Faker\\' => 6,
             'Facebook\\WebDriver\\' => 19,
         ),
-        'E' => 
-        array (
-            'Eddmash\\Clipboard\\' => 18,
-        ),
         'D' => 
         array (
             'Dotenv\\' => 7,
@@ -365,10 +361,6 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         'Facebook\\WebDriver\\' => 
         array (
             0 => __DIR__ . '/..' . '/facebook/webdriver/lib',
-        ),
-        'Eddmash\\Clipboard\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/eddmash/yii2-clipboard/src',
         ),
         'Dotenv\\' => 
         array (

@@ -75,15 +75,6 @@ return array (
       '@dosamigos/chartjs' => $vendorDir . '/2amigos/yii2-chartjs-widget/src',
     ),
   ),
-  'eddmash/yii2-clipboard' => 
-  array (
-    'name' => 'eddmash/yii2-clipboard',
-    'version' => '9999999-dev',
-    'alias' => 
-    array (
-      '@Eddmash/Clipboard' => $vendorDir . '/eddmash/yii2-clipboard/src',
-    ),
-  ),
   'russ666/yii2-countdown' => 
   array (
     'name' => 'russ666/yii2-countdown',

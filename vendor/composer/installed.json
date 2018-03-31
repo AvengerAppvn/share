@@ -569,17 +569,17 @@
     },
     {
         "name": "bower-asset/blueimp-load-image",
-        "version": "v2.18.0",
-        "version_normalized": "2.18.0.0",
+        "version": "v2.19.0",
+        "version_normalized": "2.19.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/blueimp/JavaScript-Load-Image.git",
-            "reference": "d97d1651e89befcd4659d5543863eb8f205ffe1b"
+            "reference": "5660ef0f68a34352f4574351ab86f3ecf82240f2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/blueimp/JavaScript-Load-Image/zipball/d97d1651e89befcd4659d5543863eb8f205ffe1b",
-            "reference": "d97d1651e89befcd4659d5543863eb8f205ffe1b",
+            "url": "https://api.github.com/repos/blueimp/JavaScript-Load-Image/zipball/5660ef0f68a34352f4574351ab86f3ecf82240f2",
+            "reference": "5660ef0f68a34352f4574351ab86f3ecf82240f2",
             "shasum": ""
         },
         "type": "bower-asset-library",
@@ -688,47 +688,6 @@
             "MIT"
         ],
         "description": "Simple HTML5 charts using the canvas element."
-    },
-    {
-        "name": "bower-asset/clipboard",
-        "version": "v2.0.0",
-        "version_normalized": "2.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zenorocha/clipboard.js.git",
-            "reference": "43beb07bac8323a1ee04001d73d131f7634223cc"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/zenorocha/clipboard.js/zipball/43beb07bac8323a1ee04001d73d131f7634223cc",
-            "reference": "43beb07bac8323a1ee04001d73d131f7634223cc",
-            "shasum": ""
-        },
-        "time": "2018-03-01T05:56:32+00:00",
-        "type": "bower-asset-library",
-        "extra": {
-            "bower-asset-main": "dist/clipboard.js",
-            "bower-asset-ignore": [
-                "/.*/",
-                "/demo/",
-                "/test/",
-                "/.*",
-                "/bower.json",
-                "/karma.conf.js",
-                "/src",
-                "/lib"
-            ]
-        },
-        "installation-source": "dist",
-        "license": [
-            "MIT"
-        ],
-        "description": "Modern copy to clipboard. No Flash. Just 3kb",
-        "keywords": [
-            "clipboard",
-            "copy",
-            "cut"
-        ]
     },
     {
         "name": "bower-asset/eonasdan-bootstrap-datetimepicker",
@@ -1125,20 +1084,20 @@
     },
     {
         "name": "bower-asset/moment",
-        "version": "2.21.0",
-        "version_normalized": "2.21.0.0",
+        "version": "2.22.0",
+        "version_normalized": "2.22.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/moment/moment.git",
-            "reference": "7c4c091bedb86ca6c1a5c5419ad5204ef3926347"
+            "reference": "db71a655fc51fe58009675608a400d0d4cd0ca87"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/moment/moment/zipball/7c4c091bedb86ca6c1a5c5419ad5204ef3926347",
-            "reference": "7c4c091bedb86ca6c1a5c5419ad5204ef3926347",
+            "url": "https://api.github.com/repos/moment/moment/zipball/db71a655fc51fe58009675608a400d0d4cd0ca87",
+            "reference": "db71a655fc51fe58009675608a400d0d4cd0ca87",
             "shasum": ""
         },
-        "time": "2018-03-02T20:37:47+00:00",
+        "time": "2018-03-30T21:53:58+00:00",
         "type": "bower-asset-library",
         "extra": {
             "bower-asset-main": "moment.js",
@@ -1687,56 +1646,6 @@
         "keywords": [
             "constructor",
             "instantiate"
-        ]
-    },
-    {
-        "name": "eddmash/yii2-clipboard",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/eddmash/yii2-clipboard.git",
-            "reference": "80ebc747e8b002b992fccb50c69029059b5b34f2"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/eddmash/yii2-clipboard/zipball/80ebc747e8b002b992fccb50c69029059b5b34f2",
-            "reference": "80ebc747e8b002b992fccb50c69029059b5b34f2",
-            "shasum": ""
-        },
-        "require": {
-            "bower-asset/clipboard": "*",
-            "yiisoft/yii2": ">=2.0.6"
-        },
-        "time": "2016-11-11T15:41:19+00:00",
-        "type": "yii2-extension",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-4": {
-                "Eddmash\\Clipboard\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "EDDILBERT MACHARIA",
-                "email": "edd.cowan@gmail.com",
-                "homepage": "http://eddmash.com",
-                "role": "Developer"
-            }
-        ],
-        "description": "The Clipboard js extension for the Yii2 framework",
-        "keywords": [
-            "clipboard js",
-            "yii2"
         ]
     },
     {
