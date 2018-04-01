@@ -108,23 +108,23 @@ class UserController extends ActiveController
         return $behaviors;
     }
 
-    public function actionCreate()
-    {
-        $model = new User();
-        $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
-
-        if ($model->validate() && $model->save()) {
-            $response = \Yii::$app->getResponse();
-            $response->setStatusCode(201);
-            $id = implode(',', array_values($model->getPrimaryKey(true)));
-            $response->getHeaders()->set('Location', Url::toRoute([$id], true));
-        } else {
-            // Validation error
-            throw new HttpException(422, json_encode($model->errors));
-        }
-
-        return $model;
-    }
+//    public function actionCreate()
+//    {
+//        $model = new User();
+//        $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
+//
+//        if ($model->validate() && $model->save()) {
+//            $response = \Yii::$app->getResponse();
+//            $response->setStatusCode(201);
+//            $id = implode(',', array_values($model->getPrimaryKey(true)));
+//            $response->getHeaders()->set('Location', Url::toRoute([$id], true));
+//        } else {
+//            // Validation error
+//            throw new HttpException(422, json_encode($model->errors));
+//        }
+//
+//        return $model;
+//    }
 
     public function actionLogin()
     {
@@ -295,6 +295,8 @@ class UserController extends ActiveController
                 'birthday' => $user->userProfile->birthday ?: '',
                 'strengths' => $strengths,
                 'coin' => $coin,
+                'is_customer' => $user->is_customer? true : false,
+                'is_advertiser' => $user->is_advertiser? true : false,
             );
         } else {
             // Validation error

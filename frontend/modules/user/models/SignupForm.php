@@ -99,6 +99,8 @@ class SignupForm extends Model
             $user = new User();
             $user->username = strtolower($this->username);
             $user->email = $this->email;
+            $user->is_customer = $this->is_customer;
+            $user->is_advertiser = $this->is_advertiser;
             // TODO Zing thêm field này vào migrate cho bảng User
             //$user->unconfirmed_email = $this->email;
             $user->role = User::ROLE_USER;
