@@ -3,6 +3,7 @@
 namespace frontend\modules\api\v1\controllers;
 
 use common\models\AdsCategory;
+use common\models\Advertise;
 use common\models\User;
 use frontend\modules\api\v1\resources\User as UserResource;
 use yii\filters\AccessControl;
@@ -134,5 +135,51 @@ class HomeController extends ActiveController
             );
         }
         return $categoriesResult;
+    }
+
+    public function actionAds()
+    {
+        $page_size = Yii::$app->request->get('page_size');
+        $page_index = Yii::$app->request->get('page_index');
+        if (!$page_size) {
+            $page_size = 8;
+        }
+
+        if (!$page_index) {
+            $page_index = 1;
+        }
+
+        $index = $page_size * ($page_index - 1);
+
+        $response = \Yii::$app->getResponse();
+
+        // cat_id
+        $cat_id = Yii::$app->request->get('cat_id');
+        if(!$cat_id){
+            $response->setStatusCode(422);
+            return array(
+                'name'=> 'Thiếu tham số',
+                'message'=> array('cat_id'=> 'Thiếu tham số cat_id'),
+                'code'=> 0,
+                'status'=> 422,
+            );
+        }
+
+        $response->setStatusCode(200);
+
+        $advertises = Advertise::find()->limit($page_size)->offset($index)->all();
+        $advertisesResult = [];
+
+        foreach ($advertises as $advertise) {
+
+            $advertisesResult[] = array(
+                'id' => $advertise->id,
+                'title' => $advertise->title,
+                'description' => $advertise->description,
+                'thumbnail' => $advertise->thumb,
+                'created_at' => date('Y-m-d H:i:s',$advertise->created_at),
+            );
+        }
+        return $advertisesResult;
     }
 }

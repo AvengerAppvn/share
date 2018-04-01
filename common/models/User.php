@@ -37,7 +37,9 @@ use yii\db\Expression;
  * @property integer $twofa_lending
  * @property integer $twofa_withdraw
  * @property integer $authen_2fa
- * 
+ * @property bool $is_customer
+ * @property bool $is_advertiser
+ *
  * @property \common\models\UserProfile $userProfile
  */
 class User extends ActiveRecord implements IdentityInterface

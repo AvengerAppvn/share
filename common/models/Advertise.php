@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use trntv\filekit\behaviors\UploadBehavior;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "advertise".
@@ -21,9 +23,15 @@ use Yii;
  * @property integer $updated_at
  * @property integer $created_by
  * @property integer $updated_by
+ * @property string $thumbnail_base_url
+ * @property string $thumbnail_path
  */
 class Advertise extends \yii\db\ActiveRecord
 {
+    /**
+     * @var array
+     */
+    public $thumbnail;
     /**
      * @inheritdoc
      */
@@ -31,7 +39,21 @@ class Advertise extends \yii\db\ActiveRecord
     {
         return 'advertise';
     }
-
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+            [
+                'class' => UploadBehavior::className(),
+                'attribute' => 'thumbnail',
+                'pathAttribute' => 'thumbnail_path',
+                'baseUrlAttribute' => 'thumbnail_base_url'
+            ]
+        ];
+    }
     /**
      * @inheritdoc
      */
@@ -42,6 +64,8 @@ class Advertise extends \yii\db\ActiveRecord
             [['user_id', 'cat_id', 'share', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['content'], 'string'],
             [['title', 'slug', 'description', 'message'], 'string', 'max' => 255],
+            [['thumbnail_base_url', 'thumbnail_path'], 'string', 'max' => 1024],
+            ['thumbnail', 'safe']
         ];
     }
 
@@ -55,6 +79,7 @@ class Advertise extends \yii\db\ActiveRecord
             'user_id' => Yii::t('common', 'User Id'),
             'cat_id' => Yii::t('common', 'Danh mục'),
             'title' => Yii::t('common', 'Tiêu đề'),
+            'thumbnail' => Yii::t('common', 'Thumbnail'),
             'slug' => 'Slug',
             'content' => Yii::t('common', 'Nội dung'),
             'description' => Yii::t('common', 'Mô tả'),
@@ -73,4 +98,16 @@ class Advertise extends \yii\db\ActiveRecord
      * @return AdvertiseQuery the active query used by this AR class.
      */
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAdvertiseImages()
+    {
+        return $this->hasMany(AdsAdvertiseImage::className(), ['ads_id' => 'id']);
+    }
+
+    public function getThumb()
+    {
+        return $this->thumbnail_base_url . '/' . $this->thumbnail_path;
+    }
 }
