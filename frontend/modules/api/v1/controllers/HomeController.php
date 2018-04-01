@@ -192,7 +192,7 @@ class HomeController extends ActiveController
             $response->setStatusCode(422);
             return array(
                 'name'=> 'Thiếu tham số',
-                'message'=> array('cat_id'=> 'Thiếu tham số cat_id'),
+                'message'=> array('ads_id'=> 'Thiếu tham số ads_id'),
                 'code'=> 0,
                 'status'=> 422,
             );
