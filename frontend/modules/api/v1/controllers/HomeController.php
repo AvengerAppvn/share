@@ -137,7 +137,7 @@ class HomeController extends ActiveController
         return $categoriesResult;
     }
 
-    public function actionAds()
+    public function actionCategory()
     {
         $page_size = Yii::$app->request->get('page_size');
         $page_index = Yii::$app->request->get('page_index');
@@ -181,5 +181,37 @@ class HomeController extends ActiveController
             );
         }
         return $advertisesResult;
+    }
+
+    public function actionAds()
+    {
+        $response = \Yii::$app->getResponse();
+        // ads_id
+        $ads_id = Yii::$app->request->get('ads_id');
+        if(!$ads_id){
+            $response->setStatusCode(422);
+            return array(
+                'name'=> 'Thiếu tham số',
+                'message'=> array('cat_id'=> 'Thiếu tham số cat_id'),
+                'code'=> 0,
+                'status'=> 422,
+            );
+        }
+
+        $response->setStatusCode(200);
+
+        $advertise = Advertise::findOne($ads_id);
+
+        return array(
+            'id' => $advertise->id,
+            'title' => $advertise->title,
+            'description' => $advertise->description,
+            'content' => $advertise->content,
+            'thumbnail' => $advertise->thumb,
+            //'images' => $advertise->advertiseImages,
+            'images' => [$advertise->thumb],
+            'created_at' => date('Y-m-d H:i:s',$advertise->created_at),
+            'share' => $advertise->share ?: 0,
+        );
     }
 }
