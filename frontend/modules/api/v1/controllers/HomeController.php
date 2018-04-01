@@ -198,10 +198,19 @@ class HomeController extends ActiveController
             );
         }
 
-        $response->setStatusCode(200);
 
         $advertise = Advertise::findOne($ads_id);
+        if(!$advertise){
+            $response->setStatusCode(404);
+            return array(
+                'name'=> 'Không có dữ liệu',
+                'message'=> array('ads_id'=> 'Không tìm dược dữ liệu với id='.$ads_id),
+                'code'=> 0,
+                'status'=> 404,
+            );
+        }
 
+        $response->setStatusCode(200);
         return array(
             'id' => $advertise->id,
             'title' => $advertise->title,
