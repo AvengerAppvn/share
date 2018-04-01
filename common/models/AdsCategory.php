@@ -99,6 +99,11 @@ class AdsCategory extends \yii\db\ActiveRecord
     {
         return '/share'.$this->image_base_url . '/' . $this->image_path;
     }
+
+    public function getThumbnail()
+    {
+        return $this->image_base_url . '/' . $this->image_path;
+    }
     /**
      * @inheritdoc
      * @return AdsCategoryQuery the active query used by this AR class.
