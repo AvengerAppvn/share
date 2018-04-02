@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use trntv\filekit\widget\Upload;
+use common\components\helper\CUtils;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\AdsCategory */
@@ -45,11 +47,10 @@ use trntv\filekit\widget\Upload;
         ?>
     </div>
 
-    <div class="col-md-12">
-        <?php echo $form->field($model, 'status')->checkbox(
-            [
-                'label' => 'Kích hoạt',
-            ]
+    <div class="col-md-3">
+        <?php echo $form->field($model, 'status')->dropdownList(
+            ArrayHelper::map(CUtils::status(), 'id', 'name'),
+            ['prompt' => 'Chọn Trạng thái']
         ) ?>
     </div>
 

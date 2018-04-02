@@ -32,7 +32,7 @@ class AdsShare extends \yii\db\ActiveRecord
     {
         return [
             [['ads_id'], 'required'],
-            [['ads_id', 'user_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['ads_id', 'user_id','status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
         ];
     }
 
@@ -59,5 +59,15 @@ class AdsShare extends \yii\db\ActiveRecord
     public static function find()
     {
         return new \common\models\query\AdsShareQuery(get_called_class());
+    }
+
+    public function getAdvertise()
+    {
+        return $this->hasOne(Advertise::className(), ['id' => 'ads_id']);
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }

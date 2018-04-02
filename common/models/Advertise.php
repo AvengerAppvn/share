@@ -5,6 +5,7 @@ namespace common\models;
 use trntv\filekit\behaviors\UploadBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
 
 /**
  * This is the model class for table "advertise".
@@ -46,6 +47,7 @@ class Advertise extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::className(),
+            BlameableBehavior::className(),
             [
                 'class' => UploadBehavior::className(),
                 'attribute' => 'thumbnail',
@@ -60,8 +62,8 @@ class Advertise extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'cat_id', 'title'], 'required'],
-            [['user_id', 'cat_id', 'share', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [[ 'cat_id', 'title'], 'required'],
+            [['province_id', 'age_id', 'speciality_id', 'cat_id', 'share', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['content'], 'string'],
             [['title', 'slug', 'description', 'message'], 'string', 'max' => 255],
             [['thumbnail_base_url', 'thumbnail_path'], 'string', 'max' => 1024],
@@ -76,7 +78,7 @@ class Advertise extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => Yii::t('common', 'User Id'),
+//            'user_id' => Yii::t('common', 'User Id'),
             'cat_id' => Yii::t('common', 'Danh mục'),
             'title' => Yii::t('common', 'Tiêu đề'),
             'thumbnail' => Yii::t('common', 'Thumbnail'),
@@ -84,15 +86,52 @@ class Advertise extends \yii\db\ActiveRecord
             'content' => Yii::t('common', 'Nội dung'),
             'description' => Yii::t('common', 'Mô tả'),
             'message' => Yii::t('common', 'Thông điệp'),
-            'share' => Yii::t('common', 'Share'),
+            'share' => Yii::t('common', 'Share Quảng cáo'),
             'status' => Yii::t('common', 'Trạng thái'),
             'created_at' => Yii::t('common', 'Ngày tạo'),
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),
             'created_by' => Yii::t('common', 'Người tạo'),
             'updated_by' => Yii::t('common', 'Người cập nhật'),
+            'province_id' => Yii::t('common', ' Khu vực'),
+            'age_id' =>Yii::t('common', ' Độ tuổi'),
+            'speciality_id' => Yii::t('common', ' Chuyên ngành'),
         ];
     }
 
+    public function getAuthor()
+    {
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
+    }
+
+    public function getUpdater()
+    {
+        return $this->hasOne(User::className(), ['id' => 'updated_by']);
+    }
+
+    public function getUrl()
+    {
+        return '/share'.$this->image_base_url . '/' . $this->image_path;
+    }
+
+    public function getCategory()
+    {
+        return $this->hasOne(AdsCategory::className(), ['id' => 'cat_id']);
+    }
+
+    public function getProvince()
+    {
+        return $this->hasOne(CriteriaProvince::className(), ['id' => 'province_id']);
+    }
+
+    public function getAge()
+    {
+        return $this->hasOne(CriteriaAge::className(), ['id' => 'age_id']);
+    }
+
+    public function getSpeciality()
+    {
+        return $this->hasOne(CriteriaSpeciality::className(), ['id' => 'speciality_id']);
+    }
     /**
      * @inheritdoc
      * @return AdvertiseQuery the active query used by this AR class.

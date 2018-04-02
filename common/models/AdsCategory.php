@@ -97,7 +97,7 @@ class AdsCategory extends \yii\db\ActiveRecord
 
     public function getUrl()
     {
-        return '/share'.$this->image_base_url . '/' . $this->image_path;
+        return $this->image_base_url . '/' . $this->image_path;
     }
 
     public function getThumbnail()

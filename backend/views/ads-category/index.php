@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status',
                 'value' => function ($model) {
-                    return $model->status == 1 ? "Mở" : "Đóng";
+                    return $model->status == 1 ? "Kích hoạt" : "Đóng";
                 },
                 'filter' => ArrayHelper::map(CUtils::status(), 'id', 'name'),
             ],

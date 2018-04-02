@@ -49,11 +49,11 @@ class AdsAdvertiseShare extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'ads_id' => 'Ads ID',
-            'province_id' => 'Province ID',
-            'age_id' => 'Age ID',
-            'speciality_id' => 'Speciality ID',
-            'status' => 'Trạng thái',
+            'ads_id' => Yii::t('common', ' Ads Id'),
+            'province_id' => Yii::t('common', ' Khu vực'),
+            'age_id' =>Yii::t('common', ' Độ tuổi'),
+            'speciality_id' => Yii::t('common', ' Độ tuổi'),
+            'status' => Yii::t('common', ' Trạng thái'),
             'created_at' => Yii::t('common', 'Ngày tạo'),
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),
             'created_by' => Yii::t('common', 'Người tạo'),

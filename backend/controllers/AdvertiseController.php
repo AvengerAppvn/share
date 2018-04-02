@@ -2,6 +2,12 @@
 
 namespace backend\controllers;
 
+use common\models\AdsAdvertiseImage;
+use common\models\AdsAdvertiseShare;
+use common\models\AdsShare;
+use common\models\CriteriaAge;
+use common\models\CriteriaProvince;
+use common\models\CriteriaSpeciality;
 use Yii;
 use common\models\Advertise;
 use common\models\search\AdvertiseSearch;
@@ -64,14 +70,33 @@ class AdvertiseController extends Controller
     public function actionCreate()
     {
         $model = new Advertise();
+        $image = new AdsAdvertiseImage();
+        $share = new AdsShare();
+//        $model->id = $model->created_by;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $share->ads_id = $model->id;
+            $share->user_id = $model->created_by;
+            $share->status = $model->status;
+            $share->save();
+            return $this->redirect(['view', 'id' => $model->id,]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'image' => $image,
             ]);
         }
+    }
+
+    public function actionShare($ads_id)
+    {
+        $model = AdsShare::find()->where(['ads_id' => $ads_id])->all();
+        $count = count($model);
+
+        return $this->render('share', [
+            'model' => $model,
+            'count' => $count
+        ]);
     }
 
     /**
@@ -83,12 +108,19 @@ class AdvertiseController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $share = AdsShare::find()->where(['user_id' => $model->created_by, 'ads_id' => $id])->one();
+
+        $image = new AdsAdvertiseImage();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $share->status = $model->status;
+            $share->save();
+
+            return $this->redirect(['view', 'id' => $model->id,]);
         } else {
-            return $this->render('update', [
+            return $this->render('create', [
                 'model' => $model,
+                'image' => $image,
             ]);
         }
     }
@@ -116,6 +148,15 @@ class AdvertiseController extends Controller
     protected function findModel($id)
     {
         if (($model = Advertise::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    protected function findShare($id)
+    {
+        if (($model = AdsShare::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

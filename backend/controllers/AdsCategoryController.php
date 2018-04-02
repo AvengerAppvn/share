@@ -65,7 +65,6 @@ class AdsCategoryController extends Controller
     public function actionCreate()
     {
         $model = new AdsCategory();
-        $model->status = 1;
 
         if ($model->load(Yii::$app->request->post())) {
             $model->slug = CVietnameseTools::removeSigns($model->name);
