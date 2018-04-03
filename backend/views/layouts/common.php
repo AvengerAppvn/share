@@ -185,6 +185,11 @@ $bundle = BackendAsset::register($this);
                         ]
                     ],
                     [
+                        'label' => Yii::t('backend', 'Wallet'),
+                        'icon' => '<i class="fa fa-money"></i>',
+                        'url' => ['/wallet/index'],
+                    ],
+                    [
                         'label' => Yii::t('backend', 'Users'),
                         'icon' => '<i class="fa fa-users"></i>',
                         'url' => ['/user/index'],

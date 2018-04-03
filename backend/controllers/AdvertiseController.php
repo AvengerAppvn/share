@@ -90,7 +90,7 @@ class AdvertiseController extends Controller
 
     public function actionShare($ads_id)
     {
-        $model = AdsShare::find()->where(['ads_id' => $ads_id])->all();
+        $model = AdsShare::find()->where(['ads_id' => $ads_id, 'status' => 1])->all();
         $count = count($model);
 
         return $this->render('share', [
@@ -109,11 +109,10 @@ class AdvertiseController extends Controller
     {
         $model = $this->findModel($id);
         $share = AdsShare::find()->where(['user_id' => $model->created_by, 'ads_id' => $id])->one();
-
         $image = new AdsAdvertiseImage();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $share->status = $model->status;
+            $share->status = $model->share;
             $share->save();
 
             return $this->redirect(['view', 'id' => $model->id,]);
