@@ -15,7 +15,7 @@ class m180402_035833_add_advertise extends Migration
         $this->addColumn('advertise', 'province_id', $this->integer());
         $this->addColumn('advertise', 'age_id', $this->integer());
         $this->addColumn('advertise', 'speciality_id', $this->integer());
-        $this->addColumn('ads_share', 'status', $this->smallInteger(1));
+        #$this->addColumn('ads_share', 'status', $this->smallInteger(1));
     }
 
     /**
@@ -23,7 +23,7 @@ class m180402_035833_add_advertise extends Migration
      */
     public function down()
     {
-        $this->dropColumn('ads_share', 'status');
+        #$this->dropColumn('ads_share', 'status');
         $this->dropColumn('advertise', 'province_id');
         $this->dropColumn('advertise', 'age_id');
         $this->dropColumn('advertise', 'speciality_id');
