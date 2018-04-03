@@ -12,6 +12,8 @@ use common\models\Transaction;
  */
 class TransactionSearch extends Transaction
 {
+    public $max_date;
+    public $min_date;
     /**
      * @inheritdoc
      */
@@ -21,6 +23,7 @@ class TransactionSearch extends Transaction
             [['id', 'user_id', 'type', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['amount'], 'number'],
             [['description'], 'safe'],
+            [['logtime', 'min_date', 'max_date'], 'safe'],
         ];
     }
 
@@ -74,5 +77,24 @@ class TransactionSearch extends Transaction
         $query->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
+    }
+    public function searchTransaction($params){
+        if (!($this->load($params) && $this->validate())) {
+            return new ActiveDataProvider([
+                'query' => Transaction::find()->where(['user_id' => $this->user_id])->orderBy('logtime DESC'),
+                'pagination' => [
+                    'pageSize' => 5,
+                ]
+            ]);
+        }
+
+        $query = Transaction::find()->where(['user_id' => $this->user_id])
+            ->andWhere(['between', 'logtime', $this->min_date, $this->max_date])->orderBy('logtime DESC');
+        return new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 5,
+            ]
+        ]);
     }
 }

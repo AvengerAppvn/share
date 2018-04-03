@@ -47,12 +47,17 @@ class Wallet extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => Yii::t('common', 'User ID'),
             'amount' => Yii::t('common', 'Amount'),
-            'status' => Yii::t('common', 'Trạng thái'),
+            'status' => Yii::t('common', 'Status'),
             'created_at' => Yii::t('common', 'Ngày tạo'),
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),
             'created_by' => Yii::t('common', 'Người tạo'),
             'updated_by' => Yii::t('common', 'Người cập nhật'),
         ];
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
     /**

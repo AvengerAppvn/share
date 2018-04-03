@@ -37,6 +37,7 @@ class Transaction extends \yii\db\ActiveRecord
             [['user_id', 'description', 'type'], 'required'],
             [['user_id', 'type', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['amount'], 'number'],
+            [['logtime'], 'safe'],
             [['description'], 'string', 'max' => 255],
         ];
     }
@@ -49,9 +50,10 @@ class Transaction extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'user_id' => Yii::t('common', 'User ID'),
-            'amount' => Yii::t('common', 'Amount'),
+            'amount' => Yii::t('common', 'Số tiền giao dịch'),
             'description' => Yii::t('common', 'Mô tả'),
             'type' => Yii::t('common', 'Loại giao dịch'),
+            'logtime' => Yii::t('app', 'Thời gian giao dịch'),
             'status' => Yii::t('common', 'Trạng thái'),
             'created_at' => Yii::t('common', 'Ngày tạo'),
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),

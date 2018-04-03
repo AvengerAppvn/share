@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use common\models\search\TransactionSearch;
+use common\models\Transaction;
 use Yii;
 use common\models\Wallet;
 use common\models\search\WalletSearch;
@@ -51,8 +53,16 @@ class WalletController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $searchModel = new TransactionSearch();
+        $searchModel->user_id = $model->user_id;
+
+        $dataProvider = $searchModel->searchTransaction(Yii::$app->request->queryParams);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider
         ]);
     }
 

@@ -1,0 +1,13 @@
+.transaction .logtime-transaction {
+    list-style: none;
+}
+
+.transaction .logtime-transaction li{
+    float: left;
+}
+.wallet-view .transaction .title-wallet{
+    background: #a02c2cc2;
+    color: #FFF;
+    padding: 8px;
+    margin-bottom: 20px;
+}
