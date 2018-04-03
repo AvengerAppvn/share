@@ -2,6 +2,7 @@
 
 namespace frontend\modules\api\v1\controllers;
 
+use frontend\models\UserEditForm;
 use backend\models\LoginForm;
 use common\models\User;
 use frontend\modules\api\v1\resources\User as UserResource;
@@ -99,7 +100,7 @@ class UserController extends ActiveController
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['me'],
+                    'actions' => ['me','update'],
                     'roles' => ['user']
                 ]
             ],
@@ -189,7 +190,7 @@ class UserController extends ActiveController
     {
         $model = new SignupConfirmForm();
 
-        $model->load(Yii::$app->request->post());
+        $model->load(\Yii::$app->request->post());
         if ($model->validate() && $model->confirm()) {
 
             $response = \Yii::$app->getResponse();
@@ -286,7 +287,7 @@ class UserController extends ActiveController
             $strengths = ['Thời trang', 'Điện tử', 'Du lịch'];
             $coin = 0;
             return array(
-                'fullname' => $user->userProfile->fullName,
+                'fullname' => $user->userProfile->fullname,
                 'address' => $user->userProfile->address ?: '',
                 'email' => $user->email,
                 'phone' => $user->phone,
@@ -297,6 +298,7 @@ class UserController extends ActiveController
                 'coin' => $coin,
                 'is_customer' => $user->is_customer? true : false,
                 'is_advertiser' => $user->is_advertiser? true : false,
+                'status_confirmed' => $user->status_confirmed,
             );
         } else {
             // Validation error
@@ -304,14 +306,14 @@ class UserController extends ActiveController
         }
     }
 
-    public function actionMeUpdate()
+    public function actionUpdate()
     {
         $user = User::findIdentity(\Yii::$app->user->getId());
 
         if ($user) {
 
             $model = new UserEditForm();
-            $model->load(Yii::$app->request->post(), '');
+            $model->load(\Yii::$app->request->post(), '');
             $model->id = $user->id;
 
             if ($model->validate() && $model->save()) {
@@ -319,12 +321,13 @@ class UserController extends ActiveController
                 $response->setStatusCode(200);
                 $user = $model->getUserByID();
                 return [
-                    'full_name' => $user->getFullName(),
-                    'address' => $user->getAddress(),
-                    'username' => $user->username,
+                    'fullname' => $user->userProfile->fullname,
+                    'address' => $user->userProfile->address,
                     'email' => $user->email,
-                    'phone' => $user->getPhoneNumber(),
-                    'avatar_url' => $user->getAvatarUrl(),
+                    'phone' => $user->phone,
+                    //'avatar' => $user->userProfile->avatar,
+                    'birthday' => $user->userProfile->birthday,
+                    'strengths' => json_decode($user->userProfile->strengths),
                     //'last_login_at' =>  $user->last_login_at,
                     //'last_login_ip' =>  $user->last_login_ip,
                 ];

@@ -1,161 +1,175 @@
 <?php
-    namespace app\models;
+namespace frontend\models;
 
-    use Yii;
-    use yii\base\Model;
-    use app\models\User;
-    use yii\behaviors\TimestampBehavior;
-    use yii\db\Expression;
+use common\models\User;
+use Yii;
+use yii\base\Model;
+
+/**
+ * User Edit form
+ */
+class UserEditForm extends Model
+{
+    public $id;
+    public $password;
+    public $email;
+    public $address;
+    public $phone;
+    public $avatar;
+    public $fullname;
+    public $birthday;
+    public $strengths;
+
+    /** @var User */
+    private $_user = false;
 
     /**
-     * User Edit form
+     * @inheritdoc
      */
-    class UserEditForm extends Model
+    public function rules()
     {
-        public $id;
-        public $password;
-        public $email;
-        public $address;
-        public $phone;
-        public $avatar;
-        public $full_name;
-
-        /** @var User */
-        private $_user = false;
-
-        /**
-         * @inheritdoc
-         */
-        public function rules()
-        {
-            return [
-                ['id', 'exist', 'targetClass' => '\app\models\User', 'filter' => [
-                    'and', ['status' => User::STATUS_ACTIVE],
-                    'confirmed_at IS NOT NULL',
-                    'blocked_at IS NULL'
-                ], 'message' => 'The ID is not valid.'],
-                ['email', 'trim'],
-                //['email', 'required'],
-                ['email', 'email'],
-                ['address', 'string'],
-                ['phone', 'string'],
-                ['full_name', 'string'],
-                ['avatar', 'string'],
-                ['email', 'string', 'max' => 255],
-                ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => Yii::t('app', 'This email address has already been taken.'), 'filter' => function($query){
-                    $query->andWhere(['!=', 'id', $this->id]);
-                }],
-
-                ['password', 'string', 'min' => 6],
-            ];
-        }
-
-        /**
-         * Signs user up.
-         *
-         * @return boolean the saved model or null if saving fails
-         */
-        public function save()
-        {
-            if ($this->validate()) {
-                $this->getUserByID();
-
-				// if user email has been changed, then put the email in unconfirmed_email and set confirmed_at as null
-				$updateIndicator = false;
-				if($this->_user->email != $this->email) {
-					//$this->_user->unconfirmed_email = $this->email;
-					//$this->_user->confirmed_at = null;
-					//$this->_user->status = User::STATUS_PENDING;
-					//$this->_user->generateAuthKey();
-					$updateIndicator = true;
-				}
-
-				// If password is not null, then update password
-				if($this->password) {
-					$updateIndicator = true;
-					$this->_user->setPassword($this->password);
-				}
-
-                if($this->phone) {
-                    $updateIndicator = true;
-                    $this->_user->phone = $this->phone;
-                }
-
-                if($this->address) {
-                    $updateIndicator = true;
-                    $this->_user->address = $this->address;
-                }
-
-                if($this->full_name) {
-                    $updateIndicator = true;
-                    $this->_user->full_name = $this->full_name;
-                }
-
-                if($this->avatar) {
-                    $updateIndicator = true;
-                    // requires php5
-                    define('UPLOAD_DIR', 'images/avatar/');
-
-                    $img = $this->avatar;
-                    $img = str_replace('data:image/png;base64,', '', $img);
-                    $img = str_replace(' ', '+', $img);
-                    $data = base64_decode($img);
-                    $file = UPLOAD_DIR . uniqid() . '.png';
-                    $success = file_put_contents($file, $data);
-                    $this->_user->avatar =  $success ? $file : '';
-                }
-
-                if($updateIndicator == true && $this->_user->save(false)) {
-					// Send confirmation email
-					//$this->sendConfirmationEmail();
-					return true;
-				}
-				elseif($updateIndicator == false){
-					// Nothing to update
-					return true;
-				}
-				else {
-					Yii::trace("Model validation error => ".print_r($this->_user->getErrors(), true));
-					$this->addError('generic', Yii::t('app', 'The system could not update the information.'));
-				}
-            }
-            return false;
-        }
-
-
-	    public function sendConfirmationEmail(){
-
-		    $confirmURL = \Yii::$app->params['frontendURL'].'#/confirm?id='.$this->_user->id.'&auth_key='.$this->_user->auth_key;
-
-		    $email = \Yii::$app->mailer
-			    ->compose(
-				    ['html' =>  'email-confirmation-html'],
-				    [
-					    'appName'       =>  \Yii::$app->name,
-					    'confirmURL'    =>  $confirmURL,
-				    ]
-			    )
-			    ->setTo($this->email)
-			    ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name])
-			    ->setSubject('Email confirmation')
-			    ->send();
-
-		    return $email;
-	    }
-
-        /**
-         * Finds user by [[id]]
-         *
-         * @return User|null
-         */
-        public function getUserByID()
-        {
-
-            if ($this->_user === false) {
-                $this->_user = User::findOne($this->id);
-            }
-
-            return $this->_user;
-        }
-
+        return [
+            ['id', 'exist', 'targetClass' => '\common\models\User', 'filter' => [
+                'and', ['status' => User::STATUS_ACTIVE],
+            ], 'message' => 'The ID is not valid.'],
+            ['email', 'trim'],
+            //['email', 'required'],
+            ['email', 'email'],
+            ['address', 'string'],
+            ['phone', 'string'],
+            ['fullname', 'string'],
+            //['avatar', 'string'],
+            ['email', 'string', 'max' => 255],
+            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => Yii::t('app', 'This email address has already been taken.'), 'filter' => function ($query) {
+                $query->andWhere(['!=', 'id', $this->id]);
+            }],
+            ['strengths', 'safe'],
+            ['birthday', 'safe'],
+            ['password', 'string', 'min' => 6],
+        ];
     }
+
+    /**
+     * Signs user up.
+     *
+     * @return boolean the saved model or null if saving fails
+     */
+    public function save()
+    {
+        if ($this->validate()) {
+            $this->getUserByID();
+
+            // if user email has been changed, then put the email in unconfirmed_email and set confirmed_at as null
+            $updateIndicator = false;
+            $updateProfile = false;
+
+//            if ($this->_user->email != $this->email) {
+//                //$this->_user->unconfirmed_email = $this->email;
+//                //$this->_user->confirmed_at = null;
+//                //$this->_user->status = User::STATUS_PENDING;
+//                //$this->_user->generateAuthKey();
+//                $updateIndicator = true;
+//            }
+
+            // If password is not null, then update password
+//            if ($this->password) {
+//                $updateIndicator = true;
+//                $this->_user->setPassword($this->password);
+//            }
+
+            if ($this->phone) {
+                $updateIndicator = true;
+                $this->_user->phone = $this->phone;
+            }
+
+            if ($this->birthday && $this->_user->is_confirmed == 0) {
+                $updateProfile = true;
+                $this->_user->userProfile->birthday = date('Y-m-d', strtotime($this->birthday));
+            }
+
+            if ($this->address) {
+                $updateProfile = true;
+                $this->_user->userProfile->address = $this->address;
+            }
+
+            if ($this->strengths) {
+                $updateProfile = true;
+                $this->_user->userProfile->strengths = json_encode($this->strengths);
+            }
+
+            if ($this->fullname && $this->_user->is_confirmed == 0) {
+                $updateProfile = true;
+                $this->_user->userProfile->fullname = $this->fullname;
+            }
+
+            if ($this->avatar) {
+                $updateIndicator = true;
+                // requires php5
+                define('UPLOAD_DIR', 'images/avatar/');
+
+                $img = $this->avatar;
+                $img = str_replace('data:image/png;base64,', '', $img);
+                $img = str_replace(' ', '+', $img);
+                $data = base64_decode($img);
+                $file = UPLOAD_DIR . uniqid() . '.png';
+                $success = file_put_contents($file, $data);
+                $this->_user->avatar = $success ? $file : '';
+            }
+
+            if ($updateProfile == true) {
+                $this->_user->userProfile->save(false);
+            }
+
+            if ($updateIndicator == true && $this->_user->save(false)) {
+                // Send confirmation email
+                //$this->sendConfirmationEmail();
+                return true;
+            } elseif ($updateIndicator == false && $updateProfile == true && $this->_user->userProfile->save(false)) {
+                // Nothing to update
+                return true;
+            } else {
+                Yii::trace("Model validation error => " . print_r($this->_user->getErrors(), true));
+                $this->addError('generic', Yii::t('app', 'The system could not update the information.'));
+            }
+        }
+        return false;
+    }
+
+
+    public function sendConfirmationEmail()
+    {
+
+        $confirmURL = \Yii::$app->params['frontendURL'] . '#/confirm?id=' . $this->_user->id . '&auth_key=' . $this->_user->auth_key;
+
+        $email = \Yii::$app->mailer
+            ->compose(
+                ['html' => 'email-confirmation-html'],
+                [
+                    'appName' => \Yii::$app->name,
+                    'confirmURL' => $confirmURL,
+                ]
+            )
+            ->setTo($this->email)
+            ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name])
+            ->setSubject('Email confirmation')
+            ->send();
+
+        return $email;
+    }
+
+    /**
+     * Finds user by [[id]]
+     *
+     * @return User|null
+     */
+    public function getUserByID()
+    {
+
+        if ($this->_user === false) {
+            $this->_user = User::findOne($this->id);
+        }
+
+        return $this->_user;
+    }
+
+}

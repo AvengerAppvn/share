@@ -20,6 +20,7 @@ use yii\db\ActiveRecord;
  * @property string $avatar_base_url
  * @property integer $gender
  * @property integer $country_id
+ * @property string $fullname
  * @property string $address
  * @property date $birthday
  *
@@ -70,10 +71,11 @@ class UserProfile extends ActiveRecord
             [['user_id'], 'required'],
             [['user_id', 'gender','country_id'], 'integer'],
             [['gender'], 'in', 'range' => [NULL, self::GENDER_FEMALE, self::GENDER_MALE]],
-            [['firstname', 'middlename', 'lastname', 'avatar_path', 'avatar_base_url'], 'string', 'max' => 255],
+            [['fullname', 'firstname', 'middlename', 'lastname', 'avatar_path', 'avatar_base_url'], 'string', 'max' => 255],
             ['locale', 'default', 'value' => Yii::$app->language],
             ['locale', 'in', 'range' => array_keys(Yii::$app->params['availableLocales'])],
             ['picture', 'safe'],
+            ['strengths', 'safe'],
             //['birthday', 'date']
         ];
     }
@@ -93,6 +95,7 @@ class UserProfile extends ActiveRecord
             'picture' => Yii::t('common', 'Picture'),
             'gender' => Yii::t('common', 'Gender'),
             'address' => Yii::t('common', 'Address'),
+            'fullname' => Yii::t('common', 'Fullname'),
         ];
     }
 
