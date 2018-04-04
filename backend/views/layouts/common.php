@@ -164,33 +164,33 @@ $bundle = BackendAsset::register($this);
                         'options' => ['class' => 'header']
                     ],
                     [
-                        'label' => Yii::t('backend', 'Ads'),
+                        'label' => Yii::t('backend', 'Quản lý Quảng cáo'),
                         'url' => '#',
                         'icon' => '<i class="fa fa-edit"></i>',
                         'options' => ['class' => 'treeview'],
                         'items' => [
-                            ['label' => Yii::t('backend', 'Ads Category'), 'url' => ['/ads-category/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Advertise'), 'url' => ['/advertise/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Danh Mục'), 'url' => ['/ads-category/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Quảng Cáo'), 'url' => ['/advertise/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                            ]
                     ],
                     [
-                        'label' => Yii::t('backend', 'Share Criteria'),
+                        'label' => Yii::t('backend', 'Tiêu chí Share'),
                         'url' => '#',
                         'icon' => '<i class="fa fa-address-book"></i>',
                         'options' => ['class' => 'treeview'],
                         'items' => [
-                            ['label' => Yii::t('backend', 'Criteria Province'), 'url' => ['/criteria-province/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Criteria Age'), 'url' => ['/criteria-age/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Criteria Speciality'), 'url' => ['/criteria-speciality/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Khu Vực'), 'url' => ['/criteria-province/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Độ Tuổi'), 'url' => ['/criteria-age/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Chuyên Ngành'), 'url' => ['/criteria-speciality/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                         ]
                     ],
                     [
-                        'label' => Yii::t('backend', 'Wallet'),
+                        'label' => Yii::t('backend', 'Quản lý Ví'),
                         'icon' => '<i class="fa fa-money"></i>',
                         'url' => ['/wallet/index'],
                     ],
                     [
-                        'label' => Yii::t('backend', 'Users'),
+                        'label' => Yii::t('backend', 'Quản lý Người dùng'),
                         'icon' => '<i class="fa fa-users"></i>',
                         'url' => ['/user/index'],
                         'visible' => Yii::$app->user->can('administrator')

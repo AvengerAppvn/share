@@ -20,6 +20,8 @@ use Yii;
  */
 class Transaction extends \yii\db\ActiveRecord
 {
+    const TYPE_DEPOSIT = 1;
+    const TYPE_WITHDRAW = 2;
     /**
      * @inheritdoc
      */
@@ -49,7 +51,7 @@ class Transaction extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => Yii::t('common', 'User ID'),
+            'user_id' => Yii::t('common', 'Người dùng'),
             'amount' => Yii::t('common', 'Số tiền giao dịch'),
             'description' => Yii::t('common', 'Mô tả'),
             'type' => Yii::t('common', 'Loại giao dịch'),

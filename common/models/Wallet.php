@@ -45,9 +45,9 @@ class Wallet extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => Yii::t('common', 'User ID'),
-            'amount' => Yii::t('common', 'Amount'),
-            'status' => Yii::t('common', 'Status'),
+            'user_id' => Yii::t('common', 'Người dùng'),
+            'amount' => Yii::t('common', 'Số dư'),
+            'status' => Yii::t('common', 'Trạng thái'),
             'created_at' => Yii::t('common', 'Ngày tạo'),
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),
             'created_by' => Yii::t('common', 'Người tạo'),

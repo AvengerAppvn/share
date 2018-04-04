@@ -19,7 +19,7 @@ class CriteriaProvinceSearch extends CriteriaProvince
     {
         return [
             [['id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['name', 'slug', 'description'], 'safe'],
+            [['name', 'slug'], 'safe'],
         ];
     }
 
@@ -68,8 +68,7 @@ class CriteriaProvinceSearch extends CriteriaProvince
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'slug', $this->slug])
-            ->andFilterWhere(['like', 'description', $this->description]);
+            ->andFilterWhere(['like', 'slug', $this->slug]);
 
         return $dataProvider;
     }
