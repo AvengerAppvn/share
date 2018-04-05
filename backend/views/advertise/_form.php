@@ -97,7 +97,7 @@ use common\components\helper\CUtils;
             <div class="col-md-4">
                 <?php echo $form->field($model, 'province_id')->dropdownList(
                     ArrayHelper::map(CriteriaProvince::find()->where(['status' => 1])->all(), 'id', 'name'),
-                    ['prompt' => 'Chọn Danh mục']
+                    ['prompt' => 'Chọn Thành Phố']
                 );
                 ?>
             </div>
@@ -105,7 +105,7 @@ use common\components\helper\CUtils;
             <div class="col-md-4">
                 <?php echo $form->field($model, 'age_id')->dropdownList(
                     ArrayHelper::map(CriteriaAge::find()->where(['status' => 1])->all(), 'id', 'name'),
-                    ['prompt' => 'Chọn Danh mục']
+                    ['prompt' => 'Chọn Độ tuổi']
                 );
                 ?>
             </div>
@@ -113,7 +113,7 @@ use common\components\helper\CUtils;
             <div class="col-md-4">
                 <?php echo $form->field($model, 'speciality_id')->dropdownList(
                     ArrayHelper::map(CriteriaSpeciality::find()->where(['status' => 1])->all(), 'id', 'name'),
-                    ['prompt' => 'Chọn Danh mục']
+                    ['prompt' => 'Chọn Chuyên ngành']
                 );
                 ?>
             </div>

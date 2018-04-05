@@ -80,12 +80,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'created_at',
             'updated_at',
             [
-                'attribute' => 'created_at',
-                'value' => function ($model) {
-                    return date("d-m-Y H:i:s", strtotime($model->created_at));;
-                },
-            ],
-            [
                 'attribute' => 'created_by',
                 'value' => function ($model) {
                     return $model->created_by ? $model->author->username : '';

@@ -2,6 +2,7 @@
 /**
  * @var $this yii\web\View
  */
+
 use backend\assets\BackendAsset;
 use backend\models\SystemLog;
 use backend\widgets\Menu;
@@ -146,20 +147,6 @@ $bundle = BackendAsset::register($this);
                         'badgeBgClass' => 'label-success',
                     ],
                     [
-                        'label' => Yii::t('backend', 'Content'),
-                        'url' => '#',
-                        'icon' => '<i class="fa fa-edit"></i>',
-                        'options' => ['class' => 'treeview'],
-                        'items' => [
-                            ['label' => Yii::t('backend', 'Static pages'), 'url' => ['/page/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Articles'), 'url' => ['/article/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Article Categories'), 'url' => ['/article-category/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Text Widgets'), 'url' => ['/widget-text/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Menu Widgets'), 'url' => ['/widget-menu/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Carousel Widgets'), 'url' => ['/widget-carousel/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                        ]
-                    ],
-                    [
                         'label' => Yii::t('backend', 'System'),
                         'options' => ['class' => 'header']
                     ],
@@ -171,7 +158,33 @@ $bundle = BackendAsset::register($this);
                         'items' => [
                             ['label' => Yii::t('backend', 'Danh Mục'), 'url' => ['/ads-category/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                             ['label' => Yii::t('backend', 'Quảng Cáo'), 'url' => ['/advertise/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                           ]
+                        ]
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Quản lý Ví'),
+                        'icon' => '<i class="fa fa-money"></i>',
+                        'url' => ['/wallet/index'],
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Quản lý yêu cầu giao dịch'),
+                        'icon' => '<i class="fa fa-exchange"></i>',
+                        'url' => ['/request/index'],
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Quản lý ngân hàng'),
+                        'url' => '#',
+                        'icon' => '<i class="fa fa-credit-card"></i>',
+                        'options' => ['class' => 'treeview'],
+                        'items' => [
+                            ['label' => Yii::t('backend', 'Ngân hàng'), 'url' => ['/bank/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Tài khoản ngân hàng'), 'url' => ['/user-bank/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                        ]
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Quản lý Người dùng'),
+                        'icon' => '<i class="fa fa-users"></i>',
+                        'url' => ['/user/index'],
+                        'visible' => Yii::$app->user->can('administrator')
                     ],
                     [
                         'label' => Yii::t('backend', 'Tiêu chí Share'),
@@ -185,15 +198,18 @@ $bundle = BackendAsset::register($this);
                         ]
                     ],
                     [
-                        'label' => Yii::t('backend', 'Quản lý Ví'),
-                        'icon' => '<i class="fa fa-money"></i>',
-                        'url' => ['/wallet/index'],
-                    ],
-                    [
-                        'label' => Yii::t('backend', 'Quản lý Người dùng'),
-                        'icon' => '<i class="fa fa-users"></i>',
-                        'url' => ['/user/index'],
-                        'visible' => Yii::$app->user->can('administrator')
+                        'label' => Yii::t('backend', 'Content'),
+                        'url' => '#',
+                        'icon' => '<i class="fa fa-edit"></i>',
+                        'options' => ['class' => 'treeview'],
+                        'items' => [
+                            ['label' => Yii::t('backend', 'Static pages'), 'url' => ['/page/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Articles'), 'url' => ['/article/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Article Categories'), 'url' => ['/article-category/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Text Widgets'), 'url' => ['/widget-text/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Menu Widgets'), 'url' => ['/widget-menu/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Carousel Widgets'), 'url' => ['/widget-carousel/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                        ]
                     ],
                     [
                         'label' => Yii::t('backend', 'Other'),
