@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "ads_advertise_image".
@@ -41,6 +42,19 @@ class AdsAdvertiseImage extends \yii\db\ActiveRecord
             [['image_base_url', 'image_path'], 'string', 'max' => 1024],
             [['description'], 'string', 'max' => 255],
             [['ads_id'], 'exist', 'skipOnError' => true, 'targetClass' => Advertise::className(), 'targetAttribute' => ['ads_id' => 'id']],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'updatedAtAttribute' => false
+            ]
         ];
     }
 

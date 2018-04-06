@@ -7,6 +7,7 @@ use common\models\Advertise;
 use common\models\CriteriaAge;
 use common\models\CriteriaProvince;
 use common\models\User;
+use frontend\models\AdsForm;
 use frontend\modules\api\v1\resources\User as UserResource;
 use yii\filters\AccessControl;
 use yii\filters\auth\CompositeAuth;
@@ -18,7 +19,6 @@ use yii\rest\ActiveController;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use Yii;
-
 /**
  * @author Eugene Terentev <eugene@terentev.net>
  */
@@ -27,7 +27,7 @@ class AdsController extends ActiveController
     /**
      * @var string
      */
-    public $modelClass = 'frontend\modules\api\v1\resources\Category';
+    public $modelClass = 'frontend\modules\api\v1\resources\Advertise';
 
     public function __construct($id, $module, $config = [])
     {
@@ -137,6 +137,23 @@ class AdsController extends ActiveController
             );
         }
         return $categoriesResult;
+    }
+
+    public function actionCreate()
+    {
+        $model = new AdsForm();
+        $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
+
+        if ($model->validate() && ($id = $model->save())) {
+            $response = \Yii::$app->getResponse();
+            $response->setStatusCode(200);
+            $response->getHeaders()->set('Location', Url::toRoute([$id], true));
+        } else {
+            // Validation error
+            throw new HttpException(422, json_encode($model->errors));
+        }
+
+        return 'Create successful';
     }
 
     public function actionView()
