@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\Request;
 use common\models\search\RequestSearch;
+use common\models\Transaction;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -84,13 +85,26 @@ class RequestController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->id]);
+//        } else {
+//            return $this->render('update', [
+//                'model' => $model,
+//            ]);
+//        }
+        $model->status = 1;
+        $model->save();
+//        var_dump($model);die;
+        $transaction = new Transaction();
+
+        $transaction->user_id = $model->user_id;
+        $transaction->amount = $model->amount;
+        $transaction->description = $model->description;
+        $transaction->type = $model->type;
+        $transaction->status = $model->status;
+        $transaction->save();
+        return $this->redirect(['index', 'model' => $model]);
+
     }
 
     /**

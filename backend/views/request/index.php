@@ -16,9 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Request', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -26,13 +23,28 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'user_id',
-            'amount',
+            [
+                'attribute' => 'user_id',
+                'value' => function ($model) {
+                    return $model->user_id ? $model->user->username : "";
+                },
+            ],
+            [
+                'attribute' => 'amount',
+                'format' => 'html',
+                'value' => function ($model) {
+                    if ($model->type == 1) {
+                        return '<span style="color: #00CC00"> + ' . $model->amount . '</span>';
+                    } else {
+                        return '<span style="color: red"> - ' . $model->amount . '</span>';
+                    }
+                },
+            ],
             'description',
             [
                 'attribute' => 'type',
                 'value' => function ($model) {
-                    return $model->type == 1 ? "Đã duyệt" : "Đang chờ";
+                    return $model->type == 1 ? "Nạp tiền" : "Rút tiền";
                 },
                 'filter' => ArrayHelper::map(CUtils::typeRequest(), 'id', 'name'),
             ],
@@ -43,12 +55,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => ArrayHelper::map(CUtils::statusRequest(), 'id', 'name'),
             ],
-            // 'created_at',
-            // 'updated_at',
-            // 'created_by',
-            // 'updated_by',
+            [
+                'attribute' => '',
+                'format' => 'html',
+                'value' => function ($model) {
+                    return $model->status == 1 ?
+                        Html::a("Xem", ['view', 'id' => $model->id], ['target' => '_blank', 'class' => 'btn btn-success']) :
+                        (Html::a("Duyệt", ['update', 'id' => $model->id], ['target' => '_blank', 'class' => 'btn btn-primary'])
+                            . ' ' . Html::a("Xem", ['view', 'id' => $model->id], ['target' => '_blank', 'class' => 'btn btn-success']));
+                },
+                'options' => [
+                    'style' => 'width:150px;',
+                ]
+            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 </div>

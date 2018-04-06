@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
+use common\components\helper\CUtils;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\TransactionSearch */
@@ -12,30 +14,48 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transaction-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Transaction', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'user_id',
-            'amount',
+            [
+                'attribute' => 'user_id',
+                'value' => function ($model) {
+                    return $model->user_id ? $model->user->username : "";
+                },
+            ],
+            [
+                'attribute' => 'amount',
+                'format' => 'html',
+                'value' => function ($model) {
+                    if ($model->type == 1) {
+                        return '<span style="color: #00CC00"> + ' . $model->amount . '</span>';
+                    } else {
+                        return '<span style="color: red"> - ' . $model->amount . '</span>';
+                    }
+                },
+            ],
             'description',
-            'type',
-            // 'status',
-            // 'created_at',
-            // 'updated_at',
-            // 'created_by',
-            // 'updated_by',
+            [
+                'attribute' => 'type',
+                'value' => function ($model) {
+                    return $model->type == 1 ? "Nạp tiền" : "Rút tiền";
+                },
+                'filter' => ArrayHelper::map(CUtils::typeRequest(), 'id', 'name'),
+            ],
+//            [
+//                'attribute' => 'status',
+//                'value' => function ($model) {
+//                    return $model->status == 1 ?  "Kích Hoạt" : "Đóng";
+//                },
+//                'filter' => ArrayHelper::map(CUtils::statusRequest(), 'id', 'name'),
+//            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+//            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 </div>

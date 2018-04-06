@@ -166,9 +166,14 @@ $bundle = BackendAsset::register($this);
                         'url' => ['/wallet/index'],
                     ],
                     [
-                        'label' => Yii::t('backend', 'Quản lý yêu cầu giao dịch'),
+                        'label' => Yii::t('backend', 'Quản lý giao dịch'),
+                        'url' => '#',
                         'icon' => '<i class="fa fa-exchange"></i>',
-                        'url' => ['/request/index'],
+                        'options' => ['class' => 'treeview'],
+                        'items' => [
+                            ['label' => Yii::t('backend', 'Yêu cầu giao dịch'), 'url' => ['/request/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Giao dịch'), 'url' => ['/transaction/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                        ]
                     ],
                     [
                         'label' => Yii::t('backend', 'Quản lý ngân hàng'),

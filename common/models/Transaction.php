@@ -72,4 +72,9 @@ class Transaction extends \yii\db\ActiveRecord
     {
         return new \common\models\query\TransactionQuery(get_called_class());
     }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
 }

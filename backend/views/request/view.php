@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\ArrayHelper;
+use common\components\helper\CUtils;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Request */
@@ -13,14 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="request-view">
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?= $model->status != 1 ? Html::a("Duyệt", ['update', 'id' => $model->id], ['target' => '_blank', 'class' => 'btn btn-primary']) : ""; ?>
     </p>
 
     <?= DetailView::widget([
@@ -30,12 +25,34 @@ $this->params['breadcrumbs'][] = $this->title;
             'user_id',
             'amount',
             'description',
-            'type',
-            'status',
+            [
+                'attribute' => 'type',
+                'value' => function ($model) {
+                    return $model->type == 1 ? "Nạp tiền" : "Rút tiền";
+                },
+                'filter' => ArrayHelper::map(CUtils::typeRequest(), 'id', 'name'),
+            ],
+            [
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    return $model->status == 1 ? "Đã duyệt" : "Đang chờ";
+                },
+                'filter' => ArrayHelper::map(CUtils::statusRequest(), 'id', 'name'),
+            ],
             'created_at',
             'updated_at',
-            'created_by',
-            'updated_by',
+            [
+                'attribute' => 'created_by',
+                'value' => function ($model) {
+                    return $model->created_by ? $model->author->username : '';
+                },
+            ],
+            [
+                'attribute' => 'updated_by',
+                'value' => function ($model) {
+                    return $model->updated_by ? $model->updater->username : '';
+                },
+            ],
         ],
     ]) ?>
 
