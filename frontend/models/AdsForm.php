@@ -72,7 +72,7 @@ class AdsForm extends Model
                     }
 
                 }
-                return $primaryKey;
+                return $model;
             } else {
                 Yii::trace("Model validation error => " . print_r($model->getErrors(), true));
                 $this->addError('generic', Yii::t('app', 'The system could not update the information.'));

@@ -144,16 +144,17 @@ class AdsController extends ActiveController
         $model = new AdsForm();
         $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
 
-        if ($model->validate() && ($id = $model->save())) {
+        if ($model->validate() && ($ads = $model->save())) {
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(200);
-            $response->getHeaders()->set('Location', Url::toRoute([$id], true));
+            $response->getHeaders()->set('Location', Url::toRoute([$ads->id], true));
+            return $ads;
         } else {
             // Validation error
             throw new HttpException(422, json_encode($model->errors));
         }
 
-        return 'Create successful';
+
     }
 
     public function actionView()
