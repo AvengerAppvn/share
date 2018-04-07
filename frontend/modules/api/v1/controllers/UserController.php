@@ -328,6 +328,7 @@ class UserController extends ActiveController
                     //'avatar' => $user->userProfile->avatar,
                     'birthday' => $user->userProfile->birthday,
                     'strengths' => json_decode($user->userProfile->strengths),
+                    'avatar' => $user->userProfile->avatar,
                     //'last_login_at' =>  $user->last_login_at,
                     //'last_login_ip' =>  $user->last_login_ip,
                 ];
