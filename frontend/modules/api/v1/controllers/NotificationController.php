@@ -133,6 +133,7 @@ class NotificationController extends ActiveController
         }
         return $categoriesResult;
     }
+
     public function actionView()
     {
         $response = \Yii::$app->getResponse();

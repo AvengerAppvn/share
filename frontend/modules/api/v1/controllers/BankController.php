@@ -24,7 +24,7 @@ class BankController extends ActiveController
     /**
      * @var string
      */
-    public $modelClass = 'frontend\modules\api\v1\resources\Bank';
+    public $modelClass = 'frontend\modules\api\v1\resources\UserBank';
 
     public function __construct($id, $module, $config = [])
     {
