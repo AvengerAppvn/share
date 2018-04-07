@@ -108,7 +108,7 @@ class UserEditForm extends Model
             if ($this->avatar) {
                 $updateProfile = true;
                 // requires php5
-                define('UPLOAD_DIR',  \Yii::getAlias('@storage').'/web/avatar/');
+                define('UPLOAD_DIR',  \Yii::getAlias('@storage').'/avatar/');
                 $fileStorage = Instance::ensure('fileStorage', Storage::className());
 
                 $img = $this->avatar;
@@ -119,7 +119,7 @@ class UserEditForm extends Model
                 $filename = uniqid() . '.png';
                 $file = UPLOAD_DIR . $filename;
                 $success = file_put_contents($file, $data);
-                $this->_user->userProfile->avatar_base_url = $success?$fileStorage->baseUrl.'/web/avatar' : '' ;
+                $this->_user->userProfile->avatar_base_url = $success?$fileStorage->baseUrl.'/avatar' : '' ;
                 $this->_user->userProfile->avatar_path = $success?$filename :'';
             }
 
