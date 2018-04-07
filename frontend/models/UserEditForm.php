@@ -2,6 +2,7 @@
 namespace frontend\models;
 
 use common\models\User;
+use trntv\filekit\Storage;
 use Yii;
 use yii\base\Model;
 use yii\di\Instance;
