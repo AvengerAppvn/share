@@ -184,8 +184,8 @@ class AdsController extends ActiveController
             'images' => [$advertise->thumb],
             'created_at' => date('Y-m-d H:i:s',$advertise->created_at),
             'share' => $advertise->share ?: 0,
-            'customer_avatar' => $advertise->created_by && $advertise->getAuthor()? $advertise->getAuthor()->userProfile->avatar : '',
-            'customer_name' => $advertise->created_by && $advertise->getAuthor()? $advertise->getAuthor()->userProfile->fullname : '',
+            'customer_avatar' => $advertise->created_by && $advertise->getAuthor()? $advertise->getAuthor()->getUserProfile()->getAvatar() : '',
+            'customer_name' => $advertise->created_by && $advertise->getAuthor()? $advertise->getAuthor()->getUserProfile()->fullname : '',
         );
     }
 
