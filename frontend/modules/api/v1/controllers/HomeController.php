@@ -211,6 +211,13 @@ class HomeController extends ActiveController
         }
 
         $response->setStatusCode(200);
+        $user = User::findOne($advertise->created_by);
+        $customer_avatar = null;
+        $customer_name = null;
+        if($user){
+            $customer_avatar = $user->userProfile->avatar;
+            $customer_name = $user->userProfile->fullname;
+        }
         return array(
             'id' => $advertise->id,
             'title' => $advertise->title,
@@ -221,6 +228,8 @@ class HomeController extends ActiveController
             'images' => [$advertise->thumb],
             'created_at' => date('Y-m-d H:i:s',$advertise->created_at),
             'share' => $advertise->share ?: 0,
+            'customer_avatar' => $customer_avatar?:'',
+            'customer_name' => $customer_name?:'',
         );
     }
 }
