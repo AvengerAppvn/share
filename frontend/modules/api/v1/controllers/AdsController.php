@@ -174,6 +174,14 @@ class AdsController extends ActiveController
         }
 
         $response->setStatusCode(200);
+
+        $user = User::findOne($advertise->created_by);
+        $customer_avatar = '';
+        $customer_name = '';
+        if($user){
+            $customer_avatar = $user->userProfile->avatar;
+            $customer_name = $user->userProfile->fullname;
+        }
         return array(
             'id' => $advertise->id,
             'title' => $advertise->title,
@@ -184,8 +192,8 @@ class AdsController extends ActiveController
             'images' => [$advertise->thumb],
             'created_at' => date('Y-m-d H:i:s',$advertise->created_at),
             'share' => $advertise->share ?: 0,
-            'customer_avatar' => $advertise->created_by && $advertise->getAuthor()? $advertise->getAuthor()->getUserProfile()->getAvatar() : '',
-            'customer_name' => $advertise->created_by && $advertise->getAuthor()? $advertise->getAuthor()->getUserProfile()->fullname : '',
+            'customer_avatar' => $customer_avatar,
+            'customer_name' => $customer_name,
         );
     }
 
