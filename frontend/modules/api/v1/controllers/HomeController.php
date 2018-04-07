@@ -171,13 +171,21 @@ class HomeController extends ActiveController
         $advertisesResult = [];
 
         foreach ($advertises as $advertise) {
-
+            $user = User::findOne($advertise->created_by);
+            $customer_avatar = null;
+            $customer_name = null;
+            if($user){
+                $customer_avatar = $user->userProfile->avatar;
+                $customer_name = $user->userProfile->fullname;
+            }
             $advertisesResult[] = array(
                 'id' => $advertise->id,
                 'title' => $advertise->title,
                 'description' => $advertise->description,
                 'thumbnail' => $advertise->thumb,
                 'created_at' => date('Y-m-d H:i:s',$advertise->created_at),
+                'customer_avatar' => $customer_avatar?:'',
+                'customer_name' => $customer_name?:'',
             );
         }
         return $advertisesResult;
