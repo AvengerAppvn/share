@@ -4,6 +4,7 @@ namespace frontend\models;
 use common\models\User;
 use Yii;
 use yii\base\Model;
+use yii\di\Instance;
 
 /**
  * User Edit form
@@ -45,6 +46,7 @@ class UserEditForm extends Model
             }],
             ['strengths', 'safe'],
             ['birthday', 'safe'],
+            ['avatar', 'safe'],
             ['password', 'string', 'min' => 6],
         ];
     }
@@ -103,17 +105,21 @@ class UserEditForm extends Model
             }
 
             if ($this->avatar) {
-                $updateIndicator = true;
+                $updateProfile = true;
                 // requires php5
-                define('UPLOAD_DIR', 'images/avatar/');
+                define('UPLOAD_DIR',  \Yii::getAlias('@storage').'/web/avatar/');
+                $fileStorage = Instance::ensure('fileStorage', Storage::className());
 
                 $img = $this->avatar;
                 $img = str_replace('data:image/png;base64,', '', $img);
                 $img = str_replace(' ', '+', $img);
                 $data = base64_decode($img);
-                $file = UPLOAD_DIR . uniqid() . '.png';
+
+                $filename = uniqid() . '.png';
+                $file = UPLOAD_DIR . $filename;
                 $success = file_put_contents($file, $data);
-                $this->_user->avatar = $success ? $file : '';
+                $this->_user->userProfile->avatar_base_url = $success?$fileStorage->baseUrl.'/web/avatar' : '' ;
+                $this->_user->userProfile->avatar_path = $success?$filename :'';
             }
 
             if ($updateProfile == true) {
