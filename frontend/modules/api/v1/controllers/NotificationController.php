@@ -136,7 +136,7 @@ class NotificationController extends ActiveController
     {
         $response = \Yii::$app->getResponse();
         // ads_id
-        $id = Yii::$app->request->get('id');
+        $id = \Yii::$app->request->get('id');
         if (!$id) {
             $response->setStatusCode(422);
             return 'Thiếu tham số id';
