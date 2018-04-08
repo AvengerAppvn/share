@@ -17,7 +17,7 @@ class m180407_042406_notification extends Migration
         $this->createTable('{{%notification}}', [
             'id' => $this->primaryKey(),
             'title' => $this->string()->notNull()->comment('Tiêu đề'),
-            'description' => $this->integer()->notNull()->comment('Mô tả'),
+            'description' => $this->string()->notNull()->comment('Mô tả'),
             'user_id' => $this->integer()->notNull()->comment('Người dùng'),
             'ads_id' => $this->integer()->notNull()->comment('Quảng cáo'),
             'status' => $this->smallInteger(1)->defaultValue(1),
