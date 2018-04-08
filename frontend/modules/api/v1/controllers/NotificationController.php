@@ -2,18 +2,13 @@
 
 namespace frontend\modules\api\v1\controllers;
 
-use frontend\models\UserEditForm;
-use backend\models\LoginForm;
+use common\models\Notification;
 use common\models\User;
 use frontend\modules\api\v1\resources\User as UserResource;
-use frontend\modules\user\models\SignupConfirmForm;
-use frontend\modules\user\models\SignupForm;
 use yii\filters\AccessControl;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;
-use yii\helpers\Url;
 use yii\rest\ActiveController;
-use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -117,64 +112,108 @@ class NotificationController extends ActiveController
 
         $index = $page_size * ($page_index - 1);
 
+        $user = User::findIdentity(\Yii::$app->user->getId());
+
         $response = \Yii::$app->getResponse();
         $response->setStatusCode(200);
 
-        $categories = AdsCategory::find()->limit($page_size)->offset($index)->all();
-        $categoriesResult = [];
+        $notifications = Notification::find()->where(['user_id' => $user->id])->limit($page_size)->offset($index)->all();
+        $notificationsResult = [];
 
-        foreach ($categories as $category) {
+        foreach ($notifications as $notification) {
 
-            $categoriesResult[] = array(
-                'id' => $category->id,
-                'name' => $category->name,
-                'thumbnail' => $category->thumbnail,
-                'new' => 0,
+            $notificationsResult[] = array(
+                'id' => $notification->id,
+                'name' => $notification->title,
+                'createa_at' => $notification->created_at,
 
             );
         }
-        return $categoriesResult;
+        return $notificationsResult;
     }
 
     public function actionView()
     {
         $response = \Yii::$app->getResponse();
         // ads_id
-        $ads_id = Yii::$app->request->get('ads_id');
-        if(!$ads_id){
+        $id = Yii::$app->request->get('id');
+        if (!$id) {
+            $response->setStatusCode(422);
+            return 'Thiếu tham số id';
+        }
+
+        $notification = Notification::findOne($id);
+        if (!$notification) {
+            $response->setStatusCode(404);
+            return 'Không có dữ liệu với id=' . $id;
+        }
+
+        $response->setStatusCode(200);
+
+        // $user = User::findOne($advertise->created_by);
+//        $customer_avatar = null;
+//        $customer_name = null;
+//        if($user){
+//            $customer_avatar = $user->userProfile->avatar;
+//            $customer_name = $user->userProfile->fullname;
+//        }
+        return array(
+            'id' => $notification->id,
+            'title' => $notification->title,
+            'description' => $notification->description,
+            'created_at' => date('Y-m-d H:i:s', $notification->created_at),
+        );
+    }
+
+    public function actionRemove()
+    {
+        $response = \Yii::$app->getResponse();
+        // $id
+        $id = Yii::$app->request->get('id');
+        if (!$id) {
             $response->setStatusCode(422);
             return array(
-                'name'=> 'Thiếu tham số',
-                'message'=> array('ads_id'=> 'Thiếu tham số ads_id'),
-                'code'=> 0,
-                'status'=> 422,
+                'name' => 'Thiếu tham số',
+                'message' => 'Thiếu tham số id',
+                'code' => 0,
+                'status' => 422,
             );
         }
 
 
-        $advertise = Advertise::findOne($ads_id);
-        if(!$advertise){
+        $notification = Notification::findOne($id);
+        if (!$notification) {
             $response->setStatusCode(404);
             return array(
-                'name'=> 'Không có dữ liệu',
-                'message'=> array('ads_id'=> 'Không tìm dược dữ liệu với id='.$ads_id),
-                'code'=> 0,
-                'status'=> 404,
+                'name' => 'Không có dữ liệu',
+                'message' => 'Không tìm dược dữ liệu với id=' . $id,
+                'code' => 0,
+                'status' => 404,
             );
         }
 
         $response->setStatusCode(200);
+        $id = $notification->id;
+        $result = $notification->delete();
         return array(
-            'id' => $advertise->id,
-            'title' => $advertise->title,
-            'description' => $advertise->description,
-            'content' => $advertise->content,
-            'thumbnail' => $advertise->thumb,
-            //'images' => $advertise->advertiseImages,
-            'images' => [$advertise->thumb],
-            'created_at' => date('Y-m-d H:i:s',$advertise->created_at),
-            'share' => $advertise->share ?: 0,
+            'id' => $id,
+            'status' => $result,
         );
+    }
+
+    public function actionRemoveAll()
+    {
+        $user = User::findIdentity(\Yii::$app->user->getId());
+        if ($user) {
+            $result = Notification::deleteAll(['user_id' => $user->id]);
+            $response = \Yii::$app->getResponse();
+            return array(
+                'status' => $result,
+            );
+        } else {
+            // Validation error
+            throw new NotFoundHttpException("Object not found");
+        }
     }
 
     public function actionOptions($id = null)
