@@ -100,8 +100,8 @@ class NotificationController extends ActiveController
 
     public function actionIndex()
     {
-        $page_size = Yii::$app->request->get('page_size');
-        $page_index = Yii::$app->request->get('page_index');
+        $page_size = \Yii::$app->request->get('page_size');
+        $page_index = \Yii::$app->request->get('page_index');
         if (!$page_size) {
             $page_size = 8;
         }
