@@ -5,6 +5,7 @@ namespace frontend\modules\api\v1\controllers;
 use frontend\models\UserEditForm;
 use backend\models\LoginForm;
 use common\models\User;
+use frontend\models\UserVerifyForm;
 use frontend\modules\api\v1\resources\User as UserResource;
 use frontend\modules\user\models\SignupConfirmForm;
 use frontend\modules\user\models\SignupForm;
@@ -331,6 +332,36 @@ class UserController extends ActiveController
                     'avatar' => $user->userProfile->avatar,
                     //'last_login_at' =>  $user->last_login_at,
                     //'last_login_ip' =>  $user->last_login_ip,
+                ];
+            } else {
+                // Validation error
+                throw new HttpException(422, json_encode($model->errors));
+            }
+        } else {
+            // Validation error
+            throw new NotFoundHttpException("Object not found");
+        }
+    }
+
+    public function actionVerify()
+    {
+        $user = User::findIdentity(\Yii::$app->user->getId());
+
+        if ($user) {
+
+            $model = new UserVerifyForm();
+            $model->load(\Yii::$app->request->post(), '');
+            $model->id = $user->id;
+
+            if ($model->validate() && $model->save()) {
+                $response = \Yii::$app->getResponse();
+                $response->setStatusCode(200);
+                $user = $model->getUserByID();
+                return [
+                    'user_id' => $user->id,
+                    'message' => 'Successful',
+                    'is_customer' => $user->is_customer,
+                    'is_advertiser' => $user->is_advertiser
                 ];
             } else {
                 // Validation error

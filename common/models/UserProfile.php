@@ -23,6 +23,9 @@ use yii\db\ActiveRecord;
  * @property string $fullname
  * @property string $address
  * @property date $birthday
+ * @property string $image_id_1
+ * @property string $image_id_2
+ * @property string $image_friend_list
  *
  * @property User $user
  * @property Country $country
@@ -71,7 +74,7 @@ class UserProfile extends ActiveRecord
             [['user_id'], 'required'],
             [['user_id', 'gender','country_id'], 'integer'],
             [['gender'], 'in', 'range' => [NULL, self::GENDER_FEMALE, self::GENDER_MALE]],
-            [['fullname', 'firstname', 'middlename', 'lastname', 'avatar_path', 'avatar_base_url'], 'string', 'max' => 255],
+            [['fullname', 'firstname', 'middlename', 'lastname', 'avatar_path', 'avatar_base_url','image_friend_list','image_id_1','image_id_2'], 'string', 'max' => 255],
             ['locale', 'default', 'value' => Yii::$app->language],
             ['locale', 'in', 'range' => array_keys(Yii::$app->params['availableLocales'])],
             ['picture', 'safe'],
