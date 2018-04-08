@@ -136,7 +136,7 @@ class NotificationController extends ActiveController
         return $notificationsResult;
     }
 
-    public function actionView()
+    public function actionDetail()
     {
         $response = \Yii::$app->getResponse();
         // ads_id
@@ -173,7 +173,7 @@ class NotificationController extends ActiveController
     {
         $response = \Yii::$app->getResponse();
         // $id
-        $id = Yii::$app->request->get('id');
+        $id = \Yii::$app->request->post('id');
         if (!$id) {
             $response->setStatusCode(422);
             return array(
