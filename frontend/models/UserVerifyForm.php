@@ -28,21 +28,9 @@ class UserVerifyForm extends Model
             ['id', 'exist', 'targetClass' => '\common\models\User', 'filter' => [
                 'and', ['status' => User::STATUS_ACTIVE],
             ], 'message' => 'The ID is not valid.'],
-            ['email', 'trim'],
-            //['email', 'required'],
-            ['email', 'email'],
-            ['address', 'string'],
-            ['phone', 'string'],
-            ['fullname', 'string'],
-            //['avatar', 'string'],
-            ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => Yii::t('app', 'This email address has already been taken.'), 'filter' => function ($query) {
-                $query->andWhere(['!=', 'id', $this->id]);
-            }],
-            ['strengths', 'safe'],
-            ['birthday', 'safe'],
-            ['avatar', 'safe'],
-            ['password', 'string', 'min' => 6],
+            ['image_id_1', 'safe'],
+            ['image_id_2', 'safe'],
+            ['image_friend_list', 'safe'],
         ];
     }
 
