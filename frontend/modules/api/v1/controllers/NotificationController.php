@@ -165,6 +165,7 @@ class NotificationController extends ActiveController
             'id' => $notification->id,
             'title' => $notification->title,
             'description' => $notification->description,
+            'ads_id' => $notification->ads_id,
             'created_at' => date('Y-m-d H:i:s', $notification->created_at),
         );
     }
