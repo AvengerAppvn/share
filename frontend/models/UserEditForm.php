@@ -108,7 +108,7 @@ class UserEditForm extends Model
             if ($this->avatar) {
                 $updateProfile = true;
                 // requires php5
-                define('UPLOAD_DIR',  \Yii::getAlias('@storage').'/avatar/');
+                define('UPLOAD_DIR',  \Yii::getAlias('@storage').'/web/source/avatar/');
                 $fileStorage = Instance::ensure('fileStorage', Storage::className());
 
                 $img = $this->avatar;
