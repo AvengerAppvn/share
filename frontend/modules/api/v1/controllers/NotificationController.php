@@ -128,7 +128,7 @@ class NotificationController extends ActiveController
 
             $notificationsResult[] = array(
                 'id' => $notification->id,
-                'name' => $notification->title,
+                'title' => $notification->title,
                 'createa_at' => $notification->created_at,
 
             );
