@@ -12,6 +12,7 @@ use yii\di\Instance;
  */
 class UserVerifyForm extends Model
 {
+    public $id;
     public $image_id_1;
     public $image_id_2;
     public $image_friend_list;
