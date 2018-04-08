@@ -2,6 +2,7 @@
 
 namespace frontend\modules\api\v1\controllers;
 
+use common\models\Transaction;
 use frontend\models\UserEditForm;
 use backend\models\LoginForm;
 use common\models\User;
@@ -133,29 +134,45 @@ class WalletController extends ActiveController
 
         if ($user) {
 
-            $model = new UserEditForm();
-            $model->load(\Yii::$app->request->post(), '');
-            $model->id = $user->id;
-
-            if ($model->validate() && $model->save()) {
-                $response = \Yii::$app->getResponse();
-                $response->setStatusCode(200);
-                $user = $model->getUserByID();
-                return [
-                    'fullname' => $user->userProfile->fullname,
-                    'address' => $user->userProfile->address,
-                    'email' => $user->email,
-                    'phone' => $user->phone,
-                    //'avatar' => $user->userProfile->avatar,
-                    'birthday' => $user->userProfile->birthday,
-                    'strengths' => json_decode($user->userProfile->strengths),
-                    //'last_login_at' =>  $user->last_login_at,
-                    //'last_login_ip' =>  $user->last_login_ip,
-                ];
-            } else {
-                // Validation error
-                throw new HttpException(422, json_encode($model->errors));
+            $page_size = Yii::$app->request->get('page_size');
+            $page_index = Yii::$app->request->get('page_index');
+            if (!$page_size) {
+                $page_size = 8;
             }
+
+            if (!$page_index) {
+                $page_index = 1;
+            }
+
+            $index = $page_size * ($page_index - 1);
+
+            $response = \Yii::$app->getResponse();
+
+            $response->setStatusCode(200);
+
+            $transactions = Transaction::find()->where(['user_id' => $user->id])->limit($page_size)->offset($index)->all();
+
+            $advertisesResult = [];
+
+            foreach ($transactions as $transaction) {
+                $user = User::findOne($transaction->created_by);
+                $customer_avatar = null;
+                $customer_name = null;
+                if($user){
+                    $customer_avatar = $user->userProfile->avatar;
+                    $customer_name = $user->userProfile->fullname;
+                }
+                $advertisesResult[] = array(
+                    'id' => $transaction->id,
+                    'title' => $transaction->title,
+                    'description' => $transaction->description,
+                    'thumbnail' => $transaction->thumb,
+                    'created_at' => date('Y-m-d H:i:s',$transaction->created_at),
+                    'customer_avatar' => $customer_avatar?:'',
+                    'customer_name' => $customer_name?:'',
+                );
+            }
+            return $advertisesResult;
         } else {
             // Validation error
             throw new NotFoundHttpException("Object not found");
