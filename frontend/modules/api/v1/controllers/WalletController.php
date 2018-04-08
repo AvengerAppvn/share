@@ -116,21 +116,10 @@ class WalletController extends ActiveController
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(200);
             // TODO get from profile
-            $strengths = ['Thời trang', 'Điện tử', 'Du lịch'];
-            $coin = 0;
+            $coin = 6900000;
             return array(
-                'fullname' => $user->userProfile->fullname,
-                'address' => $user->userProfile->address ?: '',
-                'email' => $user->email,
-                'phone' => $user->phone,
-                'avatar' => $user->userProfile->avatar ?: '',
-                'is_confirmed' => $user->is_confirmed ?: false,
-                'birthday' => $user->userProfile->birthday ?: '',
-                'strengths' => $strengths,
+                'user_id' => $user->id,
                 'coin' => $coin,
-                'is_customer' => $user->is_customer? true : false,
-                'is_advertiser' => $user->is_advertiser? true : false,
-                'status_confirmed' => $user->status_confirmed,
             );
         } else {
             // Validation error
