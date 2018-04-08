@@ -212,7 +212,7 @@ class NotificationController extends ActiveController
             $result = Notification::deleteAll(['user_id' => $user->id]);
             $response = \Yii::$app->getResponse();
             return array(
-                'status' => $result,
+                'count_deleted' => $result,
             );
         } else {
             // Validation error
