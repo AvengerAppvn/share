@@ -57,6 +57,8 @@ class NotificationController extends ActiveController
             'actions' => [
                 'index' => ['get'],
                 'view' => ['get'],
+                'remove' => ['delete'],
+                'remove-all' => ['delete'],
             ],
         ];
 
