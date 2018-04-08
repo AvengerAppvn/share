@@ -100,6 +100,10 @@ class NotificationController extends ActiveController
 
     public function actionIndex()
     {
+        $exist = Notification::find()->one();
+        if(!$exist){
+            $this->generate();
+        }
         $page_size = \Yii::$app->request->get('page_size');
         $page_index = \Yii::$app->request->get('page_index');
         if (!$page_size) {
@@ -216,6 +220,19 @@ class NotificationController extends ActiveController
         }
     }
 
+    public function generate(){
+        $users= User::find()->all();
+        foreach($users as $user){
+            for($i = 0;$i < 10;$i++){
+                $notification = new Notification();
+                $notification->title = "Tiêu đề thông báo";
+                $notification->description = "Mô tả thông báo";
+                $notification->user_id = $user->id;
+                $notification->ads_id = $i;
+                $notification->save();
+            }
+        }
+    }
     public function actionOptions($id = null)
     {
         return "ok";
