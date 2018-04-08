@@ -66,6 +66,7 @@ class UserController extends ActiveController
                 'profile' => ['get', 'post'],
                 'emotion' => ['get'],
                 'addresses' => ['get'],
+                'verify' => ['post'],
             ],
         ];
 
