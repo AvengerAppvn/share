@@ -52,7 +52,7 @@ class AdsForm extends Model
                 $primaryKey = $model->getPrimaryKey();
                 if ($this->images) {
                     // requires php5
-                    define('UPLOAD_DIR',  \Yii::getAlias('@storage').'/web/shares/');
+                    define('UPLOAD_DIR',  \Yii::getAlias('@storage').'/web/source/shares/');
                     $fileStorage = Instance::ensure('fileStorage', Storage::className());
 
                     foreach($this->images as $image){
@@ -66,9 +66,15 @@ class AdsForm extends Model
                         $filename = uniqid() . '.png';
                         $file = UPLOAD_DIR . $filename;
                         $success = file_put_contents($file, $data);
-                        $baseUrl = $fileStorage->baseUrl.'/web/shares/'. $filename ;
+                        $baseUrl = $fileStorage->baseUrl.'/shares/'. $filename ;
                         $adsImage->image_path = $success ? $baseUrl : '';
                         $adsImage->save();
+
+                        if(!$model->thumbnail_base_url){
+                            $model->thumbnail_base_url = $fileStorage->baseUrl;
+                            $model->thumbnail_path = '/shares/'. $filename;
+                            $model->save(false);
+                        }
                     }
 
                 }
