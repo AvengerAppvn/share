@@ -29,7 +29,6 @@ class BankForm extends Model
     {
         return [
             ['account_name', 'trim'],
-            ['account_name', 'trim'],
             ['account_name', 'required', 'message' => Yii::t('frontend', 'Missing account_name')],
             ['account_number', 'required', 'message' => Yii::t('frontend', 'Missing account_number')],
             ['bank_id', 'required', 'message' => Yii::t('frontend', 'Missing bank_id')],
