@@ -137,9 +137,11 @@ class BankController extends ActiveController
 
     public function actionAdd()
     {
+        $user = User::findIdentity(\Yii::$app->user->getId());
         $model = new BankForm();
-        $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
 
+        $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
+        $model->user_id = $user->id;
         if ($model->validate() && ($user_bank = $model->save())) {
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(200);
