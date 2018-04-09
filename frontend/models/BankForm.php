@@ -3,6 +3,9 @@ namespace frontend\models;
 
 use common\models\AdsAdvertiseImage;
 use common\models\Advertise;
+use common\models\Bank;
+use common\models\CriteriaProvince;
+use common\models\UserBank;
 use trntv\filekit\Storage;
 use Yii;
 use yii\base\Model;
@@ -13,13 +16,11 @@ use yii\di\Instance;
  */
 class BankForm extends Model
 {
-    public $title;
-    public $images;
-    public $location;
-    public $require;
-    public $message;
-    public $age;
-    public $category;
+    public $account_name;
+    public $account_number;
+    public $bank_id;
+    public $province_id;
+    public $branch_name;
 
     /**
      * @inheritdoc
@@ -27,11 +28,14 @@ class BankForm extends Model
     public function rules()
     {
         return [
-            ['title', 'trim'],
-            ['title', 'required','message'=> Yii::t('frontend','Missing title')],
-            ['require', 'required','message'=> Yii::t('frontend','Missing require')],
-            [['title','require','message'], 'string'],
-            [['images','location','age','category'], 'safe']
+            ['account_name', 'trim'],
+            ['account_name', 'trim'],
+            ['account_name', 'required', 'message' => Yii::t('frontend', 'Missing account_name')],
+            ['account_number', 'required', 'message' => Yii::t('frontend', 'Missing account_number')],
+            ['bank_id', 'required', 'message' => Yii::t('frontend', 'Missing bank_id')],
+            ['province_id', 'required', 'message' => Yii::t('frontend', 'Missing province_id')],
+            ['branch_name', 'string'],
+            ['branch_name', 'trim'],
         ];
     }
 
@@ -42,42 +46,24 @@ class BankForm extends Model
     public function save()
     {
         if ($this->validate()) {
-            $model = new Advertise();
-            $model->title = $this->title;
-            $model->content = $this->require;
-            $model->description = $this->message;
-            $model->cat_id = $this->category?:1;
+            $model = new UserBank();
+            $model->account_name = $this->account_name;
+            $model->account_number = $this->account_number;
+            $model->bank_id = $this->bank_id;
+            $model->province_id = $this->province_id;
+            $model->branch_name = $this->branch_name;
+
+            $bank = Bank::findOne($this->bank_id);
+            if ($bank) {
+                $model->bank_name = $this->bank->name;
+            }
+
+            $province = CriteriaProvince::findOne($this->province_id);
+            if ($province) {
+                $model->province_name = $this->province->name;
+            }
 
             if ($model->save(false)) {
-                $primaryKey = $model->getPrimaryKey();
-                if ($this->images) {
-                    // requires php5
-                    define('UPLOAD_DIR',  \Yii::getAlias('@storage').'/web/source/shares/');
-                    $fileStorage = Instance::ensure('fileStorage', Storage::className());
-
-                    foreach($this->images as $image){
-                        $adsImage = new AdsAdvertiseImage();
-                        $adsImage->ads_id = $primaryKey;
-                        $img = $image;
-                        $img = str_replace('data:image/png;base64,', '', $img);
-                        $img = str_replace(' ', '+', $img);
-                        $data = base64_decode($img);
-
-                        $filename = uniqid() . '.png';
-                        $file = UPLOAD_DIR . $filename;
-                        $success = file_put_contents($file, $data);
-                        $baseUrl = $fileStorage->baseUrl.'/shares/'. $filename ;
-                        $adsImage->image_path = $success ? $baseUrl : '';
-                        $adsImage->save();
-
-                        if(!$model->thumbnail_base_url){
-                            $model->thumbnail_base_url = $fileStorage->baseUrl;
-                            $model->thumbnail_path = 'shares/'. $filename;
-                            $model->save(false);
-                        }
-                    }
-
-                }
                 return $model;
             } else {
                 Yii::trace("Model validation error => " . print_r($model->getErrors(), true));

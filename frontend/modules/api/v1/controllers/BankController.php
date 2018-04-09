@@ -3,6 +3,7 @@
 namespace frontend\modules\api\v1\controllers;
 
 use common\models\Bank;
+use common\models\UserBank;
 use frontend\models\UserEditForm;
 use backend\models\LoginForm;
 use common\models\User;
@@ -57,7 +58,9 @@ class BankController extends ActiveController
             'class' => \yii\filters\VerbFilter::className(),
             'actions' => [
                 'index' => ['get'],
-                'view' => ['get'],
+                'me' => ['get'],
+                'add' => ['post'],
+                'delete' => ['delete'],
             ],
         ];
 
@@ -132,23 +135,23 @@ class BankController extends ActiveController
         return $banksResult;
     }
 
-    public function actionCreate()
+    public function actionAdd()
     {
         $model = new BankForm();
         $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
 
-        if ($model->validate() && ($ads = $model->save())) {
+        if ($model->validate() && ($user_bank = $model->save())) {
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(200);
-            $response->getHeaders()->set('Location', Url::toRoute([$ads->id], true));
+            $response->getHeaders()->set('Location', Url::toRoute([$user_bank->id], true));
             return array(
-                'id'=> $ads->id,
-                'title'=> $ads->title,
-                'require'=> $ads->content,
-                'message'=> $ads->description,
-                'cat_id'=> 1,
-                'created_at'=> date('Y-m-d H:i:s',$ads->created_at),
-                'thumbnail'=> $ads->thumb,
+                'id'=> $user_bank->id,
+                'account_name'=> $user_bank->account_name,
+                'account_number'=> $user_bank->account_number,
+                'bank_name'=> $user_bank->bank_name,
+                'province_name'=> $user_bank->province_name,
+                'branch_name'=> $user_bank->branch_name,
+                'created_at'=> date('Y-m-d H:i:s',$user_bank->created_at),
             );
         } else {
             // Validation error
@@ -158,28 +161,52 @@ class BankController extends ActiveController
 
     }
 
-    public function actionView()
+    public function actionRemove()
     {
         $response = \Yii::$app->getResponse();
-        // ads_id
-        $ads_id = Yii::$app->request->get('ads_id');
-        if(!$ads_id){
+        // $id
+        $id = \Yii::$app->request->post('id');
+        if (!$id) {
             $response->setStatusCode(422);
             return array(
-                'name'=> 'Thiếu tham số',
-                'message'=> array('ads_id'=> 'Thiếu tham số ads_id'),
-                'code'=> 0,
-                'status'=> 422,
+                'name' => 'Thiếu tham số',
+                'message' => 'Thiếu tham số id',
+                'code' => 0,
+                'status' => 422,
             );
         }
 
 
-        $advertise = Advertise::findOne($ads_id);
-        if(!$advertise){
+        $notification = Notification::findOne($id);
+        if (!$notification) {
+            $response->setStatusCode(404);
+            return array(
+                'name' => 'Không có dữ liệu',
+                'message' => 'Không tìm dược dữ liệu với id=' . $id,
+                'code' => 0,
+                'status' => 404,
+            );
+        }
+
+        $response->setStatusCode(200);
+        $id = $notification->id;
+        $result = $notification->delete();
+        return array(
+            'id' => $id,
+            'status' => $result,
+        );
+    }
+
+    public function actionMe()
+    {
+        $response = \Yii::$app->getResponse();
+
+        $user_bank = UserBank::find()->where(['created_by'=>$user->id])->one();
+        if(!$user_bank){
             $response->setStatusCode(404);
             return array(
                 'name'=> 'Không có dữ liệu',
-                'message'=> array('ads_id'=> 'Không tìm dược dữ liệu với id='.$ads_id),
+                'message'=> 'Chưa có ngân hàng nào',
                 'code'=> 0,
                 'status'=> 404,
             );
@@ -187,15 +214,13 @@ class BankController extends ActiveController
 
         $response->setStatusCode(200);
         return array(
-            'id' => $advertise->id,
-            'title' => $advertise->title,
-            'description' => $advertise->description,
-            'content' => $advertise->content,
-            'thumbnail' => $advertise->thumb,
-            //'images' => $advertise->advertiseImages,
-            'images' => [$advertise->thumb],
-            'created_at' => date('Y-m-d H:i:s',$advertise->created_at),
-            'share' => $advertise->share ?: 0,
+            'id'=> $user_bank->id,
+            'account_name'=> $user_bank->account_name,
+            'account_number'=> $user_bank->account_number,
+            'bank_name'=> $user_bank->bank_name,
+            'province_name'=> $user_bank->province_name,
+            'branch_name'=> $user_bank->branch_name,
+            'created_at'=> date('Y-m-d H:i:s',$user_bank->created_at),
         );
     }
 
