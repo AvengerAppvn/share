@@ -10,10 +10,12 @@ use yii\behaviors\BlameableBehavior;
  * This is the model class for table "user_bank1".
  *
  * @property integer $id
- * @property string $user_name
- * @property integer $number
+ * @property string $account_name
+ * @property string $account_number
  * @property integer $bank_id
+ * @property string $bank_name
  * @property integer $province_id
+ * @property string $province_name*
  * @property string $branch_name
  * @property integer $status
  * @property integer $created_at

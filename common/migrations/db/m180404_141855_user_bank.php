@@ -16,10 +16,12 @@ class m180404_141855_user_bank extends Migration
 
         $this->createTable('{{%user_bank}}', [
             'id' => $this->primaryKey(),
-            'user_name' => $this->string()->notNull()->comment('Tên tài khoản'),
-            'number' => $this->integer()->notNull()->comment('Số tài khoản'),
+            'account_name' => $this->string()->notNull()->comment('Tên tài khoản'),
+            'account_number' => $this->string()->notNull()->comment('Số tài khoản'),
             'bank_id' => $this->integer()->notNull()->comment('Tên ngân hàng'),
+            'bank_name' => $this->string()->comment('Tên ngân hàng'),
             'province_id' => $this->integer()->notNull()->comment('Khu vực'),
+            'province_name' => $this->string()->comment('Khu vực'),
             'branch_name' => $this->string()->notNull()->comment('Tên chi nhánh'),
             'status' => $this->smallInteger(1)->defaultValue(1),
             'created_at' => $this->integer(),

@@ -132,6 +132,32 @@ class BankController extends ActiveController
         return $banksResult;
     }
 
+    public function actionCreate()
+    {
+        $model = new BankForm();
+        $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
+
+        if ($model->validate() && ($ads = $model->save())) {
+            $response = \Yii::$app->getResponse();
+            $response->setStatusCode(200);
+            $response->getHeaders()->set('Location', Url::toRoute([$ads->id], true));
+            return array(
+                'id'=> $ads->id,
+                'title'=> $ads->title,
+                'require'=> $ads->content,
+                'message'=> $ads->description,
+                'cat_id'=> 1,
+                'created_at'=> date('Y-m-d H:i:s',$ads->created_at),
+                'thumbnail'=> $ads->thumb,
+            );
+        } else {
+            // Validation error
+            throw new HttpException(422, json_encode($model->errors));
+        }
+
+
+    }
+
     public function actionView()
     {
         $response = \Yii::$app->getResponse();
