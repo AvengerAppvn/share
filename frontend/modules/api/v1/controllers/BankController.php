@@ -145,7 +145,6 @@ class BankController extends ActiveController
             $response->setStatusCode(200);
             $response->getHeaders()->set('Location', Url::toRoute([$user_bank->id], true));
             return array(
-                'id' => $user_bank->id,
                 'account_name' => $user_bank->account_name,
                 'account_number' => $user_bank->account_number,
                 'bank_name' => $user_bank->bank_name,
@@ -165,7 +164,7 @@ class BankController extends ActiveController
     {
         $response = \Yii::$app->getResponse();
         $user = User::findIdentity(\Yii::$app->user->getId());
-        $user_bank = UserBank::find()->where(['created_by' => $user->id])->one();
+        $user_bank = UserBank::find()->where(['user_id' => $user->id])->one();
 
         if (!$user_bank) {
             $response->setStatusCode(404);
@@ -191,7 +190,7 @@ class BankController extends ActiveController
     {
         $response = \Yii::$app->getResponse();
         $user = User::findIdentity(\Yii::$app->user->getId());
-        $user_bank = UserBank::find()->where(['created_by' => $user->id])->one();
+        $user_bank = UserBank::find()->where(['user_id' => $user->id])->one();
         if (!$user_bank) {
             $response->setStatusCode(404);
             return array(
@@ -204,7 +203,6 @@ class BankController extends ActiveController
 
         $response->setStatusCode(200);
         return array(
-            'id' => $user_bank->id,
             'account_name' => $user_bank->account_name,
             'account_number' => $user_bank->account_number,
             'bank_name' => $user_bank->bank_name,
