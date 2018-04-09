@@ -81,12 +81,26 @@ class BankController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'login', 'signup', 'confirm', 'password-reset-request', 'password-reset-token-verification', 'password-reset'];
+        $behaviors['authenticator']['except'] = ['options'];
 
 
         // setup access
-        $behaviors['access'] = ['class' => AccessControl::className(),];
-
+        $behaviors['access'] = [
+            'class' => AccessControl::className(),
+            'only' => ['index', 'view', 'add', 'remove', 'me'], //only be applied to
+            'rules' => [
+                [
+                    'allow' => true,
+                    'actions' => ['index', 'view', 'add', 'remove', 'me'],
+                    'roles' => ['admin', 'manageUsers'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['index', 'view', 'add', 'remove', 'me'],
+                    'roles' => ['user']
+                ]
+            ],
+        ];
         return $behaviors;
     }
 
