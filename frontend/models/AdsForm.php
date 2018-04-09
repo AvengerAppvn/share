@@ -46,7 +46,7 @@ class AdsForm extends Model
             $model->title = $this->title;
             $model->content = $this->require;
             $model->description = $this->message;
-            $model->cat_id = 1;
+            $model->cat_id = $this->category;
 
             if ($model->save(false)) {
                 $primaryKey = $model->getPrimaryKey();
@@ -72,7 +72,7 @@ class AdsForm extends Model
 
                         if(!$model->thumbnail_base_url){
                             $model->thumbnail_base_url = $fileStorage->baseUrl;
-                            $model->thumbnail_path = '/shares/'. $filename;
+                            $model->thumbnail_path = 'shares/'. $filename;
                             $model->save(false);
                         }
                     }
