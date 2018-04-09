@@ -15,7 +15,7 @@ use yii\behaviors\BlameableBehavior;
  * @property integer $bank_id
  * @property string $bank_name
  * @property integer $province_id
- * @property string $province_name*
+ * @property string $province_name
  * @property string $branch_name
  * @property integer $status
  * @property integer $created_at
@@ -47,9 +47,9 @@ class UserBank extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_name', 'number', 'bank_id', 'province_id', 'branch_name'], 'required'],
-            [['number', 'bank_id', 'province_id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['user_name', 'branch_name'], 'string', 'max' => 255],
+            [['account_name', 'account_number', 'bank_id', 'province_id', 'branch_name'], 'required'],
+            [['bank_id', 'province_id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['account_name', 'account_number' ,'branch_name'], 'string', 'max' => 255],
         ];
     }
 
@@ -60,10 +60,12 @@ class UserBank extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_name' => Yii::t('common', 'Tên chủ tài khoản'),
-            'number' => Yii::t('common', 'Số tài khoản'),
+            'account_name' => Yii::t('common', 'Tên chủ tài khoản'),
+            'account_number' => Yii::t('common', 'Số tài khoản'),
             'bank_id' => Yii::t('common', 'Tên ngân hàng'),
+            'bank_name' => Yii::t('common', 'Tên ngân hàng'),
             'province_id' => Yii::t('common', 'Khu vực'),
+            'province_name' => Yii::t('common', 'Khu vực'),
             'branch_name' => Yii::t('common', 'Chi nhánh ngân hàng'),
             'status' => Yii::t('common', 'Trạng thái'),
             'created_at' => Yii::t('common', 'Ngày tạo'),
