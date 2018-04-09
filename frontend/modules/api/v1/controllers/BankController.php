@@ -2,6 +2,7 @@
 
 namespace frontend\modules\api\v1\controllers;
 
+use common\models\Bank;
 use frontend\models\UserEditForm;
 use backend\models\LoginForm;
 use common\models\User;

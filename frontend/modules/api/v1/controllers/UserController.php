@@ -286,8 +286,21 @@ class UserController extends ActiveController
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(200);
             // TODO get from profile
-            $strengths = ['Thời trang', 'Điện tử', 'Du lịch'];
-            $coin = 0;
+
+            $strengths = [];
+            $strengths[] = array(
+                'id'=>1,
+                'name'=>'Thời trang',
+            );
+            $strengths[] = array(
+                'id'=>2,
+                'name'=>'Điện thoại',
+            );
+            $strengths[] = array(
+                'id'=>3,
+                'name'=>'Ẩm thực',
+            );
+            $coin = 123123;
             return array(
                 'fullname' => $user->userProfile->fullname,
                 'address' => $user->userProfile->address ?: '',
