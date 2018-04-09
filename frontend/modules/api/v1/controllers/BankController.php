@@ -87,7 +87,7 @@ class BankController extends ActiveController
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['index', 'view', 'add', 'remove', 'me'], //only be applied to
+            'only' => ['index', 'view', 'add', '', 'me'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
@@ -163,35 +163,25 @@ class BankController extends ActiveController
     public function actionRemove()
     {
         $response = \Yii::$app->getResponse();
-        // $id
-        $id = \Yii::$app->request->post('id');
-        if (!$id) {
-            $response->setStatusCode(422);
-            return array(
-                'name' => 'Thiếu tham số',
-                'message' => 'Thiếu tham số id',
-                'code' => 0,
-                'status' => 422,
-            );
-        }
+        $user = User::findIdentity(\Yii::$app->user->getId());
+        $user_bank = UserBank::find()->where(['created_by'=>$user->id])->one();
 
-
-        $notification = Notification::findOne($id);
-        if (!$notification) {
+        if (!$user_bank) {
             $response->setStatusCode(404);
             return array(
                 'name' => 'Không có dữ liệu',
-                'message' => 'Không tìm dược dữ liệu với id=' . $id,
+                'message' => 'Không tìm dược dữ liệu ',
                 'code' => 0,
                 'status' => 404,
             );
         }
 
         $response->setStatusCode(200);
-        $id = $notification->id;
-        $result = $notification->delete();
+        $id = $user_bank->id;
+        $result = $user_bank->delete();
         return array(
-            'id' => $id,
+            'account_name' => $user_bank->account_name,
+            'account_number' => $user_bank->account_number,
             'status' => $result,
         );
     }
