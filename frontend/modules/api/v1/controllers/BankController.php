@@ -118,20 +118,17 @@ class BankController extends ActiveController
         $response = \Yii::$app->getResponse();
         $response->setStatusCode(200);
 
-        $categories = AdsCategory::find()->limit($page_size)->offset($index)->all();
-        $categoriesResult = [];
+        $banks = Bank::find()->limit($page_size)->offset($index)->all();
+        $banksResult = [];
 
-        foreach ($categories as $category) {
-
-            $categoriesResult[] = array(
-                'id' => $category->id,
-                'name' => $category->name,
-                'thumbnail' => $category->thumbnail,
-                'new' => 0,
+        foreach ($banks as $bank) {
+            $banksResult[] = array(
+                'id' => $bank->id,
+                'name' => $bank->name,
 
             );
         }
-        return $categoriesResult;
+        return $banksResult;
     }
 
     public function actionView()
