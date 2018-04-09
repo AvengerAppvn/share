@@ -60,7 +60,7 @@ class BankController extends ActiveController
                 'index' => ['get'],
                 'me' => ['get'],
                 'add' => ['post'],
-                'delete' => ['delete'],
+                'remove' => ['delete'],
             ],
         ];
 
@@ -85,22 +85,7 @@ class BankController extends ActiveController
 
 
         // setup access
-        $behaviors['access'] = [
-            'class' => AccessControl::className(),
-            'only' => ['index', 'view', 'create', 'update', 'delete', 'me'], //only be applied to
-            'rules' => [
-                [
-                    'allow' => true,
-                    'actions' => ['index', 'view'],
-                    'roles' => ['admin', 'manageUsers'],
-                ],
-                [
-                    'allow' => true,
-                    'actions' => ['index', 'view'],
-                    'roles' => ['user']
-                ]
-            ],
-        ];
+        $behaviors['access'] = ['class' => AccessControl::className(),];
 
         return $behaviors;
     }
@@ -200,7 +185,7 @@ class BankController extends ActiveController
     public function actionMe()
     {
         $response = \Yii::$app->getResponse();
-
+        $user = User::findIdentity(\Yii::$app->user->getId());
         $user_bank = UserBank::find()->where(['created_by'=>$user->id])->one();
         if(!$user_bank){
             $response->setStatusCode(404);
