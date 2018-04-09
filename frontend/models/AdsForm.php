@@ -46,7 +46,7 @@ class AdsForm extends Model
             $model->title = $this->title;
             $model->content = $this->require;
             $model->description = $this->message;
-            $model->cat_id = $this->category;
+            $model->cat_id = $this->category?:1;
 
             if ($model->save(false)) {
                 $primaryKey = $model->getPrimaryKey();
