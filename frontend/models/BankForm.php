@@ -16,6 +16,7 @@ use yii\di\Instance;
  */
 class BankForm extends Model
 {
+    public $user_id;
     public $account_name;
     public $account_number;
     public $bank_id;
@@ -35,6 +36,7 @@ class BankForm extends Model
             ['province_id', 'required', 'message' => Yii::t('frontend', 'Missing province_id')],
             ['branch_name', 'string'],
             ['branch_name', 'trim'],
+            ['user_id', 'safe'],
         ];
     }
 

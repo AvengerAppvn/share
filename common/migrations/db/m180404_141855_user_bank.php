@@ -16,6 +16,7 @@ class m180404_141855_user_bank extends Migration
 
         $this->createTable('{{%user_bank}}', [
             'id' => $this->primaryKey(),
+            'user_id' => $this->integer(),
             'account_name' => $this->string()->notNull()->comment('Tên tài khoản'),
             'account_number' => $this->string()->notNull()->comment('Số tài khoản'),
             'bank_id' => $this->integer()->notNull()->comment('Tên ngân hàng'),

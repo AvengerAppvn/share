@@ -12,6 +12,7 @@ use yii\behaviors\BlameableBehavior;
  * @property integer $id
  * @property string $account_name
  * @property string $account_number
+ * @property integer $user_id
  * @property integer $bank_id
  * @property string $bank_name
  * @property integer $province_id
@@ -48,7 +49,7 @@ class UserBank extends \yii\db\ActiveRecord
     {
         return [
             [['account_name', 'account_number', 'bank_id', 'province_id', 'branch_name'], 'required'],
-            [['bank_id', 'province_id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['user_id','bank_id', 'province_id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['account_name', 'account_number' ,'branch_name'], 'string', 'max' => 255],
         ];
     }
@@ -60,6 +61,7 @@ class UserBank extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'user_id' => Yii::t('common', 'Tên chủ tài khoản'),
             'account_name' => Yii::t('common', 'Tên chủ tài khoản'),
             'account_number' => Yii::t('common', 'Số tài khoản'),
             'bank_id' => Yii::t('common', 'Tên ngân hàng'),
@@ -102,5 +104,10 @@ class UserBank extends \yii\db\ActiveRecord
     public function getBank()
     {
         return $this->hasOne(Bank::className(), ['id' => 'bank_id']);
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }
