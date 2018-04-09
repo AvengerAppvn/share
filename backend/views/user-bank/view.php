@@ -11,7 +11,7 @@ use common\components\helper\CUtils;
 /* @var $model common\models\UserBank */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'User Bank1s', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'User Banks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-bank-view">
@@ -31,8 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'user_name',
-            'number',
+            'account_name',
+            'account_number',
             [
                 'attribute' => 'bank_id',
                 'value' => function ($model) {

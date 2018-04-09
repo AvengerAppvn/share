@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model common\models\UserBank */
 
 $this->title = 'Create User Bank';
-$this->params['breadcrumbs'][] = ['label' => 'User Bank1s', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'User Banks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-bank-create">

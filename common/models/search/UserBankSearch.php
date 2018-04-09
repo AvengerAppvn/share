@@ -18,8 +18,8 @@ class UserBankSearch extends UserBank
     public function rules()
     {
         return [
-            [['id', 'number', 'bank_id', 'province_id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['user_name', 'branch_name'], 'safe'],
+            [['id', 'account_number', 'bank_id', 'province_id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['account_name','province_name','bank_name', 'branch_name'], 'safe'],
         ];
     }
 
@@ -60,7 +60,7 @@ class UserBankSearch extends UserBank
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'number' => $this->number,
+            'account_number' => $this->account_number,
             'bank_id' => $this->bank_id,
             'province_id' => $this->province_id,
             'status' => $this->status,
@@ -70,7 +70,7 @@ class UserBankSearch extends UserBank
             'updated_by' => $this->updated_by,
         ]);
 
-        $query->andFilterWhere(['like', 'user_name', $this->user_name])
+        $query->andFilterWhere(['like', 'account_name', $this->account_name])
             ->andFilterWhere(['like', 'branch_name', $this->branch_name]);
 
         return $dataProvider;

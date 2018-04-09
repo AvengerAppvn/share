@@ -17,11 +17,11 @@ use common\models\CriteriaProvince;
     <?php $form = ActiveForm::begin(); ?>
 
     <div class="col-md-12">
-        <?= $form->field($model, 'user_name')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'account_name')->textInput(['maxlength' => true]) ?>
     </div>
 
     <div class="col-md-12">
-        <?= $form->field($model, 'number')->textInput() ?>
+        <?= $form->field($model, 'account_number')->textInput() ?>
     </div>
 
     <div class="col-md-12">

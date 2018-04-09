@@ -27,8 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'user_name',
-            'number',
+            'account_name',
+            'account_number',
             [
                 'attribute' => 'bank_id',
                 'value' => function ($model) {

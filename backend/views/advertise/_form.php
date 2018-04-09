@@ -36,7 +36,7 @@ use common\components\helper\CUtils;
         </div>
 
         <div class="col-md-12">
-            <?php echo $form->field($model, 'content')->widget(
+            <?php echo $form->field($model, 'require')->widget(
                 \yii\imperavi\Widget::className(),
                 [
                     'plugins' => ['fullscreen', 'fontcolor', 'video'],
@@ -52,10 +52,10 @@ use common\components\helper\CUtils;
             ) ?>
         </div>
 
-        <div class="row">
+<!--        <div class="row">-->
 
-            <div class="col-md-6">
-                <?php echo $form->field($model, 'description')->widget(
+            <!--<div class="col-md-6">
+                <?php /*echo $form->field($model, 'description')->widget(
                     \yii\imperavi\Widget::className(),
                     [
                         'plugins' => ['fullscreen', 'fontcolor', 'video'],
@@ -68,10 +68,10 @@ use common\components\helper\CUtils;
                             'imageUpload' => Yii::$app->urlManager->createUrl(['/file-storage/upload-imperavi'])
                         ]
                     ]
-                ) ?>
-            </div>
+                ) */?>
+            </div>-->
 
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <?php echo $form->field($model, 'message')->widget(
                     \yii\imperavi\Widget::className(),
                     [
@@ -88,7 +88,7 @@ use common\components\helper\CUtils;
                 ) ?>
             </div>
 
-        </div>
+<!--        </div>-->
 
         <div class="row">
 
@@ -112,7 +112,7 @@ use common\components\helper\CUtils;
 
             <div class="col-md-4">
                 <?php echo $form->field($model, 'speciality_id')->dropdownList(
-                    ArrayHelper::map(CriteriaSpeciality::find()->where(['status' => 1])->all(), 'id', 'name'),
+                    ArrayHelper::map(AdsCategory::find()->where(['status' => 1])->all(), 'id', 'name'),
                     ['prompt' => 'Chọn Chuyên ngành']
                 );
                 ?>

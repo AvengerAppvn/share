@@ -18,6 +18,7 @@ use yii\behaviors\BlameableBehavior;
  * @property string $content
  * @property string $description
  * @property string $message
+ * @property string $require
  * @property integer $share
  * @property integer $status
  * @property integer $created_at
@@ -33,6 +34,7 @@ class Advertise extends \yii\db\ActiveRecord
      * @var array
      */
     public $thumbnail;
+
     /**
      * @inheritdoc
      */
@@ -40,6 +42,7 @@ class Advertise extends \yii\db\ActiveRecord
     {
         return 'advertise';
     }
+
     /**
      * @inheritdoc
      */
@@ -56,16 +59,18 @@ class Advertise extends \yii\db\ActiveRecord
             ]
         ];
     }
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [[ 'cat_id', 'title'], 'required'],
+            [['cat_id', 'title'], 'required'],
             [['province_id', 'age_id', 'speciality_id', 'cat_id', 'share', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['content'], 'string'],
-            [['title', 'slug', 'description', 'message'], 'string', 'max' => 255],
+            [['require', 'message'], 'string', 'max' => 500],
+            [['title', 'slug', 'description'], 'string', 'max' => 255],
             [['thumbnail_base_url', 'thumbnail_path'], 'string', 'max' => 1024],
             ['thumbnail', 'safe']
         ];
@@ -86,6 +91,7 @@ class Advertise extends \yii\db\ActiveRecord
             'content' => Yii::t('common', 'Nội dung'),
             'description' => Yii::t('common', 'Mô tả'),
             'message' => Yii::t('common', 'Thông điệp'),
+            'require' => Yii::t('common', 'Thông tin cần thiết'),
             'share' => Yii::t('common', 'Share Quảng cáo'),
             'status' => Yii::t('common', 'Trạng thái'),
             'created_at' => Yii::t('common', 'Ngày tạo'),
@@ -93,7 +99,7 @@ class Advertise extends \yii\db\ActiveRecord
             'created_by' => Yii::t('common', 'Người tạo'),
             'updated_by' => Yii::t('common', 'Người cập nhật'),
             'province_id' => Yii::t('common', ' Khu vực'),
-            'age_id' =>Yii::t('common', ' Độ tuổi'),
+            'age_id' => Yii::t('common', ' Độ tuổi'),
             'speciality_id' => Yii::t('common', ' Chuyên ngành'),
         ];
     }
@@ -110,7 +116,7 @@ class Advertise extends \yii\db\ActiveRecord
 
     public function getUrl()
     {
-        return '/share'.$this->image_base_url . '/' . $this->image_path;
+        return '/share' . $this->image_base_url . '/' . $this->image_path;
     }
 
     public function getCategory()
