@@ -4,6 +4,7 @@ namespace frontend\modules\api\v1\controllers;
 
 use common\models\Bank;
 use common\models\UserBank;
+use frontend\models\BankForm;
 use frontend\models\UserEditForm;
 use backend\models\LoginForm;
 use common\models\User;
@@ -144,13 +145,13 @@ class BankController extends ActiveController
             $response->setStatusCode(200);
             $response->getHeaders()->set('Location', Url::toRoute([$user_bank->id], true));
             return array(
-                'id'=> $user_bank->id,
-                'account_name'=> $user_bank->account_name,
-                'account_number'=> $user_bank->account_number,
-                'bank_name'=> $user_bank->bank_name,
-                'province_name'=> $user_bank->province_name,
-                'branch_name'=> $user_bank->branch_name,
-                'created_at'=> date('Y-m-d H:i:s',$user_bank->created_at),
+                'id' => $user_bank->id,
+                'account_name' => $user_bank->account_name,
+                'account_number' => $user_bank->account_number,
+                'bank_name' => $user_bank->bank_name,
+                'province_name' => $user_bank->province_name,
+                'branch_name' => $user_bank->branch_name,
+                'created_at' => date('Y-m-d H:i:s', $user_bank->created_at),
             );
         } else {
             // Validation error
@@ -164,7 +165,7 @@ class BankController extends ActiveController
     {
         $response = \Yii::$app->getResponse();
         $user = User::findIdentity(\Yii::$app->user->getId());
-        $user_bank = UserBank::find()->where(['created_by'=>$user->id])->one();
+        $user_bank = UserBank::find()->where(['created_by' => $user->id])->one();
 
         if (!$user_bank) {
             $response->setStatusCode(404);
@@ -190,26 +191,26 @@ class BankController extends ActiveController
     {
         $response = \Yii::$app->getResponse();
         $user = User::findIdentity(\Yii::$app->user->getId());
-        $user_bank = UserBank::find()->where(['created_by'=>$user->id])->one();
-        if(!$user_bank){
+        $user_bank = UserBank::find()->where(['created_by' => $user->id])->one();
+        if (!$user_bank) {
             $response->setStatusCode(404);
             return array(
-                'name'=> 'Không có dữ liệu',
-                'message'=> 'Chưa có ngân hàng nào',
-                'code'=> 0,
-                'status'=> 404,
+                'name' => 'Không có dữ liệu',
+                'message' => 'Chưa có ngân hàng nào',
+                'code' => 0,
+                'status' => 404,
             );
         }
 
         $response->setStatusCode(200);
         return array(
-            'id'=> $user_bank->id,
-            'account_name'=> $user_bank->account_name,
-            'account_number'=> $user_bank->account_number,
-            'bank_name'=> $user_bank->bank_name,
-            'province_name'=> $user_bank->province_name,
-            'branch_name'=> $user_bank->branch_name,
-            'created_at'=> date('Y-m-d H:i:s',$user_bank->created_at),
+            'id' => $user_bank->id,
+            'account_name' => $user_bank->account_name,
+            'account_number' => $user_bank->account_number,
+            'bank_name' => $user_bank->bank_name,
+            'province_name' => $user_bank->province_name,
+            'branch_name' => $user_bank->branch_name,
+            'created_at' => date('Y-m-d H:i:s', $user_bank->created_at),
         );
     }
 
