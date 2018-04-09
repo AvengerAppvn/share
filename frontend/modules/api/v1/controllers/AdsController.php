@@ -148,7 +148,15 @@ class AdsController extends ActiveController
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(200);
             $response->getHeaders()->set('Location', Url::toRoute([$ads->id], true));
-            return $ads;
+            return array(
+                'id'=> $ads->id,
+                'title'=> $ads->title,
+                'require'=> $ads->content,
+                'message'=> $ads->description,
+                'cat_id'=> 1,
+                'created_at'=> date('Y-m-d H:i:s',$ads->created_at),
+                'thumbnail'=> $ads->thumb,
+            );
         } else {
             // Validation error
             throw new HttpException(422, json_encode($model->errors));
