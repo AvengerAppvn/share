@@ -7,7 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 
 /**
- * This is the model class for table "user_bank1".
+ * This is the model class for table "user_bank".
  *
  * @property integer $id
  * @property string $account_name
