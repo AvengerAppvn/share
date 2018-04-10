@@ -2,7 +2,7 @@
 
 namespace frontend\modules\api\v1\controllers;
 
-use common\models\Transaction;
+use common\models\Request;
 use common\models\User;
 use frontend\modules\api\v1\resources\User as UserResource;
 use yii\filters\AccessControl;
@@ -14,12 +14,12 @@ use yii\web\NotFoundHttpException;
 /**
  * @author Eugene Terentev <eugene@terentev.net>
  */
-class TransactionController extends ActiveController
+class HistoryController extends ActiveController
 {
     /**
      * @var string
      */
-    public $modelClass = 'frontend\modules\api\v1\resources\Transaction';
+    public $modelClass = 'frontend\modules\api\v1\resources\Request';
 
     public function __construct($id, $module, $config = [])
     {
@@ -50,9 +50,8 @@ class TransactionController extends ActiveController
         $behaviors['verbs'] = [
             'class' => \yii\filters\VerbFilter::className(),
             'actions' => [
-                'add' => ['get'],
-                'sub' => ['get'],
-                'pending' => ['get'],
+                'deposit' => ['get'],
+                'withdraw' => ['get'],
             ],
         ];
 
@@ -79,16 +78,16 @@ class TransactionController extends ActiveController
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['add', 'sub', 'pending'], //only be applied to
+            'only' => ['deposit', 'withdraw'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['add', 'sub', 'pending'],
+                    'actions' => ['deposit', 'withdraw'],
                     'roles' => ['admin', 'manageUsers'],
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['add', 'sub', 'pending'],
+                    'actions' => ['deposit', 'withdraw'],
                     'roles' => ['user']
                 ]
             ],
@@ -97,10 +96,10 @@ class TransactionController extends ActiveController
         return $behaviors;
     }
 
-    public function actionAdd()
+    public function actionDeposit()
     {
         //TODO remove
-        $exist = Transaction::find()->one();
+        $exist = Request::find()->one();
         if (!$exist) {
             $this->generate();
         }
@@ -120,7 +119,7 @@ class TransactionController extends ActiveController
         return $this->getList($page_size, $index, 1);
     }
 
-    public function actionSub()
+    public function actionWithdraw()
     {
         $page_size = \Yii::$app->request->get('page_size');
         $page_index = \Yii::$app->request->get('page_index');
@@ -137,23 +136,6 @@ class TransactionController extends ActiveController
         return $this->getList($page_size, $index, 2);
     }
 
-    public function actionPending()
-    {
-        $page_size = \Yii::$app->request->get('page_size');
-        $page_index = \Yii::$app->request->get('page_index');
-        if (!$page_size) {
-            $page_size = 8;
-        }
-
-        if (!$page_index) {
-            $page_index = 1;
-        }
-
-        $index = $page_size * ($page_index - 1);
-
-        return $this->getList($page_size, $index, 3);
-    }
-
     public function actionDetail()
     {
         $response = \Yii::$app->getResponse();
@@ -164,8 +146,8 @@ class TransactionController extends ActiveController
             return 'Thiếu tham số id';
         }
 
-        $transaction = Transaction::findOne($id);
-        if (!$transaction) {
+        $request = Request::findOne($id);
+        if (!$request) {
             $response->setStatusCode(404);
             return 'Không có dữ liệu với id=' . $id;
         }
@@ -173,63 +155,12 @@ class TransactionController extends ActiveController
         $response->setStatusCode(200);
 
         return array(
-            'id' => $transaction->id,
-            'title' => $transaction->title,
-            'description' => $transaction->description,
-            'ads_id' => $transaction->ads_id,
-            'created_at' => date('Y-m-d H:i:s', $transaction->created_at),
+            'id' => $request->id,
+            'title' => $request->title,
+            'description' => $request->description,
+            'ads_id' => $request->ads_id,
+            'created_at' => date('Y-m-d H:i:s', $request->created_at),
         );
-    }
-
-    public function actionRemove()
-    {
-        $response = \Yii::$app->getResponse();
-        // $id
-        $id = \Yii::$app->request->post('id');
-        if (!$id) {
-            $response->setStatusCode(422);
-            return array(
-                'name' => 'Thiếu tham số',
-                'message' => 'Thiếu tham số id',
-                'code' => 0,
-                'status' => 422,
-            );
-        }
-
-
-        $transaction = Transaction::findOne($id);
-        if (!$transaction) {
-            $response->setStatusCode(404);
-            return array(
-                'name' => 'Không có dữ liệu',
-                'message' => 'Không tìm dược dữ liệu với id=' . $id,
-                'code' => 0,
-                'status' => 404,
-            );
-        }
-
-        $response->setStatusCode(200);
-        $id = $transaction->id;
-        $result = $transaction->delete();
-        return array(
-            'id' => $id,
-            'status' => $result,
-        );
-    }
-
-    public function actionRemoveAll()
-    {
-        $user = User::findIdentity(\Yii::$app->user->getId());
-        if ($user) {
-            $result = Transaction::deleteAll(['user_id' => $user->id]);
-            $response = \Yii::$app->getResponse();
-            return array(
-                'count_deleted' => $result,
-            );
-        } else {
-            // Validation error
-            throw new NotFoundHttpException("Object not found");
-        }
     }
 
     public function generate()
@@ -237,12 +168,12 @@ class TransactionController extends ActiveController
         $users = User::find()->all();
         foreach ($users as $user) {
             for ($i = 0; $i < 10; $i++) {
-                $transaction = new Transaction();
-                $transaction->title = "Tiêu đề thông báo";
-                $transaction->description = "Mô tả thông báo";
-                $transaction->user_id = $user->id;
-                $transaction->ads_id = $i;
-                $transaction->save();
+                $request = new Request();
+                $request->title = "Tiêu đề thông báo";
+                $request->description = "Mô tả thông báo";
+                $request->user_id = $user->id;
+                $request->ads_id = $i;
+                $request->save();
             }
         }
     }
@@ -278,7 +209,7 @@ class TransactionController extends ActiveController
         $response = \Yii::$app->getResponse();
         $response->setStatusCode(200);
 
-        $transactions = Transaction::find()->where(
+        $requests = Request::find()->where(
             [
                 'user_id' => $user->id,
                 'type' => $type
@@ -286,18 +217,18 @@ class TransactionController extends ActiveController
             ->limit($page_size)
             ->offset($index)
             ->all();
-        $transactionsResult = [];
+        $requestsResult = [];
 
-        foreach ($transactions as $transaction) {
+        foreach ($requests as $request) {
 
-            $transactionsResult[] = array(
-                'id' => $transaction->id,
-                'description' => $transaction->title,
-                'ads_id' => $transaction->ads_id,
-                'created_at' => date('Y-m-d H:i:s', $transaction->created_at),
+            $requestsResult[] = array(
+                'id' => $request->id,
+                'description' => $request->title,
+                'ads_id' => $request->ads_id,
+                'created_at' => date('Y-m-d H:i:s', $request->created_at),
 
             );
         }
-        return $transactionsResult;
+        return $requestsResult;
     }
 }
