@@ -98,7 +98,7 @@ class BankController extends ActiveController
                 [
                     'allow' => true,
                     'actions' => ['index', 'view', 'add', 'remove', 'me'],
-                    'roles' => ['user']
+                    'roles' => ['@']
                 ]
             ],
         ];

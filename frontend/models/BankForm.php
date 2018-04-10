@@ -56,12 +56,12 @@ class BankForm extends Model
 
             $bank = Bank::findOne($this->bank_id);
             if ($bank) {
-                $model->bank_name = $this->bank->name;
+                $model->bank_name = $bank->name;
             }
 
             $province = CriteriaProvince::findOne($this->province_id);
             if ($province) {
-                $model->province_name = $this->province->name;
+                $model->province_name = $province->name;
             }
 
             if ($model->save(false)) {

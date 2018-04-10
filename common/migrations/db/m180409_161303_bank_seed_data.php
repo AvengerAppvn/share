@@ -34,4 +34,9 @@ class m180409_161303_bank_seed_data extends Migration
         $this->insert('{{%bank}}', ['id' => 23, 'name' => 'Ngân hàng Tiên Phong (GPBank)', 'status' => 1]);
         $this->insert('{{%bank}}', ['id' => 24, 'name' => 'Ngân hàng Đông Á (DAF)', 'status' => 1]);
     }
+    public function down()
+    {
+        $this->truncateTable('bank');
+    }
+
 }
