@@ -73,7 +73,7 @@ class TransactionController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'login', 'signup', 'confirm', 'password-reset-request', 'password-reset-token-verification', 'password-reset'];
+        $behaviors['authenticator']['except'] = ['options'];
 
 
         // setup access
@@ -89,7 +89,7 @@ class TransactionController extends ActiveController
                 [
                     'allow' => true,
                     'actions' => ['add', 'sub', 'pending'],
-                    'roles' => ['user']
+                    'roles' => ['@']
                 ]
             ],
         ];
@@ -174,7 +174,6 @@ class TransactionController extends ActiveController
 
         return array(
             'id' => $transaction->id,
-            'title' => $transaction->title,
             'description' => $transaction->description,
             'ads_id' => $transaction->ads_id,
             'created_at' => date('Y-m-d H:i:s', $transaction->created_at),
@@ -238,10 +237,11 @@ class TransactionController extends ActiveController
         foreach ($users as $user) {
             for ($i = 0; $i < 10; $i++) {
                 $transaction = new Transaction();
-                $transaction->title = "Tiêu đề thông báo";
-                $transaction->description = "Mô tả thông báo";
+                $type = rand(1,3);
+                $transaction->description = "Tiêu đề thông báo";
                 $transaction->user_id = $user->id;
                 $transaction->ads_id = $i;
+                $transaction->type = $type;
                 $transaction->save();
             }
         }
@@ -292,7 +292,7 @@ class TransactionController extends ActiveController
 
             $transactionsResult[] = array(
                 'id' => $transaction->id,
-                'description' => $transaction->title,
+                'description' => $transaction->description,
                 'ads_id' => $transaction->ads_id,
                 'created_at' => date('Y-m-d H:i:s', $transaction->created_at),
 

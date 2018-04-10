@@ -3,7 +3,7 @@
 namespace frontend\modules\api\v1\controllers;
 
 use frontend\models\UserEditForm;
-use backend\models\LoginForm;
+use frontend\models\LoginForm;
 use common\models\User;
 use frontend\models\UserVerifyForm;
 use frontend\modules\api\v1\resources\User as UserResource;
