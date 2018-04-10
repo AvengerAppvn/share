@@ -50,6 +50,7 @@ class HistoryController extends ActiveController
         $behaviors['verbs'] = [
             'class' => \yii\filters\VerbFilter::className(),
             'actions' => [
+                'index' => ['get'],
                 'deposit' => ['get'],
                 'withdraw' => ['get'],
             ],
@@ -78,22 +79,48 @@ class HistoryController extends ActiveController
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['deposit', 'withdraw'], //only be applied to
+            'only' => ['index','deposit', 'withdraw'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['deposit', 'withdraw'],
+                    'actions' => ['index','deposit', 'withdraw'],
                     'roles' => ['admin', 'manageUsers'],
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['deposit', 'withdraw'],
+                    'actions' => ['index','deposit', 'withdraw'],
                     'roles' => ['@']
                 ]
             ],
         ];
 
         return $behaviors;
+    }
+
+    public function actionIndex()
+    {
+        //TODO remove
+        $exist = Request::find()->one();
+        if (!$exist) {
+            $this->generate();
+        }
+
+        $page_size = \Yii::$app->request->get('page_size');
+        $page_index = \Yii::$app->request->get('page_index');
+        if (!$page_size) {
+            $page_size = 8;
+        }
+
+        if (!$page_index) {
+            $page_index = 1;
+        }
+
+        $index = $page_size * ($page_index - 1);
+        $type = \Yii::$app->request->get('type');
+        if (!$type) {
+            $type = 1;
+        }
+        return $this->getList($page_size, $index, $type);
     }
 
     public function actionDeposit()

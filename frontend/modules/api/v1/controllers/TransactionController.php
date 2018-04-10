@@ -50,6 +50,7 @@ class TransactionController extends ActiveController
         $behaviors['verbs'] = [
             'class' => \yii\filters\VerbFilter::className(),
             'actions' => [
+                'index' => ['get'],
                 'add' => ['get'],
                 'sub' => ['get'],
                 'pending' => ['get'],
@@ -79,22 +80,48 @@ class TransactionController extends ActiveController
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['add', 'sub', 'pending'], //only be applied to
+            'only' => ['index','add', 'sub', 'pending'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['add', 'sub', 'pending'],
+                    'actions' => ['index','add', 'sub', 'pending'],
                     'roles' => ['admin', 'manageUsers'],
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['add', 'sub', 'pending'],
+                    'actions' => ['index','add', 'sub', 'pending'],
                     'roles' => ['@']
                 ]
             ],
         ];
 
         return $behaviors;
+    }
+
+    public function actionIndex()
+    {
+        //TODO remove
+        $exist = Transaction::find()->one();
+        if (!$exist) {
+            $this->generate();
+        }
+
+        $page_size = \Yii::$app->request->get('page_size');
+        $page_index = \Yii::$app->request->get('page_index');
+        if (!$page_size) {
+            $page_size = 8;
+        }
+
+        if (!$page_index) {
+            $page_index = 1;
+        }
+
+        $index = $page_size * ($page_index - 1);
+        $type = \Yii::$app->request->get('type');
+        if (!$type) {
+            $type = 1;
+        }
+        return $this->getList($page_size, $index, $type);
     }
 
     public function actionAdd()
