@@ -274,7 +274,6 @@ class TransactionController extends ActiveController
                 }
                 $transaction->description = "Mô tả giao dịch " . $str;
                 $transaction->user_id = $user->id;
-                $transaction->ads_id = $i;
                 $transaction->type = $type;
                 $transaction->save();
             }
