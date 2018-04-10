@@ -238,7 +238,14 @@ class TransactionController extends ActiveController
             for ($i = 0; $i < 10; $i++) {
                 $transaction = new Transaction();
                 $type = rand(1,3);
-                $transaction->description = "Tiêu đề thông báo";
+                if($type == 1){
+                    $str = 'Thu';
+                }elseif($type == 2){
+                    $str = 'Chi';
+                }else{
+                    $str = 'Đang chờ';
+                }
+                $transaction->description = "Mô tả giao dịch " . $str;
                 $transaction->user_id = $user->id;
                 $transaction->ads_id = $i;
                 $transaction->type = $type;
