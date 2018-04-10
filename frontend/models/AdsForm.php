@@ -66,8 +66,9 @@ class AdsForm extends Model
                         $filename = uniqid() . '.png';
                         $file = UPLOAD_DIR . $filename;
                         $success = file_put_contents($file, $data);
-                        $baseUrl = $fileStorage->baseUrl.'/shares/'. $filename ;
-                        $adsImage->image_path = $success ? $baseUrl : '';
+                        
+                        $adsImage->image_base_url = $success ? $fileStorage->baseUrl : '';
+                        $adsImage->image_path = $success ? 'shares/'. $filename : '';
                         $adsImage->save();
 
                         if(!$model->thumbnail_base_url){
