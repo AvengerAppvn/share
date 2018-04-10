@@ -2,6 +2,7 @@
 
 namespace frontend\modules\api\v1\controllers;
 
+use common\models\AdsAdvertiseImage;
 use common\models\AdsCategory;
 use common\models\Advertise;
 use common\models\CriteriaAge;
@@ -190,14 +191,19 @@ class AdsController extends ActiveController
             $customer_avatar = $user->userProfile->avatar;
             $customer_name = $user->userProfile->fullname;
         }
+
+        $images = [];
+        foreach($advertise->advertiseImages as $adsImage){
+            $images[] = $adsImage->image;
+        }
+
         return array(
             'id' => $advertise->id,
             'title' => $advertise->title,
             'description' => $advertise->description,
             'content' => $advertise->content,
             'thumbnail' => $advertise->thumb,
-            //'images' => $advertise->advertiseImages,
-            'images' => [$advertise->thumb],
+            'images' => $images,
             'created_at' => date('Y-m-d H:i:s',$advertise->created_at),
             'share' => $advertise->share ?: 0,
             'customer_avatar' => $customer_avatar?:'',

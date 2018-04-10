@@ -84,7 +84,10 @@ class AdsAdvertiseImage extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Advertise::className(), ['id' => 'ads_id']);
     }
-
+    public function getImage()
+    {
+        return $this->image_base_url . '/' . $this->image_path;
+    }
     /**
      * @inheritdoc
      * @return \common\models\query\AdsAdvertiseImageQuery the active query used by this AR class.
