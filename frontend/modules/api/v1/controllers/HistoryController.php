@@ -88,7 +88,7 @@ class HistoryController extends ActiveController
                 [
                     'allow' => true,
                     'actions' => ['deposit', 'withdraw'],
-                    'roles' => ['user']
+                    'roles' => ['@']
                 ]
             ],
         ];
@@ -116,7 +116,7 @@ class HistoryController extends ActiveController
 
         $index = $page_size * ($page_index - 1);
 
-        return $this->getList($page_size, $index, 1);
+        return $this->getList($page_size, $index, 2);
     }
 
     public function actionWithdraw()
@@ -133,7 +133,7 @@ class HistoryController extends ActiveController
 
         $index = $page_size * ($page_index - 1);
 
-        return $this->getList($page_size, $index, 2);
+        return $this->getList($page_size, $index, 1);
     }
 
     public function actionDetail()
@@ -156,9 +156,7 @@ class HistoryController extends ActiveController
 
         return array(
             'id' => $request->id,
-            'title' => $request->title,
             'description' => $request->description,
-            'ads_id' => $request->ads_id,
             'created_at' => date('Y-m-d H:i:s', $request->created_at),
         );
     }
@@ -168,11 +166,19 @@ class HistoryController extends ActiveController
         $users = User::find()->all();
         foreach ($users as $user) {
             for ($i = 0; $i < 10; $i++) {
+
+                $type = rand(1,2);
+                if($type == 1){
+                    $str = 'Rút';
+                }else{
+                    $str = 'Nạp';
+                }
+
                 $request = new Request();
-                $request->title = "Tiêu đề thông báo";
-                $request->description = "Mô tả thông báo";
+                $request->description = "Mô tả lịch sử ". $str;
                 $request->user_id = $user->id;
-                $request->ads_id = $i;
+                $request->amount = 10000;
+                $request->type = $type;
                 $request->save();
             }
         }
@@ -223,8 +229,8 @@ class HistoryController extends ActiveController
 
             $requestsResult[] = array(
                 'id' => $request->id,
-                'description' => $request->title,
-                'ads_id' => $request->ads_id,
+                'description' => $request->description,
+                'amount' => $request->amount,
                 'created_at' => date('Y-m-d H:i:s', $request->created_at),
 
             );
