@@ -326,7 +326,6 @@ class TransactionController extends ActiveController
             $transactionsResult[] = array(
                 'id' => $transaction->id,
                 'description' => $transaction->description,
-                'ads_id' => $transaction->ads_id,
                 'created_at' => date('Y-m-d H:i:s', $transaction->created_at),
 
             );
