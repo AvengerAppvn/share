@@ -53,6 +53,7 @@ class BankForm extends Model
             $model->bank_id = $this->bank_id;
             $model->province_id = $this->province_id;
             $model->branch_name = $this->branch_name;
+            $model->user_id = $this->user_id;
 
             $bank = Bank::findOne($this->bank_id);
             if ($bank) {
