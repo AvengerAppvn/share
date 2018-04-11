@@ -36,10 +36,16 @@ class UserController extends Controller
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $customer = count(User::find()->where(['is_customer' => 1])->all());
+        $advertiser = count(User::find()->where(['is_advertiser' => 1])->all());
+        $user = count(User::find()->where(['is_advertiser' => 1, 'is_customer' => 1])->all());
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'customer' => $customer,
+            'advertiser' => $advertiser,
+            'user' => $user,
         ]);
     }
 

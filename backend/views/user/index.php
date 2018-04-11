@@ -18,10 +18,27 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?php echo Html::a(Yii::t('backend', 'Create {modelClass}', [
-    'modelClass' => 'User',
-]), ['create'], ['class' => 'btn btn-success']) ?>
+            'modelClass' => 'User',
+        ]), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
+    <div class="count">
+        <table class="table table-bordered table-hover dataTable">
+            <thead>
+            <tr>
+                <th>Tài khoản Khách hàng</th>
+                <th>Tài khoản Người Quảng cáo</th>
+                <th>Tài khoản Khách hàng + Người quảng cáo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><?php echo $customer; ?></td>
+                <td><?php echo $advertiser; ?></td>
+                <td><?php echo $user; ?></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
     <?php echo GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -32,6 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'username',
             'email:email',
+            'phone',
             [
                 'class' => EnumColumn::className(),
                 'attribute' => 'status',
