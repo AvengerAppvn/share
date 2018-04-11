@@ -3,6 +3,7 @@
 namespace frontend\modules\api\v1\controllers;
 
 use common\models\AdsAdvertiseImage;
+use common\models\AdsAdvertiseShare;
 use common\models\AdsCategory;
 use common\models\Advertise;
 use common\models\CriteriaAge;
@@ -67,7 +68,7 @@ class AdsController extends ActiveController
                 'me' => ['get', 'post'],
                 'profile' => ['get', 'post'],
                 'emotion' => ['get'],
-                'addresses' => ['get'],
+                'share' => ['post'],
             ],
         ];
 
@@ -94,11 +95,11 @@ class AdsController extends ActiveController
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['view','location','age'], //only be applied to
+            'only' => ['view','location','age','share'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['view','location','age'],
+                    'actions' => ['view','location','age','share'],
                     'roles' => ['@']
                 ]
             ],
@@ -162,8 +163,30 @@ class AdsController extends ActiveController
             // Validation error
             throw new HttpException(422, json_encode($model->errors));
         }
+    }
 
 
+    public function actionShare()
+    {
+        $user = User::findIdentity(\Yii::$app->user->getId());
+        $response = \Yii::$app->getResponse();
+        // ads_id
+        $ads_id = Yii::$app->request->post('ads_id');
+        if(!$ads_id){
+            $response->setStatusCode(422);
+            return 'Thiếu tham số ads_id';
+        }
+        $model = new AdsAdvertiseShare();
+        $model->ads_id = $ads_id;
+        $model->user_id = $user->id;
+        if ($model->save()) {
+            $response->setStatusCode(200);
+            $response->getHeaders()->set('Location', Url::toRoute([$model->id], true));
+            return $model;
+        } else {
+            // Validation error
+            throw new HttpException(422, json_encode($model->errors));
+        }
     }
 
     public function actionView()
