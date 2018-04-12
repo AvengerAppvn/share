@@ -397,7 +397,7 @@ class UserController extends ActiveController
 
             $model = new UserDeviceTokenForm();
             $model->load(\Yii::$app->request->post(), '');
-            $model->id = $user->id;
+            $model->user_id = $user->id;
 
             if ($model->validate() && $model->save()) {
                 $response = \Yii::$app->getResponse();
