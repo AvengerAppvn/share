@@ -2,6 +2,7 @@
 
 namespace frontend\modules\api\v1\controllers;
 
+use common\models\Wallet;
 use frontend\models\UserEditForm;
 use backend\models\LoginForm;
 use common\models\User;
@@ -302,7 +303,12 @@ class UserController extends ActiveController
                 'id'=>3,
                 'name'=>'Ẩm thực',
             );
-            $coin = 123123;
+
+            $coin = 0;
+            $wallet = Wallet::find()->where(['user_id'=>$user->id])->one();
+            if($wallet){
+                $coin = $wallet->amount;
+            }
             return array(
                 'fullname' => $user->userProfile->fullname,
                 'address' => $user->userProfile->address ?: '',

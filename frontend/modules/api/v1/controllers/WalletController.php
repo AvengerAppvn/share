@@ -3,6 +3,7 @@
 namespace frontend\modules\api\v1\controllers;
 
 use common\models\Transaction;
+use common\models\Wallet;
 use frontend\models\UserEditForm;
 use backend\models\LoginForm;
 use common\models\User;
@@ -116,8 +117,11 @@ class WalletController extends ActiveController
         if ($user) {
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(200);
-            // TODO get from profile
-            $coin = 6900000;
+            $coin = 0;
+            $wallet = Wallet::find()->where(['user_id'=>$user->id])->one();
+            if($wallet){
+                $coin = $wallet->amount;
+            }
             return array(
                 'user_id' => $user->id,
                 'coin' => $coin,
