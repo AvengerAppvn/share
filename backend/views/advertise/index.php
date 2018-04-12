@@ -52,13 +52,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => ArrayHelper::map(CUtils::shareStatus(), 'id', 'name'),
             ],
             [
-                'attribute' => 'status',
-                'value' => function ($model) {
-                    return $model->status == 1 ? "Kích hoạt" : "Đóng";
-                },
-                'filter' => ArrayHelper::map(CUtils::status(), 'id', 'name'),
-            ],
-            [
                 'attribute' => 'total_share',
                 'format' => 'html',
                 'value' => function ($model) {
