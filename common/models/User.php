@@ -107,20 +107,20 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
-//    /**
-//     * @return array
-//     */
-//    public function scenarios()
-//    {
-//        return ArrayHelper::merge(
-//            parent::scenarios(),
-//            [
-//                'oauth_create' => [
-//                    'oauth_client', 'oauth_client_user_id', 'email', 'username', '!status'
-//                ]
-//            ]
-//        );
-//    }
+    /**
+     * @return array
+     */
+    public function scenarios()
+    {
+        return ArrayHelper::merge(
+            parent::scenarios(),
+            [
+                'oauth_create' => [
+                    'oauth_client', 'oauth_client_user_id', 'email', 'username', '!status'
+                ]
+            ]
+        );
+    }
 
 
     /**
@@ -131,7 +131,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['username', 'email'], 'unique'],
             ['phone', 'number'],
-            ['is_customer', 'is_advertiser', 'boolean'],
+            [['is_customer', 'is_advertiser'], 'boolean'],
             ['status', 'default', 'value' => self::STATUS_NOT_ACTIVE],
             ['status', 'in', 'range' => array_keys(self::statuses())],
             [['username'], 'filter', 'filter' => '\yii\helpers\Html::encode'],
