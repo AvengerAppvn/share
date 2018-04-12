@@ -30,7 +30,7 @@ class UserDeviceToken extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%user_device_token}}';
+        return 'user_device_token';
     }
 
     /**
