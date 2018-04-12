@@ -5,6 +5,7 @@ namespace frontend\modules\api\v1\controllers;
 use frontend\models\UserEditForm;
 use backend\models\LoginForm;
 use common\models\User;
+use frontend\models\UserDeviceTokenForm;
 use frontend\models\UserVerifyForm;
 use frontend\modules\api\v1\resources\User as UserResource;
 use frontend\modules\user\models\SignupConfirmForm;
