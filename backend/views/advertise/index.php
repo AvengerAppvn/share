@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'total_share',
                 'format' => 'html',
                 'value' => function ($model) {
-                    return Html::a($model->id ? AdsShare::find()->where(['ads_id' => $model->id, 'status' => 1])->count() . ' Lượt Share' : 0, ['/advertise/share?ads_id=' . $model->id], ['target' => '_blank']);
+                    return Html::a($model->id ? AdsShare::find()->where(['ads_id' => $model->id])->count() . ' Lượt Share' : 0, ['/advertise/share?ads_id=' . $model->id], ['target' => '_blank']);
                 },
             ],
 
