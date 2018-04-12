@@ -176,6 +176,12 @@ class AdsController extends ActiveController
             $response->setStatusCode(422);
             return 'Thiếu tham số ads_id';
         }
+
+        if(AdsAdvertiseShare::find()->where(['ads_id'=>$ads_id,'user_id'=>$user->id])->exists()) {
+            $response->setStatusCode(422);
+            return 'Đã share ads này';
+        }
+
         $model = new AdsAdvertiseShare();
         $model->ads_id = $ads_id;
         $model->user_id = $user->id;
