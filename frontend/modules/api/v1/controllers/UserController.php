@@ -67,6 +67,7 @@ class UserController extends ActiveController
                 'emotion' => ['get'],
                 'addresses' => ['get'],
                 'verify' => ['post'],
+                'device-token' => ['post'],
             ],
         ];
 
@@ -93,7 +94,7 @@ class UserController extends ActiveController
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['index', 'view', 'create', 'update', 'delete', 'me'], //only be applied to
+            'only' => ['index', 'view', 'create', 'update', 'delete', 'me','device-token'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
@@ -102,7 +103,7 @@ class UserController extends ActiveController
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['me','update'],
+                    'actions' => ['me','update','device-token'],
                     'roles' => ['user']
                 ]
             ],
@@ -376,6 +377,36 @@ class UserController extends ActiveController
                     'message' => 'Successful',
                     'is_customer' => $user->is_customer,
                     'is_advertiser' => $user->is_advertiser
+                ];
+            } else {
+                // Validation error
+                throw new HttpException(422, json_encode($model->errors));
+            }
+        } else {
+            // Validation error
+            throw new NotFoundHttpException("Object not found");
+        }
+    }
+
+    public function actionDeviceToken()
+    {
+        $user = User::findIdentity(\Yii::$app->user->getId());
+
+        if ($user) {
+
+            $model = new UserDeviceTokenForm();
+            $model->load(\Yii::$app->request->post(), '');
+            $model->id = $user->id;
+
+            if ($model->validate() && $model->save()) {
+                $response = \Yii::$app->getResponse();
+                $response->setStatusCode(200);
+                $user = $model->getUserByID();
+                return [
+                    'user_id' => $user->id,
+                    'message' => 'Successful',
+                    'token' => $model->token,
+                    'type' => $model->type,
                 ];
             } else {
                 // Validation error
