@@ -13,7 +13,7 @@ class UserDeviceTokenForm extends Model
 {
     public $type;
     public $token;
-    public $user_id;
+    public $id;
 
     /** @var User */
     private $_user = false;
@@ -24,7 +24,7 @@ class UserDeviceTokenForm extends Model
     public function rules()
     {
         return [
-            ['user_id', 'exist', 'targetClass' => '\common\models\User', 'filter' => [
+            ['id', 'exist', 'targetClass' => '\common\models\User', 'filter' => [
                 'and', ['status' => User::STATUS_ACTIVE],
             ], 'message' => 'The User_ID is not valid.'],
             [['token', 'type'], 'required'],
@@ -41,7 +41,7 @@ class UserDeviceTokenForm extends Model
         if ($this->validate()) {
             $this->getUserByID();
             $deviceToken = new UserDeviceToken();
-            $deviceToken->user_id = $this->user_id;
+            $deviceToken->user_id = $this->id;
             $deviceToken->type = $this->type;
             $deviceToken->token = $this->token;
             if ($deviceToken->save(false)) {
@@ -63,7 +63,7 @@ class UserDeviceTokenForm extends Model
     {
 
         if ($this->_user === false) {
-            $this->_user = User::findOne($this->user_id);
+            $this->_user = User::findOne($this->id);
         }
 
         return $this->_user;
