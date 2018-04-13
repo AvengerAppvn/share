@@ -2,6 +2,7 @@
 
 namespace frontend\modules\api\v1\controllers;
 
+use common\models\AdsCategory;
 use common\models\Wallet;
 use frontend\models\UserEditForm;
 use backend\models\LoginForm;
@@ -290,7 +291,7 @@ class UserController extends ActiveController
             $response->setStatusCode(200);
             // TODO get from profile
 
-            $strengths = [];
+
             $strengths[] = array(
                 'id'=>1,
                 'name'=>'Thời trang',
@@ -303,6 +304,17 @@ class UserController extends ActiveController
                 'id'=>3,
                 'name'=>'Ẩm thực',
             );
+            $strengths = [];
+            if($user->userProfile->strengths){
+                $argStrengths = json_decode($user->userProfile->strengths);
+                $adsCategories = AdsCategory::find()->where(['id'=>$argStrengths]);
+                foreach ($adsCategories as $adsCategory){
+                    $strengths[] = array(
+                        'id'=>$adsCategory->id,
+                        'name'=>$adsCategory->name,
+                    );
+                }
+            }
 
             $coin = 0;
             $wallet = Wallet::find()->where(['user_id'=>$user->id])->one();

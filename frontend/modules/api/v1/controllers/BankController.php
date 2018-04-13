@@ -130,7 +130,7 @@ class BankController extends ActiveController
                 'id' => $bank->id,
                 'name' => $bank->name,
                 'fee_bank' => $bank->fee_bank?:0,
-                'description' => $bank->description,
+                'description' => $bank->description?:'',
 
             );
         }

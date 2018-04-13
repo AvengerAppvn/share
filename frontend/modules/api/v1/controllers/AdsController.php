@@ -252,6 +252,7 @@ class AdsController extends ActiveController
             'share' => $advertise->share ?: 0,
             'customer_avatar' => $customer_avatar?:'',
             'customer_name' => $customer_name?:'',
+            'is_shared' => AdsShare::find()->where(['ads_id'=>$advertise->id,'user_id'=>$user->id])->exists()? 1:0,
         );
     }
 
