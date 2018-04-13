@@ -1,3 +1,9 @@
+<!-- BADGES/ -->
+
+[![Build Status](https://travis-ci.org/AvengerAppvn/share.svg?branch=master)](https://travis-ci.org/AvengerAppvn/share)
+
+<!-- /BADGES -->
+
 START php console/yii app/setup
 - Get rate -> save to key_storage_item
 - 30 minute run to rate
