@@ -32,7 +32,7 @@ class AdsShare extends \yii\db\ActiveRecord
     {
         return [
             [['ads_id'], 'required'],
-            [['ads_id', 'user_id','status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['ads_id', 'user_id','created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
         ];
     }
 
