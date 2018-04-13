@@ -5,6 +5,7 @@ namespace frontend\modules\api\v1\controllers;
 use common\models\AdsAdvertiseImage;
 use common\models\AdsAdvertiseShare;
 use common\models\AdsCategory;
+use common\models\AdsShare;
 use common\models\Advertise;
 use common\models\CriteriaAge;
 use common\models\CriteriaProvince;
@@ -177,15 +178,22 @@ class AdsController extends ActiveController
             return 'Thiếu tham số ads_id';
         }
 
-        if(AdsAdvertiseShare::find()->where(['ads_id'=>$ads_id,'user_id'=>$user->id])->exists()) {
+        if(AdsShare::find()->where(['ads_id'=>$ads_id,'user_id'=>$user->id])->exists()) {
             $response->setStatusCode(422);
             return 'Đã share ads này';
         }
-
-        $model = new AdsAdvertiseShare();
+        $advertise = Advertise::findOne($ads_id);
+        if(!$advertise){
+            $response->setStatusCode(404);
+            return 'Không có dữ liệu với id='.$ads_id;
+        }
+        $model = new AdsShare();
         $model->ads_id = $ads_id;
         $model->user_id = $user->id;
         if ($model->save()) {
+            $advertise->share += 1;
+            $advertise->save(false);
+
             $response->setStatusCode(200);
             $response->getHeaders()->set('Location', Url::toRoute([$model->id], true));
             return $model;

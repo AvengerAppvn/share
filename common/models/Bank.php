@@ -16,6 +16,8 @@ use yii\behaviors\BlameableBehavior;
  * @property integer $updated_at
  * @property integer $created_by
  * @property integer $updated_by
+ * @property string $description
+ * @property integer $fee_bank
  */
 class Bank extends \yii\db\ActiveRecord
 {

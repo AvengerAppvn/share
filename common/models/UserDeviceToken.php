@@ -58,7 +58,7 @@ class UserDeviceToken extends ActiveRecord
     {
         return [
             [['user_id', 'type', 'token'], 'required'],
-            [['user_id', 'expire_at'], 'integer'],
+            ['user_id', 'integer'],
             [['token'], 'string', 'max' => self::TOKEN_LENGTH]
         ];
     }
