@@ -180,26 +180,33 @@ class AdsController extends ActiveController
 
         if(AdsShare::find()->where(['ads_id'=>$ads_id,'user_id'=>$user->id])->exists()) {
             $response->setStatusCode(422);
-            return 'Đã share ads này';
+            return 'Đã share quảng cáo này';
         }
         $advertise = Advertise::findOne($ads_id);
         if(!$advertise){
             $response->setStatusCode(404);
             return 'Không có dữ liệu với id='.$ads_id;
         }
-        $model = new AdsShare();
-        $model->ads_id = $ads_id;
-        $model->user_id = $user->id;
-        if ($model->save()) {
-            $advertise->share += 1;
-            $advertise->save(false);
+        if($advertise->share <= 0){
+            $response->setStatusCode(422);
+            return 'Đã hết lượt share';
+        }else{
+            $model = new AdsShare();
+            $model->ads_id = $ads_id;
+            $model->user_id = $user->id;
+            if ($model->save()) {
+                if($advertise->share > 0){
+                    $advertise->share -= 1;
+                    $advertise->save(false);
+                }
 
-            $response->setStatusCode(200);
-            $response->getHeaders()->set('Location', Url::toRoute([$model->id], true));
-            return $model;
-        } else {
-            // Validation error
-            throw new HttpException(422, json_encode($model->errors));
+                $response->setStatusCode(200);
+                $response->getHeaders()->set('Location', Url::toRoute([$model->id], true));
+                return $model;
+            } else {
+                // Validation error
+                throw new HttpException(422, json_encode($model->errors));
+            }
         }
     }
 
