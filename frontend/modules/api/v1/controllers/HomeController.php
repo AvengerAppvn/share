@@ -121,8 +121,30 @@ class HomeController extends ActiveController
         $response = \Yii::$app->getResponse();
         $response->setStatusCode(200);
 
-        $categories = AdsCategory::find()->limit($page_size)->offset($index)->all();
+
         $categoriesResult = [];
+
+        $strengths = [];
+        $argStrengths = [];
+        $user = User::findIdentity(\Yii::$app->user->getId());
+        if($user && $user->userProfile->strengths){
+            $argStrengths = json_decode($user->userProfile->strengths);
+            $adsCategories = AdsCategory::find()->where(['id'=>$argStrengths])->all();
+            foreach ($adsCategories as $adsCategory){
+                $categoriesResult[] = array(
+                    'id' => $adsCategory->id,
+                    'name' => $adsCategory->name,
+                    'thumbnail' => $adsCategory->thumbnail,
+                    'new' => $adsCategory->new? : 0,
+
+                );
+            }
+        }
+        if($categoriesResult){
+            $categories = AdsCategory::find()->where(['not in','id',$argStrengths])->limit($page_size)->offset($index)->all();
+        }else{
+            $categories = AdsCategory::find()->limit($page_size)->offset($index)->all();
+        }
 
         foreach ($categories as $category) {
 
@@ -130,7 +152,7 @@ class HomeController extends ActiveController
                 'id' => $category->id,
                 'name' => $category->name,
                 'thumbnail' => $category->thumbnail,
-                'new' => 0,
+                'new' => $category->new? : 0,
 
             );
         }
