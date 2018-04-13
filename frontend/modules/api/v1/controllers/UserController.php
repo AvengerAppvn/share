@@ -307,7 +307,7 @@ class UserController extends ActiveController
             $strengths = [];
             if($user->userProfile->strengths){
                 $argStrengths = json_decode($user->userProfile->strengths);
-                $adsCategories = AdsCategory::find()->where(['id'=>$argStrengths]);
+                $adsCategories = AdsCategory::find()->where(['id'=>$argStrengths])->all();
                 foreach ($adsCategories as $adsCategory){
                     $strengths[] = array(
                         'id'=>$adsCategory->id,
