@@ -25,7 +25,7 @@ install:
 # setup application:
   - |
     cp .env.dist .env
-    sed -i s/yii2-starter-kit\.dev/localhost:8080/ .env
+    sed -i s/share\.dev/localhost:8080/ .env
 
   - |
     cd tests/codeception/backend && codecept build
