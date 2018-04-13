@@ -47,6 +47,8 @@ class AdsForm extends Model
             $model->content = $this->require;
             $model->description = $this->message;
             $model->cat_id = $this->category?:0;
+            // TODO fix share
+            $model->share = 50;
 
             if ($model->save(false)) {
                 $primaryKey = $model->getPrimaryKey();
