@@ -156,7 +156,7 @@ class AdsController extends ActiveController
                 'title'=> $ads->title,
                 'require'=> $ads->content,
                 'message'=> $ads->description,
-                'cat_id'=> 1,
+                'cat_id'=> $ads->cat_id,
                 'created_at'=> date('Y-m-d H:i:s',$ads->created_at),
                 'thumbnail'=> $ads->thumb,
             );

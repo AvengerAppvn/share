@@ -11,6 +11,7 @@ use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\rest\ActiveController;
 use yii\web\HttpException;
@@ -141,9 +142,9 @@ class HomeController extends ActiveController
             }
         }
         if($categoriesResult){
-            $categories = AdsCategory::find()->where(['not in','id',$argStrengths])->limit($page_size)->offset($index)->all();
+            $categories = AdsCategory::find()->where(['not in','id',$argStrengths])->andWhere('id > 0')->limit($page_size)->offset($index)->all();
         }else{
-            $categories = AdsCategory::find()->limit($page_size)->offset($index)->all();
+            $categories = AdsCategory::find()->andWhere('id > 0')->limit($page_size)->offset($index)->all();
         }
 
         foreach ($categories as $category) {
@@ -189,7 +190,7 @@ class HomeController extends ActiveController
 
         $response->setStatusCode(200);
 
-        $advertises = Advertise::find()->where(['cat_id'=>$cat_id])->limit($page_size)->offset($index)->all();
+        $advertises = Advertise::find()->where(['cat_id'=>[0,$cat_id]])->limit($page_size)->offset($index)->all();
         $advertisesResult = [];
 
         foreach ($advertises as $advertise) {
