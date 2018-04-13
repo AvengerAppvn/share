@@ -27,6 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name',
+            'description',
+            [
+                'attribute' => 'fee_bank',
+                'value' => function ($model) {
+                    return $model->fee_bank == 1 ? "Mất phí" : "Không mất phí";
+                },
+                'filter' => ArrayHelper::map(CUtils::feeBank(), 'id', 'name'),
+            ],
             [
                 'attribute' => 'status',
                 'value' => function ($model) {

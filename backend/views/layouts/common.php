@@ -147,6 +147,12 @@ $bundle = BackendAsset::register($this);
                         'badgeBgClass' => 'label-success',
                     ],
                     [
+                        'label' => Yii::t('backend', 'Bảng điều khiển'),
+                        'icon' => '<i class="fa fa-dashboard"></i>',
+                        'url' => ['/dashboard/index'],
+                        'visible' => Yii::$app->user->can('administrator')
+                    ],
+                    [
                         'label' => Yii::t('backend', 'System'),
                         'options' => ['class' => 'header']
                     ],

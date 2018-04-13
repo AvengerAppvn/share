@@ -10,7 +10,7 @@ use common\models\AdsShare;
 /* @var $this yii\web\View */
 /* @var $model common\models\Advertise */
 
-$this->title = $model->title;
+$this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Advertises', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

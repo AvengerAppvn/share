@@ -32,6 +32,22 @@ class AdvertiseSearch extends Advertise
         return Model::scenarios();
     }
 
+    public function searchAdvertise($params){
+        $query =Advertise::find()->where(['status' => 1])->orderBy(['id' => SORT_DESC])->limit(5)->all();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+    }
+
     /**
      * Creates data provider instance with search query applied
      *
@@ -39,6 +55,7 @@ class AdvertiseSearch extends Advertise
      *
      * @return ActiveDataProvider
      */
+
     public function search($params)
     {
         $query = Advertise::find();

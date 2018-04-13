@@ -44,8 +44,8 @@ class Bank extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['status', 'fee_bank', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['name', 'description'], 'string', 'max' => 255],
         ];
     }
 
@@ -57,6 +57,8 @@ class Bank extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => Yii::t('common', 'Tên ngân hàng'),
+            'description' => Yii::t('common', 'Mô tả'),
+            'fee_bank' => Yii::t('common', 'Phí'),
             'status' => Yii::t('common', 'Trạng thái'),
             'created_at' => Yii::t('common', 'Ngày tạo'),
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),

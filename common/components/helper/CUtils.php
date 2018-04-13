@@ -19,6 +19,13 @@ class CUtils
         return $status;
     }
 
+    public static function feeBank(){
+        $fee= array();
+        $fee[]=['id'=>1, 'name'=>'Mất phí'];
+        $fee[]=['id'=>0, 'name'=>'Không mất phí'];
+        return $fee;
+    }
+
     public static function shareStatus(){
         $share= array();
         $share[]=['id'=>1, 'name'=>'Đã Share'];

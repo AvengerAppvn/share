@@ -17,9 +17,33 @@ use yii\helpers\ArrayHelper;
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
     </div>
 
+    <div class="col-md-12">
+        <?php echo $form->field($model, 'description')->widget(
+            \yii\imperavi\Widget::className(),
+            [
+                'plugins' => ['fullscreen', 'fontcolor', 'video'],
+                'options' => [
+                    'minHeight' => 240,
+                    'maxHeight' => 360,
+                    'buttonSource' => true,
+                    'convertDivs' => false,
+                    'removeEmptyTags' => false,
+                    'imageUpload' => Yii::$app->urlManager->createUrl(['/file-storage/upload-imperavi'])
+                ]
+            ]
+        ) ?>
+    </div>
+
     <div class="col-md-3">
         <?php echo $form->field($model, 'status')->dropdownList(
             ArrayHelper::map(CUtils::status(), 'id', 'name'),
+            ['prompt' => 'Chọn Trạng thái']
+        ) ?>
+    </div>
+
+    <div class="col-md-3">
+        <?php echo $form->field($model, 'fee_bank')->dropdownList(
+            ArrayHelper::map(CUtils::feeBank(), 'id', 'name'),
             ['prompt' => 'Chọn Trạng thái']
         ) ?>
     </div>

@@ -9,7 +9,7 @@ use yii\helpers\ArrayHelper;
 /* @var $model common\models\Bank */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Bank1s', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Banks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="bank-view">
@@ -30,6 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
+            'description',
+            [
+                'attribute' => 'fee_bank',
+                'value' => function ($model) {
+                    return $model->fee_bank == 1 ? "Mất phí" : "Không mất phí";
+                },
+                'filter' => ArrayHelper::map(CUtils::feeBank(), 'id', 'name'),
+            ],
             [
                 'attribute' => 'status',
                 'value' => function ($model) {

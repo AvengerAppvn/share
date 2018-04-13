@@ -18,8 +18,8 @@ class BankSearch extends Bank
     public function rules()
     {
         return [
-            [['id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['name'], 'safe'],
+            [['id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'fee_bank'], 'integer'],
+            [['name', 'description'], 'safe'],
         ];
     }
 
@@ -61,6 +61,7 @@ class BankSearch extends Bank
         $query->andFilterWhere([
             'id' => $this->id,
             'status' => $this->status,
+            'fee_bank' => $this->fee_bank,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
@@ -68,6 +69,7 @@ class BankSearch extends Bank
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }
