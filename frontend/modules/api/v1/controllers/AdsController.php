@@ -265,6 +265,51 @@ class AdsController extends ActiveController
         );
     }
 
+    public function actionShared()
+    {
+        $response = \Yii::$app->getResponse();
+        // ads_id
+        $ads_id = Yii::$app->request->get('ads_id');
+        if(!$ads_id){
+            $response->setStatusCode(422);
+            return 'Thiếu tham số ads_id';
+        }
+
+        $advertise = Advertise::findOne($ads_id);
+        if(!$advertise){
+            $response->setStatusCode(404);
+            return 'Không có dữ liệu với id='.$ads_id;
+        }
+
+        $page_size = Yii::$app->request->get('page_size');
+        $page_index = Yii::$app->request->get('page_index');
+        if (!$page_size) {
+            $page_size = 8;
+        }
+
+        if (!$page_index) {
+            $page_index = 1;
+        }
+
+        $index = $page_size * ($page_index - 1);
+
+        $response = \Yii::$app->getResponse();
+        $response->setStatusCode(200);
+
+        $shares = AdsShare::find()->where(['ads_id'=>$ads_id])->limit($page_size)->offset($index)->all();
+        $sharesResult = [];
+
+        foreach ($shares as $share) {
+
+            $sharesResult[] = array(
+                'id' => $share->id,
+                'name' => $share->user->userProfile->fullname,
+                'post_id' => $share->post_id,
+            );
+        }
+        return $sharesResult;
+    }
+
     public function actionLocation()
     {
         $response = \Yii::$app->getResponse();
