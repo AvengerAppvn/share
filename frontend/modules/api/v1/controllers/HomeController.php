@@ -57,6 +57,7 @@ class HomeController extends ActiveController
             'class' => \yii\filters\VerbFilter::className(),
             'actions' => [
                 'index' => ['get'],
+                'guest' => ['get'],
                 'view' => ['get'],
                 'create' => ['post'],
                 'update' => ['put'],
@@ -86,7 +87,7 @@ class HomeController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'login', 'signup', 'confirm', 'password-reset-request', 'password-reset-token-verification', 'password-reset'];
+        $behaviors['authenticator']['except'] = ['options', 'guest'];
 
 
         // setup access
@@ -147,6 +148,38 @@ class HomeController extends ActiveController
             $categories = AdsCategory::find()->andWhere('id > 0')->limit($page_size)->offset($index)->all();
         }
 
+        foreach ($categories as $category) {
+
+            $categoriesResult[] = array(
+                'id' => $category->id,
+                'name' => $category->name,
+                'thumbnail' => $category->thumbnail,
+                'new' => $category->new? : 0,
+
+            );
+        }
+        return $categoriesResult;
+    }
+
+    public function actionGuest()
+    {
+        $page_size = Yii::$app->request->get('page_size');
+        $page_index = Yii::$app->request->get('page_index');
+        if (!$page_size) {
+            $page_size = 8;
+        }
+
+        if (!$page_index) {
+            $page_index = 1;
+        }
+
+        $index = $page_size * ($page_index - 1);
+
+        $response = \Yii::$app->getResponse();
+        $response->setStatusCode(200);
+
+        $categoriesResult = [];
+        $categories = AdsCategory::find()->andWhere('id > 0')->limit($page_size)->offset($index)->all();
         foreach ($categories as $category) {
 
             $categoriesResult[] = array(
