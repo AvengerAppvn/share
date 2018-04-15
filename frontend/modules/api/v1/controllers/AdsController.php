@@ -90,7 +90,7 @@ class AdsController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'login', 'signup', 'confirm', 'password-reset-request', 'password-reset-token-verification', 'password-reset'];
+        $behaviors['authenticator']['except'] = ['options'];
 
 
         // setup access
@@ -250,6 +250,7 @@ class AdsController extends ActiveController
             'images' => $images,
             'created_at' => date('Y-m-d H:i:s',$advertise->created_at),
             'share' => $advertise->share ?: 0,
+            'shared_count' => AdsShare::find()->where(['ads_id'=>$advertise->id])->count(),
             'customer_avatar' => $customer_avatar?:'',
             'customer_name' => $customer_name?:'',
             'is_shared' => AdsShare::find()->where(['ads_id'=>$advertise->id,'user_id'=>$user->id])->exists()? 1:0,
