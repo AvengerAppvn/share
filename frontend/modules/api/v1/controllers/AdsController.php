@@ -173,9 +173,15 @@ class AdsController extends ActiveController
         $response = \Yii::$app->getResponse();
         // ads_id
         $ads_id = Yii::$app->request->post('ads_id');
+        $post_id = Yii::$app->request->post('post_id');
         if(!$ads_id){
             $response->setStatusCode(422);
             return 'Thiếu tham số ads_id';
+        }
+
+        if(!$post_id){
+            $response->setStatusCode(422);
+            return 'Thiếu tham số post_id';
         }
 
         if(AdsShare::find()->where(['ads_id'=>$ads_id,'user_id'=>$user->id])->exists()) {
@@ -194,6 +200,7 @@ class AdsController extends ActiveController
             $model = new AdsShare();
             $model->ads_id = $ads_id;
             $model->user_id = $user->id;
+            $model->post_id = $post_id;
             if ($model->save()) {
                 if($advertise->share > 0){
                     $advertise->share -= 1;

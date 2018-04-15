@@ -10,6 +10,7 @@ use Yii;
  * @property integer $id
  * @property integer $ads_id
  * @property integer $user_id
+ * @property string $post_id
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $created_by
@@ -31,7 +32,8 @@ class AdsShare extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ads_id'], 'required'],
+            [['ads_id','post_id'], 'required'],
+            [['post_id'], 'unique'],
             [['ads_id', 'user_id','created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
         ];
     }
