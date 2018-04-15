@@ -70,6 +70,7 @@ class AdsController extends ActiveController
                 'profile' => ['get', 'post'],
                 'emotion' => ['get'],
                 'share' => ['post'],
+                'shared' => ['get'],
             ],
         ];
 
@@ -96,11 +97,11 @@ class AdsController extends ActiveController
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['view','location','age','share'], //only be applied to
+            'only' => ['view','location','age','share','shared'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['view','location','age','share'],
+                    'actions' => ['view','location','age','share','shared'],
                     'roles' => ['@']
                 ]
             ],
