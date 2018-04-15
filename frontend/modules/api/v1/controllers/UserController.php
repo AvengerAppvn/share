@@ -289,21 +289,6 @@ class UserController extends ActiveController
         if ($user) {
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(200);
-            // TODO get from profile
-
-
-            $strengths[] = array(
-                'id'=>1,
-                'name'=>'Thời trang',
-            );
-            $strengths[] = array(
-                'id'=>2,
-                'name'=>'Điện thoại',
-            );
-            $strengths[] = array(
-                'id'=>3,
-                'name'=>'Ẩm thực',
-            );
             $strengths = [];
             if($user->userProfile->strengths){
                 $argStrengths = json_decode($user->userProfile->strengths);
@@ -319,7 +304,7 @@ class UserController extends ActiveController
             $coin = 0;
             $wallet = Wallet::find()->where(['user_id'=>$user->id])->one();
             if($wallet){
-                $coin = $wallet->amount;
+                $coin = intval($wallet->amount);
             }
             return array(
                 'fullname' => $user->userProfile->fullname,

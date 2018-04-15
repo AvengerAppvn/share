@@ -120,7 +120,7 @@ class WalletController extends ActiveController
             $coin = 0;
             $wallet = Wallet::find()->where(['user_id'=>$user->id])->one();
             if($wallet){
-                $coin = $wallet->amount;
+                $coin = intval($wallet->amount);
             }
             return array(
                 'user_id' => $user->id,
