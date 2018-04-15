@@ -257,7 +257,7 @@ class AdsController extends ActiveController
             'images' => $images,
             'created_at' => date('Y-m-d H:i:s',$advertise->created_at),
             'share' => $advertise->share ?: 0,
-            'shared_count' => int(AdsShare::find()->where(['ads_id'=>$advertise->id])->count()),
+            'shared_count' => intval(AdsShare::find()->where(['ads_id'=>$advertise->id])->count()),
             'customer_avatar' => $customer_avatar?:'',
             'customer_name' => $customer_name?:'',
             'is_shared' => AdsShare::find()->where(['ads_id'=>$advertise->id,'user_id'=>$user->id])->exists()? 1:0,
