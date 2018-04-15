@@ -20,6 +20,7 @@ class AdsForm extends Model
     public $message;
     public $age;
     public $category;
+    public $budget;
 
     /**
      * @inheritdoc
@@ -29,6 +30,7 @@ class AdsForm extends Model
         return [
             ['title', 'trim'],
             ['title', 'required','message'=> Yii::t('frontend','Missing title')],
+            ['budget', 'required','message'=> Yii::t('frontend','Missing budget')],
             ['require', 'required','message'=> Yii::t('frontend','Missing require')],
             [['title','require','message'], 'string'],
             [['images','location','age','category'], 'safe']
@@ -46,6 +48,7 @@ class AdsForm extends Model
             $model->title = $this->title;
             $model->content = $this->require;
             $model->description = $this->message;
+            $model->budget = $this->budget;
             $model->cat_id = $this->category?:0;
             // TODO fix share
             $model->share = 50;
