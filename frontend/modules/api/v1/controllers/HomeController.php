@@ -58,6 +58,8 @@ class HomeController extends ActiveController
             'actions' => [
                 'index' => ['get'],
                 'guest' => ['get'],
+                'category' => ['get'],
+                'category-guest' => ['get'],
                 'view' => ['get'],
                 'create' => ['post'],
                 'update' => ['put'],
@@ -87,7 +89,7 @@ class HomeController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'guest'];
+        $behaviors['authenticator']['except'] = ['options', 'guest','category-guest'];
 
 
         // setup access
@@ -191,6 +193,11 @@ class HomeController extends ActiveController
             );
         }
         return $categoriesResult;
+    }
+
+    public function actionCategoryGuest()
+    {
+        return $this->actionCategory();
     }
 
     public function actionCategory()
