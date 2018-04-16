@@ -15,15 +15,25 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <!--    --><?php //echo $form->field($model, 'id') ?>
+    <div class="col-md-12 col-md-offset-8 ">
+        <div class="right">
+            <div class="col-md-3">
+                <?= $form->field($model, 'name')->label(false)->textInput(['placeholder' => "Nhập tên danh mục"]) ?>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <?= Html::submitButton('Tìm kiếm', ['class' => 'btn btn-primary']) ?>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'slug') ?>
-
-    <?= $form->field($model, 'description') ?>
-
-    <?= $form->field($model, 'image_base_url') ?>
+    <!--    --><?php //echo $form->field($model, 'slug') ?>
+    <!---->
+    <!--    --><?php //echo $form->field($model, 'description') ?>
+    <!---->
+    <!--    --><?php //echo $form->field($model, 'image_base_url') ?>
 
     <?php // echo $form->field($model, 'image_path') ?>
 
@@ -36,11 +46,6 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'created_by') ?>
 
     <?php // echo $form->field($model, 'updated_by') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
-    </div>
 
     <?php ActiveForm::end(); ?>
 
