@@ -213,6 +213,7 @@ class BankController extends ActiveController
             'province_name' => $user_bank->province_name,
             'branch_name' => $user_bank->branch_name,
             'created_at' => date('Y-m-d H:i:s', $user_bank->created_at),
+            'logo' => '',
         );
     }
 
