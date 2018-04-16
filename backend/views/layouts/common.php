@@ -114,20 +114,7 @@ $bundle = BackendAsset::register($this);
     <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-            <!-- Sidebar user panel -->
-            <div class="user-panel">
-                <div class="pull-left image">
-                    <img src="<?php echo Yii::$app->user->identity->userProfile->getAvatar($this->assetManager->getAssetUrl($bundle, 'img/anonymous.jpg')) ?>"
-                         class="img-circle"/>
-                </div>
-                <div class="pull-left info">
-                    <p><?php echo Yii::t('backend', 'Hello, {username}', ['username' => Yii::$app->user->identity->getPublicIdentity()]) ?></p>
-                    <a href="<?php echo Url::to(['/sign-in/profile']) ?>">
-                        <i class="fa fa-circle text-success"></i>
-                        <?php echo Yii::$app->formatter->asDatetime(time()) ?>
-                    </a>
-                </div>
-            </div>
+
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <?php echo Menu::widget([
                 'options' => ['class' => 'sidebar-menu'],
@@ -136,35 +123,22 @@ $bundle = BackendAsset::register($this);
                 'activateParents' => true,
                 'items' => [
                     [
-                        'label' => Yii::t('backend', 'Main'),
-                        'options' => ['class' => 'header']
-                    ],
-                    [
-                        'label' => Yii::t('backend', 'Timeline'),
-                        'icon' => '<i class="fa fa-bar-chart-o"></i>',
-                        'url' => ['/timeline-event/index'],
-                        'badge' => TimelineEvent::find()->today()->count(),
-                        'badgeBgClass' => 'label-success',
-                    ],
-                    [
                         'label' => Yii::t('backend', 'Bảng điều khiển'),
                         'icon' => '<i class="fa fa-dashboard"></i>',
                         'url' => ['/dashboard/index'],
                         'visible' => Yii::$app->user->can('administrator')
                     ],
                     [
-                        'label' => Yii::t('backend', 'System'),
-                        'options' => ['class' => 'header']
+                        'label' => Yii::t('backend', 'Quản lý Danh Mục'),
+                        'icon' => '<i class="fa fa-edit"></i>',
+                        'url' => ['/ads-category/index'],
+                        'visible' => Yii::$app->user->can('administrator')
                     ],
                     [
                         'label' => Yii::t('backend', 'Quản lý Quảng cáo'),
-                        'url' => '#',
+                        'url' => ['/advertise/index'],
                         'icon' => '<i class="fa fa-edit"></i>',
-                        'options' => ['class' => 'treeview'],
-                        'items' => [
-                            ['label' => Yii::t('backend', 'Danh Mục'), 'url' => ['/ads-category/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Quảng Cáo'), 'url' => ['/advertise/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                        ]
+                        'visible' => Yii::$app->user->can('administrator')
                     ],
                     [
                         'label' => Yii::t('backend', 'Quản lý Ví'),
