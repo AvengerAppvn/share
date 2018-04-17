@@ -91,7 +91,7 @@ class AdsController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options'];
+        $behaviors['authenticator']['except'] = ['options','price-basic'];
 
 
         // setup access
@@ -309,6 +309,13 @@ class AdsController extends ActiveController
             );
         }
         return $sharesResult;
+    }
+
+    public function actionPriceBasic()
+    {
+        $response = \Yii::$app->getResponse();
+        $response->setStatusCode(200);
+        return 5000;
     }
 
     public function actionLocation()
