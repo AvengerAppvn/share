@@ -28,13 +28,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'username',
+            'phone',
             'auth_key',
             'email:email',
+            'is_customer',
+            'is_advertiser',
             'status',
             'created_at:datetime',
             'updated_at:datetime',
             'logged_at:datetime',
         ],
     ]) ?>
+
 
 </div>

@@ -41,7 +41,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'logged_at:datetime',
             // 'updated_at',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'options' => [
+                    'style' => 'width:80px;',
+                ]
+            ]
         ],
     ]); ?>
 

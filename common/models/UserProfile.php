@@ -90,15 +90,15 @@ class UserProfile extends ActiveRecord
     {
         return [
             'user_id' => Yii::t('common', 'User ID'),
-            'firstname' => Yii::t('common', 'Firstname'),
-            'middlename' => Yii::t('common', 'Middlename'),
-            'lastname' => Yii::t('common', 'Lastname'),
-            'locale' => Yii::t('common', 'Locale'),
-            'country_id' => Yii::t('common', 'Country'),
-            'picture' => Yii::t('common', 'Picture'),
-            'gender' => Yii::t('common', 'Gender'),
-            'address' => Yii::t('common', 'Address'),
-            'fullname' => Yii::t('common', 'Fullname'),
+            'firstname' => Yii::t('common', 'Tên'),
+            'middlename' => Yii::t('common', 'Tên đệm'),
+            'lastname' => Yii::t('common', 'Họ'),
+            'locale' => Yii::t('common', 'Ngôn ngữ'),
+            'country_id' => Yii::t('common', 'Quốc gia'),
+            'picture' => Yii::t('common', 'Ảnh đại diện'),
+            'gender' => Yii::t('common', 'Giới tính'),
+            'address' => Yii::t('common', 'Địa chỉ'),
+            'fullname' => Yii::t('common', 'Tên đầy đủ'),
         ];
     }
 

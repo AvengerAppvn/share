@@ -1,4 +1,5 @@
 <?php
+
 namespace common\models;
 
 use common\commands\AddToTimelineCommand;
@@ -11,6 +12,7 @@ use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 use yii\db\Expression;
+
 /**
  * User model
  *
@@ -52,6 +54,8 @@ class User extends ActiveRecord implements IdentityInterface
     const ROLE_USER = 'user';
     const ROLE_MANAGER = 'manager';
     const ROLE_ADMINISTRATOR = 'administrator';
+    const ROLE_CUSTOMER = 'customer';
+    const ROLE_ADVERTISER = 'advertiser';
 
     const EVENT_AFTER_SIGNUP = 'afterSignup';
     const EVENT_AFTER_LOGIN = 'afterLogin';
@@ -65,6 +69,7 @@ class User extends ActiveRecord implements IdentityInterface
      * @var array
      */
     protected static $decodedToken;
+
     /**
      * @inheritdoc
      */
@@ -135,7 +140,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'default', 'value' => self::STATUS_NOT_ACTIVE],
             ['status', 'in', 'range' => array_keys(self::statuses())],
             [['username'], 'filter', 'filter' => '\yii\helpers\Html::encode'],
-            [['referrer','has2fa','twofa_ex_create_order','twofa_ex_cancel_order','twofa_lending','twofa_withdraw'], 'integer'],
+            [['referrer', 'has2fa', 'twofa_ex_create_order', 'twofa_ex_cancel_order', 'twofa_lending', 'twofa_withdraw'], 'integer'],
             [['access_token'], 'safe'],
         ];
     }
@@ -146,15 +151,17 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'username' => Yii::t('common', 'Username'),
+            'username' => Yii::t('common', 'Tên đăng nhập'),
             'email' => Yii::t('common', 'E-mail'),
-            'status' => Yii::t('common', 'Status'),
+            'status' => Yii::t('common', 'Trạng thái'),
+            'is_customer' => Yii::t('common', 'Khách hàng'),
+            'is_advertiser' => Yii::t('common', 'Người quảng cáo'),
             'access_token' => Yii::t('common', 'API access token'),
             'referrer' => Yii::t('common', 'Referrer'),
-            'phone' => Yii::t('common', 'Phone'),
-            'created_at' => Yii::t('common', 'Created at'),
-            'updated_at' => Yii::t('common', 'Updated at'),
-            'logged_at' => Yii::t('common', 'Last login'),
+            'phone' => Yii::t('common', 'Số điện thoại'),
+            'created_at' => Yii::t('common', 'Ngày tạo'),
+            'updated_at' => Yii::t('common', 'Ngày cập nhật'),
+            'logged_at' => Yii::t('common', 'Lần đăng nhập cuối'),
         ];
     }
 
@@ -173,6 +180,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->hasOne(User::className(), ['id' => 'referrer']);
     }
+
     /**
      * @inheritdoc
      */
@@ -203,7 +211,7 @@ class User extends ActiveRecord implements IdentityInterface
         } catch (\Exception $e) {
             return false;
         }
-        static::$decodedToken = (array) $decoded;
+        static::$decodedToken = (array)$decoded;
         // If there's no jti param - exception
         if (!isset(static::$decodedToken['jti'])) {
             return false;
@@ -227,7 +235,7 @@ class User extends ActiveRecord implements IdentityInterface
             '=', 'id', $id
         ])
             ->andWhere([
-                '=', 'status',  self::STATUS_ACTIVE
+                '=', 'status', self::STATUS_ACTIVE
             ])
             ->andWhere([
                 '>', 'access_token_expired_at', new Expression('NOW()')
@@ -370,17 +378,16 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return bool whether the access token is generated or not
      */
-    public function generateAccessTokenAfterUpdatingClientInfo($forceRegenerate=false)
+    public function generateAccessTokenAfterUpdatingClientInfo($forceRegenerate = false)
     {
         // update client login, ip
         $this->last_login_ip = Yii::$app->request->userIP;
         $this->last_login_at = new Expression('NOW()');
 
         // check time is expired or not
-        if($forceRegenerate == true
+        if ($forceRegenerate == true
             || $this->access_token_expired_at == null
-            || (time() > strtotime($this->access_token_expired_at)))
-        {
+            || (time() > strtotime($this->access_token_expired_at))) {
             // generate access token
             $this->generateAccessToken();
         }
@@ -388,7 +395,8 @@ class User extends ActiveRecord implements IdentityInterface
         return true;
     }
 
-    public function generateAccessToken(){
+    public function generateAccessToken()
+    {
         // generate access token
 //        $this->access_token = Yii::$app->security->generateRandomString();
         $tokens = $this->getJWT();
@@ -397,7 +405,8 @@ class User extends ActiveRecord implements IdentityInterface
 
     }
 
-    public function destroyAccessToken(){
+    public function destroyAccessToken()
+    {
         // generate access token
 //        $this->access_token = Yii::$app->security->generateRandomString();
         $this->access_token = null;   // Token
@@ -413,11 +422,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function getJWT()
     {
         // Collect all the data
-        $secret      = static::getSecretKey();
+        $secret = static::getSecretKey();
         $currentTime = time();
-        $expire      = $currentTime + 86400; // 1 day
-        $request     = Yii::$app->request;
-        $hostInfo    = '';
+        $expire = $currentTime + 86400; // 1 day
+        $request = Yii::$app->request;
+        $hostInfo = '';
         // There is also a \yii\console\Request that doesn't have this property
         if ($request instanceof WebRequest) {
             $hostInfo = $request->hostInfo;
@@ -432,9 +441,9 @@ class User extends ActiveRecord implements IdentityInterface
             'nbf' => $currentTime,       // Not Before: Timestamp of when the token should start being considered valid. Should be equal to or greater than iat. In this case, the token will begin to be valid 10 seconds
             'exp' => $expire,           // Expire: Timestamp of when the token should cease to be valid. Should be greater than iat and nbf. In this case, the token will expire 60 seconds after being issued.
             'data' => [
-                'username'      =>  $this->username,
-                'roleLabel'    =>  $this->getRoleLabel(),
-                'lastLoginAt'   =>  $this->last_login_at,
+                'username' => $this->username,
+                'roleLabel' => $this->getRoleLabel(),
+                'lastLoginAt' => $this->last_login_at,
             ]
         ], static::getHeaderToken());
         // Set up id
@@ -442,9 +451,10 @@ class User extends ActiveRecord implements IdentityInterface
         return [JWT::encode($token, $secret, static::getAlgo()), $token];
     }
 
-    private function getRoleLabel(){
+    private function getRoleLabel()
+    {
         $roleLabel = '';
-        switch($this->role) {
+        switch ($this->role) {
             case self::ROLE_USER:
                 $roleLabel = Yii::t('common', 'User');
                 break;
@@ -454,6 +464,13 @@ class User extends ActiveRecord implements IdentityInterface
             case self::ROLE_ADMINISTRATOR:
                 $roleLabel = Yii::t('common', 'Administrator');
                 break;
+            case self::ROLE_CUSTOMER:
+                $roleLabel = Yii::t('common', 'Customer');
+                break;
+            case self::ROLE_ADVERTISER:
+                $roleLabel = Yii::t('common', 'advertiser');
+                break;
+
         }
         return $roleLabel;
     }

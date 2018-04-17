@@ -17,6 +17,9 @@ class UserForm extends Model
     public $password;
     public $status;
     public $roles;
+    public $is_advertiser;
+    public $is_customer;
+    public $phone;
 
     private $model;
 
@@ -28,6 +31,8 @@ class UserForm extends Model
         return [
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'required'],
+            ['phone', 'number'],
+            [['is_customer', 'is_advertiser'], 'boolean'],
             ['username', 'unique', 'targetClass' => User::className(), 'filter' => function ($query) {
                 if (!$this->getModel()->isNewRecord) {
                     $query->andWhere(['not', ['id'=>$this->getModel()->id]]);
@@ -63,10 +68,12 @@ class UserForm extends Model
     public function attributeLabels()
     {
         return [
-            'username' => Yii::t('common', 'Username'),
+            'username' => Yii::t('common', 'Tên đăng nhập'),
             'email' => Yii::t('common', 'Email'),
-            'status' => Yii::t('common', 'Status'),
-            'password' => Yii::t('common', 'Password'),
+            'status' => Yii::t('common', 'Trạng thái'),
+            'password' => Yii::t('common', 'Mật khẩu'),
+            'is_customer' => Yii::t('common', 'Khách hàng'),
+            'is_advertiser' => Yii::t('common', 'Người quảng cáo'),
             'roles' => Yii::t('common', 'Roles')
         ];
     }
@@ -112,6 +119,9 @@ class UserForm extends Model
             $model->username = $this->username;
             $model->email = $this->email;
             $model->status = $this->status;
+            $model->phone = $this->phone;
+            $model->is_customer = $this->is_customer;
+            $model->is_advertiser = $this->is_advertiser;
             if ($this->password) {
                 $model->setPassword($this->password);
             }
