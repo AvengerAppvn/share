@@ -73,6 +73,7 @@ class AdvertiseController extends Controller
         $image = new AdsAdvertiseImage();
         $share = new AdsShare();
 //        $model->id = $model->created_by;
+        $model->status = 1;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $share->ads_id = $model->id;
