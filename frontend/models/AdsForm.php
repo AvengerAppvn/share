@@ -51,7 +51,7 @@ class AdsForm extends Model
             $model->budget = $this->budget;
             $model->cat_id = $this->category?:0;
             // TODO fix share
-            $model->share = 50;
+            $model->share = $this->calculateShare();
 
             if ($model->save(false)) {
                 $primaryKey = $model->getPrimaryKey();
@@ -91,5 +91,29 @@ class AdsForm extends Model
             }
         }
         return false;
+    }
+
+    private function calculateShare(){
+        $price_base = 5000; //TODO get in config
+
+        if($this->budget){
+            $share = 0;
+            $price_unit = $price_base;
+            if($this->location && $this->location > 0){
+                $price_unit += $price_base * 0.1;
+            }
+            if($this->age && $this->age > 0){
+                $price_unit += $price_base * 0.1;
+            }
+
+            if($this->category && $this->category > 0){
+                $price_unit += $price_base * 0.1;
+            }
+
+            return intval($this->budget / $price_unit);
+        }
+
+        return 0;
+
     }
 }
