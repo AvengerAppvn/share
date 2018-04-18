@@ -32,7 +32,7 @@ class AdsShare extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ads_id','post_id'], 'required'],
+            [['ads_id'], 'required'],
             [['post_id'], 'unique'],
             [['ads_id', 'user_id','created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
         ];
