@@ -7,14 +7,14 @@ use yii\widgets\DetailView;
 /* @var $model common\models\AdsCategory */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Ads Categories', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Danh sách Danh mục', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ads-category-view">
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Cập nhật', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Xóa', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',

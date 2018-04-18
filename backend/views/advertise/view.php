@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="advertise-view">
 
     <p>
-        <?php echo Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= $model->share != 1 ? Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?php echo Html::a('Cập nhật', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= $model->share != 1 ? Html::a('Xóa', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',

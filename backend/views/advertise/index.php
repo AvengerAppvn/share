@@ -12,7 +12,7 @@ use common\components\helper\CUtils;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $model common\models\Advertise */
 
-$this->title = 'Advertises';
+$this->title = 'Danh sách Quảng cáo';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <!--    --><?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?php echo Html::a('Create Advertise', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php echo Html::a('Tạo Quảng cáo', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'total_share',
                 'format' => 'html',
                 'value' => function ($model) {
-                    return Html::a($model->id ? AdsShare::find()->where(['ads_id' => $model->id])->count() . ' Lượt Share' : 0, ['/advertise/share?ads_id=' . $model->id], ['target' => '_blank']);
+                    return Html::a($model->id ? AdsShare::find()->where(['ads_id' => $model->id, 'status' => 1])->count() . ' Lượt Share' : 0, ['/advertise/share?ads_id=' . $model->id], ['target' => '_blank']);
                 },
             ],
 

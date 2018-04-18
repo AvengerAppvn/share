@@ -58,7 +58,7 @@ use yii\helpers\ArrayHelper;
         <div class="form-group">
             <?php
             echo Html::submitButton(
-                $model->isNewRecord ? Yii::t('backend', 'Create') : Yii::t('backend', 'Update'),
+                $model->isNewRecord ? Yii::t('backend', 'Tạo') : Yii::t('backend', 'Cập nhật'),
                 ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         </div>
     </div>

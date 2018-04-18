@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
 
 /**
  * This is the model class for table "wallet".
@@ -38,6 +40,14 @@ class Wallet extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+            BlameableBehavior::className(),
+        ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -53,6 +63,16 @@ class Wallet extends \yii\db\ActiveRecord
             'created_by' => Yii::t('common', 'Người tạo'),
             'updated_by' => Yii::t('common', 'Người cập nhật'),
         ];
+    }
+
+    public function getAuthor()
+    {
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
+    }
+
+    public function getUpdater()
+    {
+        return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
 
     public function getUser()

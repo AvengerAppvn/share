@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Advertise */
 
-$this->title = 'Create Advertise';
+$this->title = 'Tạo Quảng cáo';
 $this->params['breadcrumbs'][] = ['label' => 'Advertises', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

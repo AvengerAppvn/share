@@ -9,7 +9,7 @@ use common\components\helper\CUtils;
 /* @var $searchModel common\models\search\AdsCategorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Ads Categories';
+$this->title = 'Danh sách Danh mục';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ads-category-index">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Ads Category', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tạo danh mục', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

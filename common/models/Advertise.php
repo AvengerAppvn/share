@@ -136,7 +136,7 @@ class Advertise extends \yii\db\ActiveRecord
 
     public function getSpeciality()
     {
-        return $this->hasOne(CriteriaSpeciality::className(), ['id' => 'speciality_id']);
+        return $this->hasOne(AdsCategory::className(), ['id' => 'speciality_id']);
     }
     /**
      * @inheritdoc

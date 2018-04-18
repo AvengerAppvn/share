@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Wallet */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Wallets', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Danh sách Ví', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="wallet-view">

@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use common\components\helper\CUtils;
+use yii\helpers\ArrayHelper;
+
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Wallet */
@@ -12,19 +15,22 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
+    <div class="row">
+        <div class="col-md-12">
+            <?= $form->field($model, 'user_id')->textInput() ?>
+        </div>
 
-    <?= $form->field($model, 'amount')->textInput(['maxlength' => true]) ?>
+        <div class="col-md-12">
+            <?= $form->field($model, 'amount')->textInput(['maxlength' => true]) ?>
+        </div>
 
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
-    <?= $form->field($model, 'created_by')->textInput() ?>
-
-    <?= $form->field($model, 'updated_by')->textInput() ?>
+        <div class="col-md-3">
+            <?php echo $form->field($model, 'status')->dropdownList(
+                ArrayHelper::map(CUtils::status(), 'id', 'name'),
+                ['prompt' => 'Chọn Trạng thái']
+            ) ?>
+        </div>
+    </div>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

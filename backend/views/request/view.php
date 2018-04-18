@@ -9,7 +9,7 @@ use common\components\helper\CUtils;
 /* @var $model common\models\Request */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Requests', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Danh sách giao dịch', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="request-view">
