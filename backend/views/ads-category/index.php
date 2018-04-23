@@ -13,12 +13,15 @@ $this->title = 'Danh sách Danh mục';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ads-category-index">
+    <div class="row">
+        <div class="col-md-3">
+            <?= Html::a('Tạo danh mục', ['create'], ['class' => 'btn btn-success']) ?>
+        </div>
+        <div class="col-md-9">
+            <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+        </div>
+    </div>
 
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Tạo danh mục', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -27,10 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name',
-//            'slug',
-            'description',
-            'image_base_url:url',
-            // 'image_path',
+            [
+                'attribute' => 'image_base_url',
+                'format' => 'html',
+                'value' => function ($model) {
+                    return $model->image_base_url ? Html::img($model->thumbnail) : null;
+                },
+            ],
+
             [
                 'attribute' => 'status',
                 'value' => function ($model) {
@@ -38,10 +45,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => ArrayHelper::map(CUtils::status(), 'id', 'name'),
             ],
-            // 'created_at',
-            // 'updated_at',
-            // 'created_by',
-            // 'updated_by',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
