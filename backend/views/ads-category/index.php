@@ -26,22 +26,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'name',
             [
                 'attribute' => 'image_base_url',
                 'format' => 'html',
                 'value' => function ($model) {
-                    return $model->image_base_url ? Html::img($model->thumbnail) : null;
+                    return $model->image_base_url ? Html::img($model->thumbnail,['width'=>80]) : null;
                 },
             ],
 
             [
                 'attribute' => 'status',
                 'value' => function ($model) {
-                    return $model->status == 1 ? "Kích hoạt" : "Đóng";
+                    return $model->status == 1 ? "Hoạt động" : "Ngưng";
                 },
                 'filter' => ArrayHelper::map(CUtils::status(), 'id', 'name'),
             ],
