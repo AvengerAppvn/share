@@ -27,13 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-//            'id',
+            'id',
+            'title',
             [
-                'attribute' => 'created_by',
+                'attribute' => 'thumbnail_base_url',
+                'format' => 'html',
                 'value' => function ($model) {
-                    return $model->created_by ? $model->author->username : '';
+                    return $model->image_base_url ? Html::img($model->thumb,['width'=>80]) : null;
                 },
             ],
             [
@@ -43,14 +43,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => ArrayHelper::map(AdsCategory::find()->all(), 'id', 'name'),
             ],
-            'title',
             [
-                'attribute' => 'share',
+                'attribute' => 'created_by',
                 'value' => function ($model) {
-                    return $model->share == 1 ? "Đã Share" : "Chưa Share";
+                    return $model->created_by ? $model->author->username : '';
                 },
-                'filter' => ArrayHelper::map(CUtils::shareStatus(), 'id', 'name'),
             ],
+            'share',
             [
                 'attribute' => 'total_share',
                 'format' => 'html',
