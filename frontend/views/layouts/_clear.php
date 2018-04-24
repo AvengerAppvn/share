@@ -14,6 +14,15 @@ use yii\helpers\Html;
     <title><?php echo Html::encode($this->title) ?></title>
     <?php $this->head() ?>
     <?php echo Html::csrfMetaTags() ?>
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+    <script>
+        var OneSignal = window.OneSignal || [];
+        OneSignal.push(function() {
+            OneSignal.init({
+                appId: "61689d25-1b68-45da-8812-65db7405f65c",
+            });
+        });
+    </script>
 </head>
 <body>
 <?php $this->beginBody() ?>
