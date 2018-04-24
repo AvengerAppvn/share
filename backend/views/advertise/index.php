@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'thumbnail_base_url',
                 'format' => 'html',
                 'value' => function ($model) {
-                    return $model->image_base_url ? Html::img($model->thumb,['width'=>80]) : null;
+                    return $model->thumbnail_base_url ? Html::img($model->thumb,['width'=>80]) : null;
                 },
             ],
             [
