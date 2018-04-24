@@ -3,17 +3,13 @@
 namespace backend\controllers;
 
 use common\models\AdsAdvertiseImage;
-use common\models\AdsAdvertiseShare;
 use common\models\AdsShare;
-use common\models\CriteriaAge;
-use common\models\CriteriaProvince;
-use common\models\CriteriaSpeciality;
-use Yii;
 use common\models\Advertise;
 use common\models\search\AdvertiseSearch;
+use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * AdvertiseController implements the CRUD actions for Advertise model.
@@ -59,6 +55,7 @@ class AdvertiseController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'images' => $this->getImages($id),
         ]);
     }
 
@@ -113,8 +110,8 @@ class AdvertiseController extends Controller
         $image = new AdsAdvertiseImage();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $share->status = $model->share;
-            $share->save();
+            #$share->status = $model->share;
+            #$share->save();
 
             return $this->redirect(['view', 'id' => $model->id,]);
         } else {
@@ -152,6 +149,16 @@ class AdvertiseController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    protected function getImages($id)
+    {
+        $images = [];
+        $adsImages =  AdsAdvertiseImage::find()->where(['ads_id'=>$id])->all();
+        foreach($adsImages as $adsImage){
+            $images[] = $adsImage->image;
+        }
+        return $images;
     }
 
     protected function findShare($id)

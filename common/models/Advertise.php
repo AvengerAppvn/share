@@ -87,12 +87,14 @@ class Advertise extends \yii\db\ActiveRecord
             'cat_id' => Yii::t('common', 'Danh mục'),
             'title' => Yii::t('common', 'Tiêu đề'),
             'thumbnail' => Yii::t('common', 'Thumbnail'),
+            'thumbnail_base_url' => Yii::t('common', 'Ảnh'),
             'slug' => 'Slug',
             'content' => Yii::t('common', 'Nội dung'),
             'description' => Yii::t('common', 'Mô tả'),
-            'message' => Yii::t('common', 'Thông điệp'),
-            'require' => Yii::t('common', 'Thông tin cần thiết'),
-            'share' => Yii::t('common', 'Share Quảng cáo'),
+            'message' => Yii::t('common', 'Thông điệp muốn chia sẻ'),
+            'require' => Yii::t('common', 'Yêu cầu'),
+            'share' => Yii::t('common', 'Số lượt share còn lại'),
+            'total_share' => Yii::t('common', 'Đã share'),
             'status' => Yii::t('common', 'Trạng thái'),
             'created_at' => Yii::t('common', 'Ngày tạo'),
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),
@@ -101,6 +103,7 @@ class Advertise extends \yii\db\ActiveRecord
             'province_id' => Yii::t('common', ' Khu vực'),
             'age_id' => Yii::t('common', ' Độ tuổi'),
             'speciality_id' => Yii::t('common', ' Chuyên ngành'),
+            'budget' => Yii::t('common', ' Ngân sách'),
         ];
     }
 
