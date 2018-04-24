@@ -79,6 +79,7 @@ class UserProfile extends ActiveRecord
             ['locale', 'in', 'range' => array_keys(Yii::$app->params['availableLocales'])],
             ['picture', 'safe'],
             ['strengths', 'safe'],
+            ['address', 'safe'],
             //['birthday', 'date']
         ];
     }
