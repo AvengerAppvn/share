@@ -1,8 +1,10 @@
 <?php
+
 namespace frontend\models;
 
 use common\models\AdsAdvertiseImage;
 use common\models\Advertise;
+use common\models\Wallet;
 use trntv\filekit\Storage;
 use Yii;
 use yii\base\Model;
@@ -21,6 +23,7 @@ class AdsForm extends Model
     public $age;
     public $category;
     public $budget;
+    public $user_id;
 
     /**
      * @inheritdoc
@@ -29,11 +32,11 @@ class AdsForm extends Model
     {
         return [
             ['title', 'trim'],
-            ['title', 'required','message'=> Yii::t('frontend','Missing title')],
-            ['budget', 'required','message'=> Yii::t('frontend','Missing budget')],
-            ['require', 'required','message'=> Yii::t('frontend','Missing require')],
-            [['title','require','message'], 'string'],
-            [['images','location','age','category'], 'safe']
+            ['title', 'required', 'message' => Yii::t('frontend', 'Missing title')],
+            ['budget', 'required', 'message' => Yii::t('frontend', 'Missing budget')],
+            ['require', 'required', 'message' => Yii::t('frontend', 'Missing require')],
+            [['title', 'require', 'message'], 'string'],
+            [['images', 'location', 'age', 'category'], 'safe']
         ];
     }
 
@@ -51,7 +54,16 @@ class AdsForm extends Model
             $model->message = $this->message;
             $model->description = $this->message;
             $model->budget = $this->budget;
-            $model->cat_id = $this->category?:0;
+            $model->cat_id = $this->category ?: 0;
+            $model->user_id = $this->user_id;
+
+            $wallet = Wallet::find()->where(['user_id' => $this->user_id])->one();
+            if ($wallet && $wallet->amount >= $model->budget) {
+                $wallet->amount = $wallet->amount - $model->budget;
+                $wallet->save();
+            }else{
+                return false; // Out of money
+            }
             // TODO fix share
             $model->share = $this->calculateShare();
 
@@ -59,10 +71,10 @@ class AdsForm extends Model
                 $primaryKey = $model->getPrimaryKey();
                 if ($this->images) {
                     // requires php5
-                    define('UPLOAD_DIR',  \Yii::getAlias('@storage').'/web/source/shares/');
+                    define('UPLOAD_DIR', \Yii::getAlias('@storage') . '/web/source/shares/');
                     $fileStorage = Instance::ensure('fileStorage', Storage::className());
 
-                    foreach($this->images as $image){
+                    foreach ($this->images as $image) {
                         $adsImage = new AdsAdvertiseImage();
                         $adsImage->ads_id = $primaryKey;
                         $img = $image;
@@ -73,14 +85,14 @@ class AdsForm extends Model
                         $filename = uniqid() . '.png';
                         $file = UPLOAD_DIR . $filename;
                         $success = file_put_contents($file, $data);
-                        
+
                         $adsImage->image_base_url = $success ? $fileStorage->baseUrl : '';
-                        $adsImage->image_path = $success ? 'shares/'. $filename : '';
+                        $adsImage->image_path = $success ? 'shares/' . $filename : '';
                         $adsImage->save();
 
-                        if(!$model->thumbnail_base_url){
+                        if (!$model->thumbnail_base_url) {
                             $model->thumbnail_base_url = $fileStorage->baseUrl;
-                            $model->thumbnail_path = 'shares/'. $filename;
+                            $model->thumbnail_path = 'shares/' . $filename;
                             $model->save(false);
                         }
                     }
@@ -95,20 +107,21 @@ class AdsForm extends Model
         return false;
     }
 
-    private function calculateShare(){
+    private function calculateShare()
+    {
         $price_base = 5000; //TODO get in config
 
-        if($this->budget){
+        if ($this->budget) {
             $share = 0;
             $price_unit = $price_base;
-            if($this->location && $this->location > 0){
+            if ($this->location && $this->location > 0) {
                 $price_unit += $price_base * 0.1;
             }
-            if($this->age && $this->age > 0){
+            if ($this->age && $this->age > 0) {
                 $price_unit += $price_base * 0.1;
             }
 
-            if($this->category && $this->category > 0){
+            if ($this->category && $this->category > 0) {
                 $price_unit += $price_base * 0.1;
             }
 

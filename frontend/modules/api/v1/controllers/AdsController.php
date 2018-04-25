@@ -146,11 +146,19 @@ class AdsController extends ActiveController
 
     public function actionCreate()
     {
+        $user = User::findIdentity(\Yii::$app->user->getId());
         $model = new AdsForm();
-        $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
+        $response = \Yii::$app->getResponse();
 
+        $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
+        $model->user_id = $user->id;
+        $wallet = Wallet::find()->where(['user_id' => $this->user_id])->one();
+        if ($wallet && $wallet->amount < $model->budget) {
+            // Validation error
+            $response->setStatusCode(402);
+            return 'Tài khoản không đủ tiền';
+        }
         if ($model->validate() && ($ads = $model->save())) {
-            $response = \Yii::$app->getResponse();
             $response->setStatusCode(200);
             $response->getHeaders()->set('Location', Url::toRoute([$ads->id], true));
             return array(
