@@ -71,8 +71,9 @@ class UserProfile extends ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'required'],
-            [['user_id', 'gender','country_id'], 'integer'],
+            [['user_id', 'cmt'], 'required'],
+            [['cmt'], 'unique'],
+            [['user_id', 'gender','country_id', 'cmt'], 'integer'],
             [['gender'], 'in', 'range' => [NULL, self::GENDER_FEMALE, self::GENDER_MALE]],
             [['fullname', 'firstname', 'middlename', 'lastname', 'avatar_path', 'avatar_base_url','image_friend_list','image_id_1','image_id_2'], 'string', 'max' => 255],
             ['locale', 'default', 'value' => Yii::$app->language],

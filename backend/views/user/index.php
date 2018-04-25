@@ -9,14 +9,14 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\search\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('backend', 'Users');
+$this->title = Yii::t('backend', 'Danh sách người dùng');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
     <p>
-        <?php echo Html::a(Yii::t('backend', 'Create {modelClass}', [
-            'modelClass' => 'User',
+        <?php echo Html::a(Yii::t('backend', 'Tạo {modelClass}', [
+            'modelClass' => 'Người dùng',
         ]), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
@@ -41,6 +41,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'logged_at:datetime',
             // 'updated_at',
 
+            [
+                'attribute' => '',
+                'format' => 'html',
+                'value' => function ($model) {
+                    return $model->is_confirmed == 1 ? Html::a("Xác thực", ['confirm', 'id' => $model->id], ['target' => '_blank', 'class' => 'btn btn-success']) : '';
+                },
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'options' => [

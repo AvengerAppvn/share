@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\UserProfile;
 use Yii;
 use common\models\User;
 use backend\models\UserForm;
@@ -59,6 +60,31 @@ class UserController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+    }
+
+    public function actionConfirm($id)
+    {
+        $model = UserProfile::find()->where(['user_id' => $id])->one();
+
+        return $this->render('confirm', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionConfirmed($id, $cmt)
+    {
+        $model = UserProfile::find()->where(['user_id' => $id])->one();
+        $confirm = User::find()->where(['id' => $id])->one();
+        if ($cmt !== null) {
+            $model->cmt = $cmt;
+            $model->save();
+        }
+
+        if ($model->save()) {
+            $confirm->status_confirmed = 1;
+            $confirm->save();
+        }
+
     }
 
     /**
