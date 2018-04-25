@@ -154,7 +154,7 @@ class AdsController extends ActiveController
         $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
         $model->user_id = $user->id;
         $wallet = Wallet::find()->where(['user_id' => $user->id])->one();
-        if ($wallet && $wallet->amount < $model->budget) {
+        if (!$wallet || intval($wallet->amount) < $model->budget) {
             // Validation error
             $response->setStatusCode(402);
             return 'Tài khoản không đủ tiền';
