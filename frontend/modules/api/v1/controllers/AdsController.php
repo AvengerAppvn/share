@@ -98,7 +98,7 @@ class AdsController extends ActiveController
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['view','location','age','share','shared','view-guest'], //only be applied to
+            'only' => ['view','location','age','share','shared'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
