@@ -10,6 +10,7 @@ use common\models\Advertise;
 use common\models\CriteriaAge;
 use common\models\CriteriaProvince;
 use common\models\User;
+use common\models\Wallet;
 use frontend\models\AdsForm;
 use frontend\modules\api\v1\resources\User as UserResource;
 use yii\filters\AccessControl;
