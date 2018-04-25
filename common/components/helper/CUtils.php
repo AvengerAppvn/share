@@ -14,8 +14,8 @@ class CUtils
 
     public static function status(){
         $status= array();
-        $status[]=['id'=>1, 'name'=>'Kích hoạt'];
-        $status[]=['id'=>0, 'name'=>'Đóng'];
+        $status[]=['id'=>1, 'name'=>'Hoạt động'];
+        $status[]=['id'=>0, 'name'=>'Ngưng'];
         return $status;
     }
 

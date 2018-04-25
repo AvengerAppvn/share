@@ -41,8 +41,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     'title',
 //            'slug',
-                    'require:ntext',
-                    'message:ntext',
+                    'require:html',
+                    'message:html',
                     'budget',
                     [
                         'attribute' => 'province_id',
@@ -71,8 +71,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'filter' => ArrayHelper::map(CUtils::status(), 'id', 'name'),
                     ],
-                    'created_at',
-                    'updated_at',
+                    'created_at:datetime',
+                    'updated_at:datetime',
                     [
                         'attribute' => 'created_by',
                         'value' => function ($model) {
