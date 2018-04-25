@@ -62,6 +62,7 @@ class AdsController extends ActiveController
             'actions' => [
                 'index' => ['get'],
                 'view' => ['get'],
+                'view-guest' => ['get'],
                 'create' => ['post'],
                 'update' => ['put'],
                 'delete' => ['delete'],
@@ -91,13 +92,13 @@ class AdsController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options','price-basic'];
+        $behaviors['authenticator']['except'] = ['options','price-basic','view-guest'];
 
 
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['view','location','age','share','shared'], //only be applied to
+            'only' => ['view','location','age','share','shared','view-guest'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
@@ -236,13 +237,14 @@ class AdsController extends ActiveController
         }
 
         $response->setStatusCode(200);
+        $user = User::findIdentity(\Yii::$app->user->getId());
 
-        $user = User::findOne($advertise->created_by);
+        $owner = User::findOne($advertise->created_by);
         $customer_avatar = null;
         $customer_name = null;
         if($user){
-            $customer_avatar = $user->userProfile->avatar;
-            $customer_name = $user->userProfile->fullname;
+            $customer_avatar = $owner->userProfile->avatar;
+            $customer_name = $owner->userProfile->fullname;
         }
 
         $images = [];
@@ -309,6 +311,53 @@ class AdsController extends ActiveController
             );
         }
         return $sharesResult;
+    }
+
+    public function actionViewGuest()
+    {
+        $response = \Yii::$app->getResponse();
+        // ads_id
+        $ads_id = Yii::$app->request->get('ads_id');
+        if(!$ads_id){
+            $response->setStatusCode(422);
+            return 'Thiếu tham số ads_id';
+        }
+
+        $advertise = Advertise::findOne($ads_id);
+        if(!$advertise){
+            $response->setStatusCode(404);
+            return 'Không có dữ liệu với id='.$ads_id;
+        }
+
+        $response->setStatusCode(200);
+
+        $user = User::findOne($advertise->created_by);
+        $customer_avatar = null;
+        $customer_name = null;
+        if($user){
+            $customer_avatar = $user->userProfile->avatar;
+            $customer_name = $user->userProfile->fullname;
+        }
+
+        $images = [];
+        foreach($advertise->advertiseImages as $adsImage){
+            $images[] = $adsImage->image;
+        }
+
+        return array(
+            'id' => $advertise->id,
+            'title' => $advertise->title,
+            'description' => $advertise->description,
+            'content' => $advertise->content,
+            'thumbnail' => $advertise->thumb,
+            'images' => $images,
+            'created_at' => date('Y-m-d H:i:s',$advertise->created_at),
+            'share' => $advertise->share ?: 0,
+            'shared_count' => intval(AdsShare::find()->where(['ads_id'=>$advertise->id])->count()),
+            'customer_avatar' => $customer_avatar?:'',
+            'customer_name' => $customer_name?:'',
+            'is_shared' => 0,
+        );
     }
 
     public function actionPriceBasic()

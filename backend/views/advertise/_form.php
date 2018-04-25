@@ -39,11 +39,9 @@ use yii\widgets\ActiveForm;
                     \yii\imperavi\Widget::className(),
                     [
                         'options' => [
-                            'buttons' => ['formatting', 'bold', 'italic', 'deleted', 'unorderedlist', 'orderedlist',
-                                'outdent', 'indent', 'link', 'alignment'],
                             'minHeight' => 120,
                             'maxHeight' => 240,
-                            'buttonSource' => true,
+                            'buttonHtml' => false,
                             'convertDivs' => false,
                             'removeEmptyTags' => true,
                         ]

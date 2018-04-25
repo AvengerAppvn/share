@@ -47,6 +47,8 @@ class AdsForm extends Model
             $model = new Advertise();
             $model->title = $this->title;
             $model->content = $this->require;
+            $model->require = $this->require;
+            $model->message = $this->message;
             $model->description = $this->message;
             $model->budget = $this->budget;
             $model->cat_id = $this->category?:0;
