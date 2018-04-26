@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'userProfile',
-                'lable'=>'Ảnh',
+                'label'=>'Ảnh',
                 'format' => 'html',
                 'value' => function ($model) {
                     return $model->userProfile->avatar_path ? Html::img(
