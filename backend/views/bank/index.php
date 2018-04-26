@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use common\components\helper\CUtils;
-
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\BankSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -23,11 +22,22 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'id',
+            [
+                'attribute' => 'thumbnail',
+                'format' => 'html',
+                'value' => function ($model) {
+                    return $model->thumbnail_path ? Html::img(
+                        \Yii::$app->glide->createSignedUrl([
+                            'glide/index',
+                            'path' => $model->thumbnail_path,
+                            'w' => 120
+                        ], true),
+                        ['class' => 'img-rounded pull-left']
+                    ) : null;
+                },
+            ],
             'name',
-            'description',
             [
                 'attribute' => 'fee_bank',
                 'value' => function ($model) {

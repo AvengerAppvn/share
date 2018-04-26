@@ -1,11 +1,10 @@
 <?php
 
-use yii\helpers\Html;
-use yii\grid\GridView;
 use common\models\AdsCategory;
 use common\models\AdsShare;
+use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
-use common\components\helper\CUtils;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\AdvertiseSearch */
@@ -61,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'total_share',
                 'format' => 'html',
                 'value' => function ($model) {
-                    return Html::a($model->id ? AdsShare::find()->where(['ads_id' => $model->id])->count()  : 0, ['/advertise/share?ads_id=' . $model->id], ['target' => '_blank']);
+                    return Html::a($model->id ? AdsShare::find()->where(['ads_id' => $model->id])->count() : 0, ['/advertise/share?ads_id=' . $model->id], ['target' => '_blank']);
                 },
             ],
 
