@@ -30,10 +30,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             [
-                'attribute' => 'thumbnail_base_url',
+                'attribute' => 'thumbnail',
                 'format' => 'html',
                 'value' => function ($model) {
-                    return $model->thumbnail_base_url ? Html::img($model->thumb,['width'=>80]) : null;
+                    return $model->thumbnail_base_url ? Html::img(img(
+                        Yii::$app->glide->createSignedUrl([
+                            'glide/index',
+                            'path' => $model->thumbnail,
+                            'w' => 200
+                        ], true),
+                        ['class' => 'img-rounded pull-left']
+                    )) : null;
                 },
             ],
             [
