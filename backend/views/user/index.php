@@ -1,9 +1,7 @@
 <?php
 
-use common\grid\EnumColumn;
-use common\models\User;
-use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\UserSearch */
@@ -31,39 +29,35 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'id',
                 'headerOptions' => ['style' => 'width:50px'],
             ],
-            [
-                'attribute' => 'userProfile',
-                'label'=>'Ảnh',
-                'format' => 'html',
-                'value' => function ($model) {
-                    return $model->userProfile->avatar_path ? Html::img(
-                        \Yii::$app->glide->createSignedUrl([
-                            'glide/index',
-                            'path' => $model->userProfile->avatar_path,
-                            'w' => 120
-                        ], true),
-                        ['class' => 'img-rounded pull-left']
-                    ) : null;
-                },
-            ],
             'username',
             'email:email',
             'phone',
             [
-                'class' => EnumColumn::className(),
-                'attribute' => 'status',
-                'enum' => User::statuses(),
-                'filter' => User::statuses()
+                'attribute' => 'is_customer',
+                'format' => 'html',
+                'value' => function ($model) {
+                    return $model->is_customer ? Html::tag("i", '', ['class' => 'fa fa-check text-success']) : Html::tag("i", '', ['class' => 'fa fa-close text-danger']);
+                },
+            ],
+            [
+                'attribute' => 'is_advertiser',
+                'label' => 'Nhà QC',
+                'format' => 'html',
+                'value' => function ($model) {
+                    return $model->is_advertiser ? Html::tag("i", '', ['class' => 'fa fa-check text-success']) : Html::tag("i", '', ['class' => 'fa fa-close text-danger']);
+                },
             ],
             'created_at:datetime',
             'logged_at:datetime',
             // 'updated_at',
 
             [
-                'attribute' => '',
+                'label' => 'Trạng thái',
                 'format' => 'html',
                 'value' => function ($model) {
-                    return $model->is_confirmed == 1 ? Html::a("Xác thực", ['confirm', 'id' => $model->id], ['target' => '_blank', 'class' => 'btn btn-success']) : '';
+                    return $model->is_confirmed == 1 ?
+                        Html::a("Kiểm tra", ['confirm', 'id' => $model->id], ['target' => '_blank', 'class' => 'btn btn-success']) :
+                        Html::tag("i", ' Đã xác thực', ['class' => 'fa fa-check text-success']);
                 },
             ],
             [
