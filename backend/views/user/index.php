@@ -27,7 +27,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'class' => 'grid-view table-responsive'
         ],
         'columns' => [
-            'id',
+            [
+                'attribute' => 'id',
+                'headerOptions' => ['style' => 'width:50px'],
+            ],
+            [
+                'attribute' => 'userProfile',
+                'lable'=>'Ảnh',
+                'format' => 'html',
+                'value' => function ($model) {
+                    return $model->userProfile->avatar_path ? Html::img(
+                        \Yii::$app->glide->createSignedUrl([
+                            'glide/index',
+                            'path' => $model->userProfile->avatar_path,
+                            'w' => 120
+                        ], true),
+                        ['class' => 'img-rounded pull-left']
+                    ) : null;
+                },
+            ],
             'username',
             'email:email',
             'phone',

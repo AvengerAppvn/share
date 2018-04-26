@@ -78,7 +78,7 @@ class Bank extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),
             'created_by' => Yii::t('common', 'Người tạo'),
             'updated_by' => Yii::t('common', 'Người cập nhật'),
-            'thumbnail' => Yii::t('common', 'Thumbnail'),
+            'thumbnail' => Yii::t('common', 'Logo'),
         ];
     }
 
