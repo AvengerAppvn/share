@@ -3,14 +3,10 @@
 namespace frontend\modules\api\v1\controllers;
 
 use common\models\Bank;
+use common\models\User;
 use common\models\UserBank;
 use frontend\models\BankForm;
-use frontend\models\UserEditForm;
-use backend\models\LoginForm;
-use common\models\User;
 use frontend\modules\api\v1\resources\User as UserResource;
-use frontend\modules\user\models\SignupConfirmForm;
-use frontend\modules\user\models\SignupForm;
 use yii\base\ErrorException;
 use yii\filters\AccessControl;
 use yii\filters\auth\CompositeAuth;
@@ -127,17 +123,17 @@ class BankController extends ActiveController
         $banksResult = [];
 
         foreach ($banks as $bank) {
-            try{
-                list($width,$height)= getimagesize(\Yii::getAlias('@storage').'/web/source/'.$bank->thumbnail_path);
-            }catch (ErrorException $e){
+            try {
+                list($width, $height) = getimagesize(\Yii::getAlias('@storage') . '/web/source/' . $bank->thumbnail_path);
+            } catch (ErrorException $e) {
                 $width = $height = 0;
             }
             $banksResult[] = array(
                 'id' => $bank->id,
                 'name' => $bank->name,
-                'fee_bank' => $bank->fee_bank?:0,
-                'description' => $bank->description?:'',
-                'logo' => $bank->thumb?:'',
+                'fee_bank' => $bank->fee_bank ?: 0,
+                'description' => $bank->description ?: '',
+                'logo' => $bank->thumb ?: '',
                 'logo_width' => $width,
                 'logo_height' => $height,
             );
@@ -214,9 +210,9 @@ class BankController extends ActiveController
         }
 
         $response->setStatusCode(200);
-        try{
-            list($width,$height)= getimagesize(\Yii::getAlias('@storage').'/web/source/'.$user_bank->bank->thumbnail_path);
-        }catch (ErrorException $e){
+        try {
+            list($width, $height) = getimagesize(\Yii::getAlias('@storage') . '/web/source/' . $user_bank->bank->thumbnail_path);
+        } catch (ErrorException $e) {
             $width = $height = 0;
         }
         return array(
@@ -226,7 +222,7 @@ class BankController extends ActiveController
             'province_name' => $user_bank->province_name,
             'branch_name' => $user_bank->branch_name,
             'created_at' => date('Y-m-d H:i:s', $user_bank->created_at),
-            'logo' => $user_bank->bank->thumb?:'',
+            'logo' => $user_bank->bank->thumb ?: '',
             'logo_width' => $width,
             'logo_height' => $height,
         );

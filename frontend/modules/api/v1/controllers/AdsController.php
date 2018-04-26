@@ -2,8 +2,6 @@
 
 namespace frontend\modules\api\v1\controllers;
 
-use common\models\AdsAdvertiseImage;
-use common\models\AdsAdvertiseShare;
 use common\models\AdsCategory;
 use common\models\AdsShare;
 use common\models\Advertise;
@@ -12,17 +10,15 @@ use common\models\CriteriaProvince;
 use common\models\User;
 use common\models\Wallet;
 use frontend\models\AdsForm;
-use frontend\modules\api\v1\resources\User as UserResource;
+use Yii;
+use yii\base\ErrorException;
 use yii\filters\AccessControl;
 use yii\filters\auth\CompositeAuth;
-use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
-use yii\filters\auth\QueryParamAuth;
 use yii\helpers\Url;
 use yii\rest\ActiveController;
 use yii\web\HttpException;
-use yii\web\NotFoundHttpException;
-use Yii;
+
 /**
  * @author Eugene Terentev <eugene@terentev.net>
  */
@@ -43,6 +39,7 @@ class AdsController extends ActiveController
     {
         return [];
     }
+
     /**
      * @return array
      */
@@ -93,17 +90,17 @@ class AdsController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options','price-basic','view-guest'];
+        $behaviors['authenticator']['except'] = ['options', 'price-basic', 'view-guest'];
 
 
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['view','location','age','share','shared'], //only be applied to
+            'only' => ['view', 'location', 'age', 'share', 'shared'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['view','location','age','share','shared'],
+                    'actions' => ['view', 'location', 'age', 'share', 'shared'],
                     'roles' => ['@']
                 ]
             ],
@@ -165,16 +162,16 @@ class AdsController extends ActiveController
             $response->setStatusCode(200);
             $response->getHeaders()->set('Location', Url::toRoute([$ads->id], true));
             return array(
-                'id'=> $ads->id,
-                'title'=> $ads->title,
-                'require'=> $ads->content,
-                'message'=> $ads->description,
-                'budget'=> $ads->budget,
-                'cat_id'=> $ads->cat_id,
-                'age_min'=> $ads->age_min,
-                'age_max'=> $ads->age_max,
-                'created_at'=> date('Y-m-d H:i:s',$ads->created_at),
-                'thumbnail'=> $ads->thumb,
+                'id' => $ads->id,
+                'title' => $ads->title,
+                'require' => $ads->content,
+                'message' => $ads->description,
+                'budget' => $ads->budget,
+                'cat_id' => $ads->cat_id,
+                'age_min' => $ads->age_min,
+                'age_max' => $ads->age_max,
+                'created_at' => date('Y-m-d H:i:s', $ads->created_at),
+                'thumbnail' => $ads->thumb,
             );
         } else {
             // Validation error
@@ -190,35 +187,35 @@ class AdsController extends ActiveController
         // ads_id
         $ads_id = Yii::$app->request->post('ads_id');
         $post_id = Yii::$app->request->post('post_id');
-        if(!$ads_id){
+        if (!$ads_id) {
             $response->setStatusCode(422);
             return 'Thiếu tham số ads_id';
         }
 
-        if(!$post_id){
+        if (!$post_id) {
             $response->setStatusCode(422);
             return 'Thiếu tham số post_id';
         }
 
-        if(AdsShare::find()->where(['ads_id'=>$ads_id,'user_id'=>$user->id])->exists()) {
+        if (AdsShare::find()->where(['ads_id' => $ads_id, 'user_id' => $user->id])->exists()) {
             $response->setStatusCode(422);
             return 'Đã share quảng cáo này';
         }
         $advertise = Advertise::findOne($ads_id);
-        if(!$advertise){
+        if (!$advertise) {
             $response->setStatusCode(404);
-            return 'Không có dữ liệu với id='.$ads_id;
+            return 'Không có dữ liệu với id=' . $ads_id;
         }
-        if($advertise->share <= 0){
+        if ($advertise->share <= 0) {
             $response->setStatusCode(422);
             return 'Đã hết lượt share';
-        }else{
+        } else {
             $model = new AdsShare();
             $model->ads_id = $ads_id;
             $model->user_id = $user->id;
             $model->post_id = $post_id;
             if ($model->save()) {
-                if($advertise->share > 0){
+                if ($advertise->share > 0) {
                     $advertise->share -= 1;
                     $advertise->save(false);
                 }
@@ -238,15 +235,15 @@ class AdsController extends ActiveController
         $response = \Yii::$app->getResponse();
         // ads_id
         $ads_id = Yii::$app->request->get('ads_id');
-        if(!$ads_id){
+        if (!$ads_id) {
             $response->setStatusCode(422);
             return 'Thiếu tham số ads_id';
         }
 
         $advertise = Advertise::findOne($ads_id);
-        if(!$advertise){
+        if (!$advertise) {
             $response->setStatusCode(404);
-            return 'Không có dữ liệu với id='.$ads_id;
+            return 'Không có dữ liệu với id=' . $ads_id;
         }
 
         $response->setStatusCode(200);
@@ -255,29 +252,44 @@ class AdsController extends ActiveController
         $owner = User::findOne($advertise->created_by);
         $customer_avatar = null;
         $customer_name = null;
-        if($user){
+        if ($user) {
             $customer_avatar = $owner->userProfile->avatar;
             $customer_name = $owner->userProfile->fullname;
         }
 
         $images = [];
-        foreach($advertise->advertiseImages as $adsImage){
-            $images[] = $adsImage->image;
+        foreach ($advertise->advertiseImages as $adsImage) {
+            try {
+                list($width, $height) = getimagesize(\Yii::getAlias('@storage') . '/web/source/' . $adsImage->image_path);
+            } catch (ErrorException $e) {
+                $width = $height = 0;
+            }
+            $images[] = array(
+                'image' => $adsImage->image,
+                'width' => $width,
+                'height' => $height
+            );
         }
-
+        try {
+            list($width, $height) = getimagesize(\Yii::getAlias('@storage') . '/web/source/' . $advertise->thumbnail_path);
+        } catch (ErrorException $e) {
+            $width = $height = 0;
+        }
         return array(
             'id' => $advertise->id,
             'title' => $advertise->title,
             'description' => $advertise->description,
             'content' => $advertise->content,
             'thumbnail' => $advertise->thumb,
+            'thumbnail_width' => $width,
+            'thumbnail_height' => $height,
             'images' => $images,
-            'created_at' => date('Y-m-d H:i:s',$advertise->created_at),
+            'created_at' => date('Y-m-d H:i:s', $advertise->created_at),
             'share' => $advertise->share ?: 0,
-            'shared_count' => intval(AdsShare::find()->where(['ads_id'=>$advertise->id])->count()),
-            'customer_avatar' => $customer_avatar?:'',
-            'customer_name' => $customer_name?:'',
-            'is_shared' => AdsShare::find()->where(['ads_id'=>$advertise->id,'user_id'=>$user->id])->exists()? 1:0,
+            'shared_count' => intval(AdsShare::find()->where(['ads_id' => $advertise->id])->count()),
+            'customer_avatar' => $customer_avatar ?: '',
+            'customer_name' => $customer_name ?: '',
+            'is_shared' => AdsShare::find()->where(['ads_id' => $advertise->id, 'user_id' => $user->id])->exists() ? 1 : 0,
         );
     }
 
@@ -286,15 +298,15 @@ class AdsController extends ActiveController
         $response = \Yii::$app->getResponse();
         // ads_id
         $ads_id = Yii::$app->request->get('ads_id');
-        if(!$ads_id){
+        if (!$ads_id) {
             $response->setStatusCode(422);
             return 'Thiếu tham số ads_id';
         }
 
         $advertise = Advertise::findOne($ads_id);
-        if(!$advertise){
+        if (!$advertise) {
             $response->setStatusCode(404);
-            return 'Không có dữ liệu với id='.$ads_id;
+            return 'Không có dữ liệu với id=' . $ads_id;
         }
 
         $page_size = Yii::$app->request->get('page_size');
@@ -312,7 +324,7 @@ class AdsController extends ActiveController
         $response = \Yii::$app->getResponse();
         $response->setStatusCode(200);
 
-        $shares = AdsShare::find()->where(['ads_id'=>$ads_id])->limit($page_size)->offset($index)->all();
+        $shares = AdsShare::find()->where(['ads_id' => $ads_id])->limit($page_size)->offset($index)->all();
         $sharesResult = [];
 
         foreach ($shares as $share) {
@@ -331,15 +343,15 @@ class AdsController extends ActiveController
         $response = \Yii::$app->getResponse();
         // ads_id
         $ads_id = Yii::$app->request->get('ads_id');
-        if(!$ads_id){
+        if (!$ads_id) {
             $response->setStatusCode(422);
             return 'Thiếu tham số ads_id';
         }
 
         $advertise = Advertise::findOne($ads_id);
-        if(!$advertise){
+        if (!$advertise) {
             $response->setStatusCode(404);
-            return 'Không có dữ liệu với id='.$ads_id;
+            return 'Không có dữ liệu với id=' . $ads_id;
         }
 
         $response->setStatusCode(200);
@@ -347,13 +359,13 @@ class AdsController extends ActiveController
         $user = User::findOne($advertise->created_by);
         $customer_avatar = null;
         $customer_name = null;
-        if($user){
+        if ($user) {
             $customer_avatar = $user->userProfile->avatar;
             $customer_name = $user->userProfile->fullname;
         }
 
         $images = [];
-        foreach($advertise->advertiseImages as $adsImage){
+        foreach ($advertise->advertiseImages as $adsImage) {
             $images[] = $adsImage->image;
         }
 
@@ -364,11 +376,11 @@ class AdsController extends ActiveController
             'content' => $advertise->content,
             'thumbnail' => $advertise->thumb,
             'images' => $images,
-            'created_at' => date('Y-m-d H:i:s',$advertise->created_at),
+            'created_at' => date('Y-m-d H:i:s', $advertise->created_at),
             'share' => $advertise->share ?: 0,
-            'shared_count' => intval(AdsShare::find()->where(['ads_id'=>$advertise->id])->count()),
-            'customer_avatar' => $customer_avatar?:'',
-            'customer_name' => $customer_name?:'',
+            'shared_count' => intval(AdsShare::find()->where(['ads_id' => $advertise->id])->count()),
+            'customer_avatar' => $customer_avatar ?: '',
+            'customer_name' => $customer_name ?: '',
             'is_shared' => 0,
         );
     }
