@@ -126,14 +126,15 @@ class BankController extends ActiveController
         $banksResult = [];
 
         foreach ($banks as $bank) {
+            $image = Yii::app()->image->load(Yii::getPathOfAlias('@storage').'/source/'.$bank->path);
             $banksResult[] = array(
                 'id' => $bank->id,
                 'name' => $bank->name,
                 'fee_bank' => $bank->fee_bank?:0,
                 'description' => $bank->description?:'',
-                'thumb' => $bank->thumb?:'',
-                'thumbnail' => $bank->thumbnail?:'',
-
+                'logo' => $bank->thumb?:'',
+                'logo_width' => $image? $image->width : 0,
+                'logo_height' => $image? $image->height : 0,
             );
         }
         return $banksResult;
@@ -208,6 +209,7 @@ class BankController extends ActiveController
         }
 
         $response->setStatusCode(200);
+        $image = Yii::app()->image->load(Yii::getPathOfAlias('@storage').'/source/'.$user_bank->bank->path);
         return array(
             'account_name' => $user_bank->account_name,
             'account_number' => $user_bank->account_number,
@@ -215,7 +217,9 @@ class BankController extends ActiveController
             'province_name' => $user_bank->province_name,
             'branch_name' => $user_bank->branch_name,
             'created_at' => date('Y-m-d H:i:s', $user_bank->created_at),
-            'logo' => '',
+            'logo' => $user_bank->bank->thumb?:'',
+            'logo_width' => $image? $image->width : 0,
+            'logo_height' => $image? $image->height : 0,
         );
     }
 
