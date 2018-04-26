@@ -24,6 +24,8 @@ class AdsForm extends Model
     public $category;
     public $budget;
     public $user_id;
+    public $age_min;
+    public $age_max;
 
     /**
      * @inheritdoc
@@ -36,6 +38,9 @@ class AdsForm extends Model
             ['budget', 'required', 'message' => Yii::t('frontend', 'Missing budget')],
             ['require', 'required', 'message' => Yii::t('frontend', 'Missing require')],
             [['title', 'require', 'message'], 'string'],
+            ['age_max', 'integer', 'max'=>80],
+            ['age_min',  'integer', 'min' => 18],
+            [['age_max'], 'compare', 'compareAttribute'=>'age_min', 'operator'=>'>=', 'skipOnEmpty'=>true],
             [['images', 'location', 'age', 'category'], 'safe']
         ];
     }
@@ -56,6 +61,8 @@ class AdsForm extends Model
             $model->budget = $this->budget;
             $model->cat_id = $this->category ?: 0;
             $model->user_id = $this->user_id;
+            $model->age_min = $this->age_min;
+            $model->age_max = $this->age_max;
 
             $wallet = Wallet::find()->where(['user_id' => $this->user_id])->one();
             if ($wallet && $wallet->amount >= $model->budget) {

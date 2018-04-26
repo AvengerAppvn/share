@@ -129,7 +129,9 @@ class AdsController extends ActiveController
         $response = \Yii::$app->getResponse();
         $response->setStatusCode(200);
 
-        $categories = AdsCategory::find()->limit($page_size)->offset($index)->all();
+        $categories = AdsCategory::find()->limit($page_size)->offset($index)
+            ->orderBy('id desc')
+            ->all();
         $categoriesResult = [];
 
         foreach ($categories as $category) {
@@ -169,6 +171,8 @@ class AdsController extends ActiveController
                 'message'=> $ads->description,
                 'budget'=> $ads->budget,
                 'cat_id'=> $ads->cat_id,
+                'age_min'=> $ads->age_min,
+                'age_max'=> $ads->age_max,
                 'created_at'=> date('Y-m-d H:i:s',$ads->created_at),
                 'thumbnail'=> $ads->thumb,
             );
