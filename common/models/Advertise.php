@@ -86,7 +86,7 @@ class Advertise extends \yii\db\ActiveRecord
 //            'user_id' => Yii::t('common', 'User Id'),
             'cat_id' => Yii::t('common', 'Danh mục'),
             'title' => Yii::t('common', 'Tiêu đề'),
-            'thumbnail' => Yii::t('common', 'Thumbnail'),
+            'thumbnail' => Yii::t('common', 'Ảnh'),
             'thumbnail_base_url' => Yii::t('common', 'Ảnh'),
             'slug' => 'Slug',
             'content' => Yii::t('common', 'Nội dung'),

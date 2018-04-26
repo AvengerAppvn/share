@@ -29,12 +29,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             [
-                'attribute' => 'image_base_url',
+                'attribute' => 'image',
                 'format' => 'html',
                 'value' => function ($model) {
-                    return $model->thumbnail_path ? Html::img(\Yii::$app->glide->createSignedUrl([
+                    return $model->image_path ? Html::img(\Yii::$app->glide->createSignedUrl([
                         'glide/index',
-                        'path' => $model->thumbnail_path,
+                        'path' => $model->image_path,
                         'w' => 200
                     ], true),
                         ['class' => 'img-rounded pull-left']
