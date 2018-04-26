@@ -22,7 +22,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'id',
+            [
+                'attribute' => 'id',
+                'headerOptions' => ['style' => 'width:50px'],
+            ],
             [
                 'attribute' => 'thumbnail',
                 'format' => 'html',
