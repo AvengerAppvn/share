@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
-
+use trntv\filekit\behaviors\UploadBehavior;
 /**
  * This is the model class for table "bank".
  *
@@ -18,9 +18,15 @@ use yii\behaviors\BlameableBehavior;
  * @property integer $updated_by
  * @property string $description
  * @property integer $fee_bank
+ * @property string $thumbnail_base_url
+ * @property string $thumbnail_path
  */
 class Bank extends \yii\db\ActiveRecord
 {
+    /**
+     * @var array
+     */
+    public $thumbnail;
     /**
      * @inheritdoc
      */
@@ -34,6 +40,12 @@ class Bank extends \yii\db\ActiveRecord
         return [
             TimestampBehavior::className(),
             BlameableBehavior::className(),
+            [
+                'class' => UploadBehavior::className(),
+                'attribute' => 'thumbnail',
+                'pathAttribute' => 'thumbnail_path',
+                'baseUrlAttribute' => 'thumbnail_base_url'
+            ]
         ];
     }
 
@@ -46,6 +58,8 @@ class Bank extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['status', 'fee_bank', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['name', 'description'], 'string', 'max' => 255],
+            [['thumbnail_base_url', 'thumbnail_path'], 'string', 'max' => 1024],
+            [['thumbnail'], 'safe']
         ];
     }
 
@@ -64,6 +78,7 @@ class Bank extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),
             'created_by' => Yii::t('common', 'Người tạo'),
             'updated_by' => Yii::t('common', 'Người cập nhật'),
+            'thumbnail' => Yii::t('common', 'Thumbnail'),
         ];
     }
 
@@ -86,4 +101,8 @@ class Bank extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
 
+    public function getThumb()
+    {
+        return $this->thumbnail_base_url . '/' . $this->thumbnail_path;
+    }
 }
