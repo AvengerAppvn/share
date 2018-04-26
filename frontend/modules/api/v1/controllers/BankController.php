@@ -11,7 +11,7 @@ use common\models\User;
 use frontend\modules\api\v1\resources\User as UserResource;
 use frontend\modules\user\models\SignupConfirmForm;
 use frontend\modules\user\models\SignupForm;
-use Intervention\Image\Image;
+use yii\base\ErrorException;
 use yii\filters\AccessControl;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;
@@ -127,15 +127,19 @@ class BankController extends ActiveController
         $banksResult = [];
 
         foreach ($banks as $bank) {
-            $image = Image::make(\Yii::getPathOfAlias('@storage').'/web/source/'.$bank->thumbnail_path);
+            try{
+                list($width,$height)= getimagesize(\Yii::getAlias('@storage').'/web/source/'.$bank->thumbnail_path);
+            }catch (ErrorException $e){
+                $width = $height = 0;
+            }
             $banksResult[] = array(
                 'id' => $bank->id,
                 'name' => $bank->name,
                 'fee_bank' => $bank->fee_bank?:0,
                 'description' => $bank->description?:'',
                 'logo' => $bank->thumb?:'',
-                'logo_width' => $image? $image->width : 0,
-                'logo_height' => $image? $image->height : 0,
+                'logo_width' => $width,
+                'logo_height' => $height,
             );
         }
         return $banksResult;
@@ -210,7 +214,11 @@ class BankController extends ActiveController
         }
 
         $response->setStatusCode(200);
-        $image = Image::make(\Yii::getPathOfAlias('@storage').'/web/source/'.$user_bank->bank->thumbnail_path);
+        try{
+            list($width,$height)= getimagesize(\Yii::getAlias('@storage').'/web/source/'.$user_bank->bank->thumbnail_path);
+        }catch (ErrorException $e){
+            $width = $height = 0;
+        }
         return array(
             'account_name' => $user_bank->account_name,
             'account_number' => $user_bank->account_number,
@@ -219,8 +227,8 @@ class BankController extends ActiveController
             'branch_name' => $user_bank->branch_name,
             'created_at' => date('Y-m-d H:i:s', $user_bank->created_at),
             'logo' => $user_bank->bank->thumb?:'',
-            'logo_width' => $image? $image->width : 0,
-            'logo_height' => $image? $image->height : 0,
+            'logo_width' => $width,
+            'logo_height' => $height,
         );
     }
 
