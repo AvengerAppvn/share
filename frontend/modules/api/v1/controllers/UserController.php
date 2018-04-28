@@ -5,6 +5,7 @@ namespace frontend\modules\api\v1\controllers;
 use common\models\AdsCategory;
 use common\models\Wallet;
 use frontend\models\UserEditForm;
+use frontend\models\PasswordResetRequestForm;
 use backend\models\LoginForm;
 use common\models\User;
 use frontend\models\UserDeviceTokenForm;
@@ -91,7 +92,7 @@ class UserController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'login', 'signup', 'confirm', 'password-reset-request', 'password-reset-token-verification', 'password-reset'];
+        $behaviors['authenticator']['except'] = ['options', 'login', 'signup', 'confirm', 'forgot-password', 'password-reset-token-verification', 'password-reset'];
 
 
         // setup access
@@ -216,11 +217,11 @@ class UserController extends ActiveController
         }
     }
 
-    public function actionPasswordResetRequest()
+    public function actionForgotPassword()
     {
         $model = new PasswordResetRequestForm();
 
-        $model->load(Yii::$app->request->post());
+        $model->load(\Yii::$app->request->post(),'');
         if ($model->validate() && $model->sendPasswordResetEmail()) {
 
             $response = \Yii::$app->getResponse();
@@ -231,7 +232,11 @@ class UserController extends ActiveController
             return $responseData;
         } else {
             // Validation error
-            throw new HttpException(422, json_encode($model->errors));
+            $message = '';
+            foreach ($model->errors as $error){
+                $message .= $error[0];
+            }
+            throw new HttpException(422, $message);
         }
     }
 
