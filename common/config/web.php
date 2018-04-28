@@ -1,6 +1,11 @@
 <?php
 $config = [
     'components' => [
+        'onesignal' => [
+            'class' => '\rocketfirm\onesignal\OneSignal',
+            'appId' => env('ONESIGNAL_APP_ID'),
+            'apiKey' => env('ONESIGNAL_API_KEY'),
+        ],
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
