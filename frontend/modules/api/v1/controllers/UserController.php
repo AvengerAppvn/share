@@ -2,21 +2,20 @@
 
 namespace frontend\modules\api\v1\controllers;
 
-use common\models\AdsCategory;
-use common\models\Wallet;
-use frontend\models\UserEditForm;
-use frontend\models\PasswordResetRequestForm;
 use backend\models\LoginForm;
+use common\models\AdsCategory;
 use common\models\User;
+use common\models\Wallet;
 use frontend\models\UserDeviceTokenForm;
+use frontend\models\UserEditForm;
 use frontend\models\UserVerifyForm;
 use frontend\modules\api\v1\resources\User as UserResource;
+use frontend\modules\user\models\PasswordResetRequestForm;
 use frontend\modules\user\models\SignupConfirmForm;
 use frontend\modules\user\models\SignupForm;
 use yii\filters\AccessControl;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;
-use yii\helpers\Url;
 use yii\rest\ActiveController;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
@@ -98,7 +97,7 @@ class UserController extends ActiveController
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['index', 'view', 'create', 'update', 'delete', 'me','device-token'], //only be applied to
+            'only' => ['index', 'view', 'create', 'update', 'delete', 'me', 'device-token'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
@@ -107,7 +106,7 @@ class UserController extends ActiveController
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['me','update','device-token'],
+                    'actions' => ['me', 'update', 'device-token'],
                     'roles' => ['user']
                 ]
             ],
@@ -220,20 +219,25 @@ class UserController extends ActiveController
     public function actionForgotPassword()
     {
         $model = new PasswordResetRequestForm();
+        $response = \Yii::$app->getResponse();
+        if ($model->load(\Yii::$app->request->post(), '') && $model->validate()) {
+            if ($model->sendEmail()) {
+                $response->setStatusCode(200);
 
-        $model->load(\Yii::$app->request->post(),'');
-        if ($model->validate() && $model->sendPasswordResetEmail()) {
+                $responseData = "Please check your mail";
 
-            $response = \Yii::$app->getResponse();
-            $response->setStatusCode(200);
+                return $responseData;
+            } else {
+                $response->setStatusCode(404);
 
-            $responseData = "true";
+                $responseData = "Can not send email";
 
-            return $responseData;
+                return $responseData;
+            }
         } else {
             // Validation error
             $message = '';
-            foreach ($model->errors as $error){
+            foreach ($model->errors as $error) {
                 $message .= $error[0];
             }
             throw new HttpException(422, $message);
@@ -295,20 +299,20 @@ class UserController extends ActiveController
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(200);
             $strengths = [];
-            if($user->userProfile->strengths){
+            if ($user->userProfile->strengths) {
                 $argStrengths = json_decode($user->userProfile->strengths);
-                $adsCategories = AdsCategory::find()->where(['id'=>$argStrengths])->all();
-                foreach ($adsCategories as $adsCategory){
+                $adsCategories = AdsCategory::find()->where(['id' => $argStrengths])->all();
+                foreach ($adsCategories as $adsCategory) {
                     $strengths[] = array(
-                        'id'=>$adsCategory->id,
-                        'name'=>$adsCategory->name,
+                        'id' => $adsCategory->id,
+                        'name' => $adsCategory->name,
                     );
                 }
             }
 
             $coin = 0;
-            $wallet = Wallet::find()->where(['user_id'=>$user->id])->one();
-            if($wallet){
+            $wallet = Wallet::find()->where(['user_id' => $user->id])->one();
+            if ($wallet) {
                 $coin = intval($wallet->amount);
             }
             return array(
@@ -321,8 +325,8 @@ class UserController extends ActiveController
                 'birthday' => $user->userProfile->birthday ?: '',
                 'strengths' => $strengths,
                 'coin' => $coin,
-                'is_customer' => $user->is_customer? true : false,
-                'is_advertiser' => $user->is_advertiser? true : false,
+                'is_customer' => $user->is_customer ? true : false,
+                'is_advertiser' => $user->is_advertiser ? true : false,
                 'status_confirmed' => $user->status_confirmed,
             );
         } else {
