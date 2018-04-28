@@ -81,4 +81,14 @@ class ArticleController extends ActiveController
      * Rest Filters: ['filter1', 'filter2'].
      * Rest Expand: ['expandRelation1', 'expandRelation2'].
      */
+    public function actionTest()
+    {
+        $deviceType = 1;
+        $options = array();
+        \Yii::$app->onesignal->players()->add($deviceType, $options);
+        $message = array('vn'=>'Test notification OneSignal');
+        $options = array(  "included_segments"=> ["Active Users"],
+                            "data"=> array("foo"=> "bar"),);
+        \Yii::$app->onesignal->notifications()->create($message, $options);
+    }
 }
