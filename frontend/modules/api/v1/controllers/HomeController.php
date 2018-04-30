@@ -181,7 +181,7 @@ class HomeController extends ActiveController
         $response->setStatusCode(200);
 
         $categoriesResult = [];
-        $categories = AdsCategory::find()->andWhere('id > 0')->limit($page_size)->offset($index)->all();
+        $categories = AdsCategory::find()->andWhere('id > 0')->limit($page_size)->offset($index)->active()->all();
         foreach ($categories as $category) {
 
             $categoriesResult[] = array(
@@ -230,7 +230,7 @@ class HomeController extends ActiveController
 
         $response->setStatusCode(200);
 
-        $advertises = Advertise::find()->where(['cat_id'=>[0,$cat_id]])->limit($page_size)->offset($index)->orderBy('id desc')->all();
+        $advertises = Advertise::find()->where(['cat_id'=>[0,$cat_id]])->limit($page_size)->offset($index)->orderBy('id desc')->active()->all();
         $advertisesResult = [];
 
         foreach ($advertises as $advertise) {
