@@ -6,7 +6,7 @@ use trntv\filekit\behaviors\UploadBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
-
+use common\models\query\AdvertiseQuery;
 /**
  * This is the model class for table "advertise".
  *
@@ -158,4 +158,13 @@ class Advertise extends \yii\db\ActiveRecord
     {
         return $this->thumbnail_base_url . '/' . $this->thumbnail_path;
     }
+
+    /**
+     * @return AdvertiseQuery
+     */
+    public static function find()
+    {
+        return new AdvertiseQuery(get_called_class());
+    }
+
 }

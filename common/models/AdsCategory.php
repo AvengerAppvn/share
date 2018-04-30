@@ -3,7 +3,7 @@
 namespace common\models;
 
 use Yii;
-
+use common\models\query\AdsCategoryQuery;
 use trntv\filekit\behaviors\UploadBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
@@ -104,8 +104,12 @@ class AdsCategory extends \yii\db\ActiveRecord
     {
         return $this->image_base_url . '/' . $this->image_path;
     }
+
     /**
-     * @inheritdoc
-     * @return AdsCategoryQuery the active query used by this AR class.
+     * @return AdsCategoryQuery
      */
+    public static function find()
+    {
+        return new AdsCategoryQuery(get_called_class());
+    }
 }
