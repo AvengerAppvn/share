@@ -4,6 +4,7 @@ namespace frontend\models;
 
 use common\models\AdsAdvertiseImage;
 use common\models\Advertise;
+use common\models\CategoryAds;
 use common\models\Wallet;
 use trntv\filekit\Storage;
 use Yii;
@@ -59,7 +60,12 @@ class AdsForm extends Model
             $model->message = $this->message;
             $model->description = $this->message;
             $model->budget = $this->budget;
-            $model->cat_id = $this->category ?: 0;
+            if($this->category){
+                $model->cat_id = $this->category[0];
+            }else{
+                $model->cat_id = 0;
+            }
+
             $model->user_id = $this->user_id;
             $model->age_min = $this->age_min;
             $model->age_max = $this->age_max;
@@ -76,6 +82,12 @@ class AdsForm extends Model
 
             if ($model->save(false)) {
                 $primaryKey = $model->getPrimaryKey();
+                foreach ($this->category as $cat){
+                    $catAds = new CategoryAds();
+                    $catAds->cat_id = $cat;
+                    $catAds->ads_id = $primaryKey;
+                    $catAds->save();
+                }
                 if ($this->images) {
                     // requires php5
                     define('UPLOAD_DIR', \Yii::getAlias('@storage') . '/web/source/shares/');

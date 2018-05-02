@@ -29,6 +29,7 @@ class UserDeviceTokenForm extends Model
                 'and', ['status' => User::STATUS_ACTIVE],
             ], 'message' => 'The User_ID is not valid.'],
             [['token', 'type'], 'required'],
+            ['player_id', 'safe'],
         ];
     }
 
