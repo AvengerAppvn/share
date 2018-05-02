@@ -58,8 +58,8 @@ class WalletController extends ActiveController
             'class' => \yii\filters\VerbFilter::className(),
             'actions' => [
                 'index' => ['get'],
-                'transact' => ['get'],
-                'history' => ['get'],
+                'add' => ['post'],
+                'info' => ['get'],
             ],
         ];
 
@@ -80,22 +80,22 @@ class WalletController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'login', 'signup', 'confirm', 'password-reset-request', 'password-reset-token-verification', 'password-reset'];
+        $behaviors['authenticator']['except'] = ['options',];
 
 
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['index', 'transact', 'history'], //only be applied to
+            'only' => ['index', 'add', 'info'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['index', 'transact', 'history'],
+                    'actions' => ['index', 'add', 'info'],
                     'roles' => ['admin', 'manageUsers'],
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['index', 'transact', 'history'],
+                    'actions' => ['index', 'add', 'info'],
                     'roles' => ['user']
                 ]
             ],
@@ -131,91 +131,31 @@ class WalletController extends ActiveController
             throw new NotFoundHttpException("Object not found");
         }
     }
-
-    public function actionTransact()
+    // Khi người dùng chọn nạp tiền, hiển thị số tài khoản của admin và form thông báo cho người quản trị
+    public function actionAdd()
     {
         $user = User::findIdentity(\Yii::$app->user->getId());
 
         if ($user) {
-
-            $page_size = Yii::$app->request->get('page_size');
-            $page_index = Yii::$app->request->get('page_index');
-            if (!$page_size) {
-                $page_size = 8;
-            }
-
-            if (!$page_index) {
-                $page_index = 1;
-            }
-
-            $index = $page_size * ($page_index - 1);
-
             $response = \Yii::$app->getResponse();
-
+            $transaction = new Transaction();
+            $transaction->user_id = $user->id;
+            $transaction->amount = 0;
+            $transaction->type = Transaction::TYPE_PENDING;
+            $transaction->status = 1;
+            $transaction->save();
             $response->setStatusCode(200);
 
-            $transactions = Transaction::find()->where(['user_id' => $user->id])->limit($page_size)->offset($index)->all();
-
-            $advertisesResult = [];
-
-            foreach ($transactions as $transaction) {
-                $user = User::findOne($transaction->created_by);
-                $customer_avatar = null;
-                $customer_name = null;
-                if($user){
-                    $customer_avatar = $user->userProfile->avatar;
-                    $customer_name = $user->userProfile->fullname;
-                }
-                $advertisesResult[] = array(
-                    'id' => $transaction->id,
-                    'title' => $transaction->title,
-                    'description' => $transaction->description,
-                    'thumbnail' => $transaction->thumb,
-                    'created_at' => date('Y-m-d H:i:s',$transaction->created_at),
-                    'customer_avatar' => $customer_avatar?:'',
-                    'customer_name' => $customer_name?:'',
-                );
-            }
-            return $advertisesResult;
+            return $transaction;
         } else {
             // Validation error
             throw new NotFoundHttpException("Object not found");
         }
     }
 
-    public function actionHistory()
+    public function actionInfo()
     {
-        $user = User::findIdentity(\Yii::$app->user->getId());
-
-        if ($user) {
-
-            $model = new UserEditForm();
-            $model->load(\Yii::$app->request->post(), '');
-            $model->id = $user->id;
-
-            if ($model->validate() && $model->save()) {
-                $response = \Yii::$app->getResponse();
-                $response->setStatusCode(200);
-                $user = $model->getUserByID();
-                return [
-                    'fullname' => $user->userProfile->fullname,
-                    'address' => $user->userProfile->address,
-                    'email' => $user->email,
-                    'phone' => $user->phone,
-                    //'avatar' => $user->userProfile->avatar,
-                    'birthday' => $user->userProfile->birthday,
-                    'strengths' => json_decode($user->userProfile->strengths),
-                    //'last_login_at' =>  $user->last_login_at,
-                    //'last_login_ip' =>  $user->last_login_ip,
-                ];
-            } else {
-                // Validation error
-                throw new HttpException(422, json_encode($model->errors));
-            }
-        } else {
-            // Validation error
-            throw new NotFoundHttpException("Object not found");
-        }
+        return "Tài khoản Shareme Techcombank 123123123";
     }
 
     public function actionOptions($id = null)
