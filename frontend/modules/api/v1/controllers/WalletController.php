@@ -58,7 +58,7 @@ class WalletController extends ActiveController
             'class' => \yii\filters\VerbFilter::className(),
             'actions' => [
                 'index' => ['get'],
-                'add' => ['post'],
+                'deposit' => ['post'],
                 'info' => ['get'],
             ],
         ];
@@ -86,16 +86,16 @@ class WalletController extends ActiveController
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['index', 'add', 'info'], //only be applied to
+            'only' => ['index', 'deposit', 'info'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['index', 'add', 'info'],
+                    'actions' => ['index', 'deposit', 'info'],
                     'roles' => ['admin', 'manageUsers'],
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['index', 'add', 'info'],
+                    'actions' => ['index', 'deposit', 'info'],
                     'roles' => ['user']
                 ]
             ],
@@ -132,7 +132,7 @@ class WalletController extends ActiveController
         }
     }
     // Khi người dùng chọn nạp tiền, hiển thị số tài khoản của admin và form thông báo cho người quản trị
-    public function actionAdd()
+    public function actionDeposit()
     {
         $user = User::findIdentity(\Yii::$app->user->getId());
 
