@@ -14,6 +14,7 @@ use yii\db\ActiveRecord;
  * @property integer $user_id
  * @property string $type
  * @property string $token
+ * @property string $player_id
  * @property integer $created_at
  * @property integer $updated_at
  *
@@ -59,7 +60,7 @@ class UserDeviceToken extends ActiveRecord
         return [
             [['user_id', 'type', 'token'], 'required'],
             ['user_id', 'integer'],
-            [['token'], 'string', 'max' => self::TOKEN_LENGTH]
+            [['token','player_id'], 'string', 'max' => self::TOKEN_LENGTH]
         ];
     }
 
@@ -73,6 +74,7 @@ class UserDeviceToken extends ActiveRecord
             'user_id' => Yii::t('common', 'User ID'),
             'type' => Yii::t('common', 'Type'),
             'token' => Yii::t('common', 'Token'),
+            'player_id' => Yii::t('common', 'Player Id'),
             'created_at' => Yii::t('common', 'Created At'),
             'updated_at' => Yii::t('common', 'Updated At'),
         ];
@@ -92,5 +94,13 @@ class UserDeviceToken extends ActiveRecord
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlayer()
+    {
+        return $this->player_id;
     }
 }

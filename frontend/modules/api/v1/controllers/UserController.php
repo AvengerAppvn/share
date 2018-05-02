@@ -419,6 +419,7 @@ class UserController extends ActiveController
                     'user_id' => $user->id,
                     'message' => 'Successful',
                     'token' => $model->token,
+                    'player_id' => $model->player_id,
                     'type' => $model->type,
                 ];
             } else {

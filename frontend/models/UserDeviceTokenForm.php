@@ -13,6 +13,7 @@ class UserDeviceTokenForm extends Model
 {
     public $type;
     public $token;
+    public $player_id;
     public $id;
 
     /** @var User */
@@ -44,6 +45,7 @@ class UserDeviceTokenForm extends Model
             $deviceToken->user_id = $this->id;
             $deviceToken->type = $this->type;
             $deviceToken->token = $this->token;
+            $deviceToken->player_id = $this->player_id;
             if ($deviceToken->save(false)) {
                 return true;
             } else {
