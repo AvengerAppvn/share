@@ -142,6 +142,38 @@ class WalletController extends ActiveController
             $transaction->user_id = $user->id;
             $transaction->amount = 0;
             $transaction->type = Transaction::TYPE_PENDING;
+
+//            if ($this->image) {
+//                // requires php5
+//                define('UPLOAD_DIR', \Yii::getAlias('@storage') . '/web/source/shares/');
+//                $fileStorage = Instance::ensure('fileStorage', Storage::className());
+//
+//                foreach ($this->images as $image) {
+//                    $adsImage = new AdsAdvertiseImage();
+//                    $adsImage->ads_id = $primaryKey;
+//                    $img = $image;
+//                    $img = str_replace('data:image/png;base64,', '', $img);
+//                    $img = str_replace(' ', '+', $img);
+//                    $data = base64_decode($img);
+//
+//                    $filename = uniqid() . '.png';
+//                    $file = UPLOAD_DIR . $filename;
+//                    $success = file_put_contents($file, $data);
+//
+//                    $adsImage->image_base_url = $success ? $fileStorage->baseUrl : '';
+//                    $adsImage->image_path = $success ? 'shares/' . $filename : '';
+//                    $adsImage->save();
+//
+//                    if (!$model->thumbnail_base_url) {
+//                        $model->thumbnail_base_url = $fileStorage->baseUrl;
+//                        $model->thumbnail_path = 'shares/' . $filename;
+//                        $model->save(false);
+//                    }
+//                }
+//
+//            }
+
+            $transaction->description = 'Yêu cầu nạp nạp tiền';
             $transaction->status = 1;
             $transaction->save();
             $response->setStatusCode(200);
