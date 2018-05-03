@@ -19,6 +19,8 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $updated_at
  * @property integer $created_by
  * @property integer $updated_by
+ * @property string $image_base_url
+ * @property string $image_path
  */
 class Transaction extends \yii\db\ActiveRecord
 {
@@ -55,6 +57,7 @@ class Transaction extends \yii\db\ActiveRecord
             [['amount'], 'number'],
             [['logtime'], 'safe'],
             [['description'], 'string', 'max' => 255],
+            [['image_base_url', 'image_path'], 'string', 'max' => 1024],
         ];
     }
 
@@ -76,6 +79,8 @@ class Transaction extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),
             'created_by' => Yii::t('common', 'Người tạo'),
             'updated_by' => Yii::t('common', 'Người cập nhật'),
+            'image_base_url' => 'Image Base Url',
+            'image_path' => 'Image Path',
         ];
     }
 
@@ -91,5 +96,10 @@ class Transaction extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public function getImage()
+    {
+        return $this->image_base_url . '/' . $this->image_path;
     }
 }
