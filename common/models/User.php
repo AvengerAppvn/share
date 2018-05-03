@@ -424,7 +424,7 @@ class User extends ActiveRecord implements IdentityInterface
         // Collect all the data
         $secret = static::getSecretKey();
         $currentTime = time();
-        $expire = $currentTime + 86400; // 1 day
+        $expire = $currentTime + 86400 * 7; // 1 day
         $request = Yii::$app->request;
         $hostInfo = '';
         // There is also a \yii\console\Request that doesn't have this property
