@@ -1,3 +1,9 @@
+<?php
+
+use yii\helpers\Html;
+
+?>
+
 <div class="dashboard-index">
     <!--start user -->
     <div class="row">
@@ -5,41 +11,45 @@
             <h3>Thống Kê Người Dùng</h3>
         </div>
         <div class="col-md-3">
+            <?= Html::a('
             <div class="info-box bg-aqua">
                 <span class="info-box-icon"><i class="fa fa-users "></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">TỔNG SỐ NGƯỜI DÙNG</span>
-                    <span class="info-box-number"><?= $total_user; ?></span>
+                    <span class="info-box-number">' . $total_user . '</span>
                 </div>
-            </div>
+            </div>', ['/user/index'], ['target' => '_blank']) ?>
         </div>
         <div class="col-md-3">
+            <?= Html::a('
             <div class="info-box bg-red">
                 <span class="info-box-icon"><i class="fa fa-user-o "></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">KHÁCH HÀNG</span>
-                    <span class="info-box-number"><?= $customer; ?></span>
+                    <span class="info-box-number">' . $customer . '</span>
                 </div>
-            </div>
+            </div>', ['/dashboard/list-user?is_customer=1'], ['target' => '_blank']) ?>
         </div>
         <div class="col-md-3">
+            <?= Html::a('
             <div class="info-box bg-green">
                 <span class="info-box-icon"><i class="fa fa-star-o "></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">NGƯỜI QUẢNG CÁO</span>
-                    <span class="info-box-number"><?= $advertiser; ?></span>
+                    <span class="info-box-number">' . $advertiser . '</span>
                 </div>
-            </div>
+            </div>', ['/dashboard/list-user?is_advertiser=1'], ['target' => '_blank']) ?>
         </div>
         <div class="col-md-3">
+            <?= Html::a('
             <div class="info-box bg-yellow">
                 <span class="info-box-icon"><i class="fa fa-thumbs-o-up "></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">KHÁCH HÀNG</span>
                     <span class="info-box-text">+ NGƯỜI QUẢNG CÁO</span>
-                    <span class="info-box-number"><?= $user; ?></span>
+                    <span class="info-box-number">' . $user . '</span>
                 </div>
-            </div>
+            </div>', ['/dashboard/list-user?is_customer=1&is_advertiser=1'], ['target' => '_blank']) ?>
         </div>
     </div> <!--end user -->
 

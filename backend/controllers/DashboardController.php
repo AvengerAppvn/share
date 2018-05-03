@@ -15,7 +15,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * UserController implements the CRUD actions for User model.
+ * DashboardController implements the CRUD actions for User model.
  */
 class DashboardController extends Controller
 {
@@ -43,7 +43,7 @@ class DashboardController extends Controller
         $total_user = count(User::find()->all());
         $advertise = Advertise::find()->where(['status' => 1])->orderBy(['id' => SORT_DESC])->limit(5)->all();
         $request = Request::find()->orderBy(['id' => SORT_DESC])->limit(5)->all();
-        $new_user  = User::find()->orderBy(['id' => SORT_DESC])->limit(5)->all();
+        $new_user = User::find()->orderBy(['id' => SORT_DESC])->limit(5)->all();
 
         return $this->render('index', [
             'customer' => $customer,
@@ -56,4 +56,20 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function actionListUser($is_customer = null, $is_advertiser = null)
+    {
+        if ($is_customer) {
+            if ($is_advertiser) {
+                $users = User::find()->where(['is_customer' => $is_customer, 'is_advertiser' => $is_advertiser])->all();
+            } else {
+                $users = User::find()->where(['is_customer' => $is_customer])->all();
+            }
+        } else {
+            $users = User::find()->where(['is_advertiser' => $is_advertiser])->all();
+        }
+
+        return $this->render('list_user', [
+            'users' => $users,
+        ]);
+    }
 }
