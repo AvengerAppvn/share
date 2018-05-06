@@ -4,6 +4,8 @@ namespace frontend\controllers;
 use Yii;
 use frontend\models\ContactForm;
 use yii\web\Controller;
+use common\models\Page;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller
@@ -56,5 +58,27 @@ class SiteController extends Controller
         return $this->render('contact', [
             'model' => $model
         ]);
+    }
+
+    public function actionPrivacy()
+    {
+        $model = Page::find()->where(['slug' => 'privacy', 'status' => Page::STATUS_PUBLISHED])->one();
+        if (!$model) {
+            throw new NotFoundHttpException(Yii::t('frontend', 'Page not found'));
+        }
+
+        $viewFile = $model->view ?: 'view';
+        return $this->render($viewFile, ['model' => $model]);
+    }
+
+    public function actionTerm()
+    {
+        $model = Page::find()->where(['slug' => 'term', 'status' => Page::STATUS_PUBLISHED])->one();
+        if (!$model) {
+            throw new NotFoundHttpException(Yii::t('frontend', 'Page not found'));
+        }
+
+        $viewFile = $model->view ?: 'view';
+        return $this->render($viewFile, ['model' => $model]);
     }
 }
