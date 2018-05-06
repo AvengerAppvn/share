@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Advertise */
 /* @var $form yii\widgets\ActiveForm */
 
-//var_dump($model);die;
+$cats =  ArrayHelper::map(AdsCategory::find()->where(['status' => 1])->all(), 'id', 'name');
 ?>
 
 <div class="advertise-form">
@@ -21,15 +21,19 @@ use yii\widgets\ActiveForm;
     <div class="col-md-12">
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
             </div>
-
-            <div class="col-md-4">
-                <?php echo $form->field($model, 'cat_id')->dropdownList(
-                    ArrayHelper::map(AdsCategory::find()->where(['status' => 1])->all(), 'id', 'name'),
-                    ['prompt' => 'Chọn Danh mục']
-                );
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?php
+                echo $form->field($model, 'cat_id')->checkboxList($cats, [
+//                    'separator' => '<br>',
+                    'itemOptions' => [
+                        'class' => 'checkbox-category'
+                    ]
+                ]);
                 ?>
             </div>
         </div>
