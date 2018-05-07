@@ -403,7 +403,6 @@ class UserController extends ActiveController
                     'message' => 'Successful',
                     'is_customer' => $user->is_customer,
                     'is_advertiser' => $user->is_advertiser,
-                    'is_confirmed' => $user->is_confirmed,
                     'status_confirmed' => $user->status_confirmed,
                     'status_confirmed_des' => $user->status_confirmed == 2? 'Đang chờ':'',
                 ];
