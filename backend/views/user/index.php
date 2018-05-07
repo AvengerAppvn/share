@@ -65,18 +65,18 @@ $this->params['breadcrumbs'][] = $this->title;
     ];
 
     // Renders a export dropdown menu
-    echo ExportMenu::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => $gridColumns
-    ]);
-
-    echo \kartik\grid\GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'options' => [
-            'class' => 'grid-view table-responsive'
-        ],
-        'columns' => $gridColumns
-    ]); ?>
+//    echo ExportMenu::widget([
+//        'dataProvider' => $dataProvider,
+//        'columns' => $gridColumns
+//    ]);
+//
+//    echo \kartik\grid\GridView::widget([
+//        'dataProvider' => $dataProvider,
+//        'filterModel' => $searchModel,
+//        'options' => [
+//            'class' => 'grid-view table-responsive'
+//        ],
+//        'columns' => $gridColumns
+//    ]); ?>
 
 </div>
