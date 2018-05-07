@@ -336,7 +336,7 @@ class UserController extends ActiveController
                 'is_customer' => $user->is_customer ? true : false,
                 'is_advertiser' => $user->is_advertiser ? true : false,
                 'status_confirmed' => $user->status_confirmed,
-                'status_confirmed_des' => $user->status_confirmed? ($user->status_confirmed == 1? 'Đã xác minh':'Đang chờ'): 'Tài khoản chưa xác minh'
+                'status_confirmed_des' => $user->status_confirmed ? ($user->status_confirmed == 1 ? 'Đã xác minh' : 'Đang chờ') : 'Tài khoản chưa xác minh'
             );
         } else {
             // Validation error
@@ -390,9 +390,12 @@ class UserController extends ActiveController
 
         if ($user) {
             $response = \Yii::$app->getResponse();
-            if($user->status_confirmed == 1){
+            if ($user->status_confirmed == 1) {
                 $response->setStatusCode(422);
-                return 'Tài khoản đã xác minh';
+                return array(
+                    'message' => 'Tài khoản đã xác minh',
+                    'code' => 422,
+                    'status' => false);
             }
             $model = new UserVerifyForm();
             $model->load(\Yii::$app->request->post(), '');
@@ -408,7 +411,7 @@ class UserController extends ActiveController
                     'is_customer' => $user->is_customer,
                     'is_advertiser' => $user->is_advertiser,
                     'status_confirmed' => $user->status_confirmed,
-                    'status_confirmed_des' => $user->status_confirmed == 2? 'Đang chờ':'',
+                    'status_confirmed_des' => $user->status_confirmed == 2 ? 'Đang chờ' : '',
                 ];
             } else {
                 // Validation error
