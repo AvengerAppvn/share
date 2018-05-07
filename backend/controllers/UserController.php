@@ -2,15 +2,15 @@
 
 namespace backend\controllers;
 
+use backend\models\search\UserSearch;
+use backend\models\UserForm;
+use common\models\User;
 use common\models\UserProfile;
 use Yii;
-use common\models\User;
-use backend\models\UserForm;
-use backend\models\search\UserSearch;
+use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -65,10 +65,17 @@ class UserController extends Controller
     public function actionConfirm($id)
     {
         $model = UserProfile::find()->where(['user_id' => $id])->one();
+        if ($model) {
+            return $this->render('confirm', [
+                'model' => $model,
+            ]);
+        } else {
+            $profile = new UserProfile();
+            $profile->user_id = $id;
+            $profile->save();
+            //throw new NotFoundHttpException('The requested page does not exist.');
+        }
 
-        return $this->render('confirm', [
-            'model' => $model,
-        ]);
     }
 
     public function actionConfirmed($id, $cmt)
