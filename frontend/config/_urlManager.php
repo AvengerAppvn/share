@@ -1,4 +1,5 @@
 <?php
+$domain = env('DOMAIN');
 return [
     'class'=>'yii\web\UrlManager',
     'enablePrettyUrl'=>true,
@@ -14,6 +15,9 @@ return [
 
         // Api
         ['class' => 'yii\rest\UrlRule', 'controller' => 'api/v1/article', 'only' => ['index', 'view', 'options']],
-        ['class' => 'yii\rest\UrlRule', 'controller' => 'api/v1/user', 'only' => ['index', 'view', 'options']]
+        ['class' => 'yii\rest\UrlRule', 'controller' => 'api/v1/user', 'only' => ['index', 'view', 'options']],
+
+        $domain.'chinh-sach' => 'site/privacy',
+        $domain.'dieu-khoan' => 'site/term',
     ]
 ];
