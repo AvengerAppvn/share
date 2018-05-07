@@ -177,7 +177,13 @@ class m150725_192740_seed_data extends Migration
             'key' => 'config.admin-bank',
             'value' => 'Tên ngân hàng và cú pháp nạp tiền',
             'comment' => 'Tên ngân hàng và cú pháp nạp tiền'
-        ]);        
+        ]);
+
+        $this->insert('{{%key_storage_item}}', [
+            'key' => 'config.price-basic',
+            'value' => 5000,
+            'comment' => 'Giá 1 lần NQC share'
+        ]);
     }
 
     public function safeDown()
