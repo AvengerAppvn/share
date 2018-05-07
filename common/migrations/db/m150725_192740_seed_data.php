@@ -172,40 +172,11 @@ class m150725_192740_seed_data extends Migration
             'value' => 'disabled',
             'comment' => 'Set it to "true" to turn on maintenance mode'
         ]);
+
         $this->insert('{{%key_storage_item}}', [
-            'key' => 'coin.code',
-            'value' => 'TKC',
-            'comment' => 'Shortcut for Coin'
-        ]);
-        $this->insert('{{%key_storage_item}}', [
-            'key' => 'coin.apiKey',
-            'value' => 'trKooONQeBDo2bn5',
-            'comment' => 'API Key of Coinbase'
-        ]);        
-        $this->insert('{{%key_storage_item}}', [
-            'key' => 'coin.apiSecret',
-            'value' => 'v4uEkb9GOEdrBUnrt9VbkWCR9slSZcHv',
-            'comment' => 'API Secret of Coinbase'
-        ]);
-        $this->insert('{{%key_storage_item}}', [
-            'key' => 'coin.total',
-            'value' => '5000000',
-            'comment' => 'Total of Coinbase'
-        ]);        
-        $this->insert('{{%key_storage_item}}', [
-            'key' => 'coin.sold',
-            'value' => '0',
-            'comment' => 'Sold of Coin'
-        ]);        
-        $this->insert('{{%key_storage_item}}', [
-            'key' => 'defaultRefferer',
-            'value' => 'manager',
-            'comment' => 'Default Refferer'
-        ]);        
-        $this->insert('{{%key_storage_item}}', [
-            'key' => 'web.total_user',
-            'value' => '3',
-            'comment' => 'Total user'
+            'key' => 'config.admin-bank',
+            'value' => 'Tên ngân hàng và cú pháp nạp tiền',
+            'comment' => 'Tên ngân hàng và cú pháp nạp tiền'
         ]);        
     }
 
