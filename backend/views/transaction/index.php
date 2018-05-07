@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'user_id',
                 'value' => function ($model) {
-                    return $model->user_id ? $model->user->username : "";
+                    return $model->user_id && $model->user ? $model->user->username : "";
                 },
             ],
             [
