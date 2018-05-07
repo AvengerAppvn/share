@@ -313,7 +313,7 @@ class UserController extends ActiveController
             $coin = 0;
             $wallet = Wallet::find()->where(['user_id' => $user->id])->one();
             if ($wallet) {
-                $coin = intval($wallet->amount);
+                $coin = $wallet->amount;
             }
             return array(
                 'fullname' => $user->userProfile->fullname,
