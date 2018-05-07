@@ -68,48 +68,16 @@ $config = [
             'class' => backend\modules\i18n\Module::class,
             'defaultRoute' => 'i18n-message/index'
         ],
-    ],
-    'as globalAccess' => [
-        'class' => common\behaviors\GlobalAccessBehavior::class,
-        'rules' => [
-            [
-                'controllers' => ['sign-in'],
-                'allow' => true,
-                'roles' => ['?'],
-                'actions' => ['login']
-            ],
-            [
-                'controllers' => ['sign-in'],
-                'allow' => true,
-                'roles' => ['@'],
-                'actions' => ['logout']
-            ],
-            [
-                'controllers' => ['site'],
-                'allow' => true,
-                'roles' => ['?', '@'],
-                'actions' => ['error']
-            ],
-            [
-                'controllers' => ['debug/default'],
-                'allow' => true,
-                'roles' => ['?'],
-            ],
-            [
-                'controllers' => ['user'],
-                'allow' => true,
-                'roles' => ['administrator'],
-            ],
-            [
-                'controllers' => ['user'],
-                'allow' => false,
-            ],
-            [
-                'allow' => true,
-                'roles' => ['manager'],
-            ]
+        'gridview' =>  [
+            'class' => '\kartik\grid\Module'
+            // enter optional module parameters below - only if you need to
+            // use your own export download action or custom translation
+            // message source
+            // 'downloadAction' => 'gridview/export/download',
+            // 'i18n' => []
         ]
-    ]
+    ],
+
 ];
 
 if (YII_ENV_DEV) {
