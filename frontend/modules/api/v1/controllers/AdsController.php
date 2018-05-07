@@ -397,7 +397,7 @@ class AdsController extends ActiveController
     {
         $response = \Yii::$app->getResponse();
         $response->setStatusCode(200);
-        return 5000;
+        return \Yii::$app->keyStorage->get('config.price-basic', 5000);
     }
 
     public function actionLocation()
