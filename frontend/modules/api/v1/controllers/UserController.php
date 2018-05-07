@@ -336,6 +336,7 @@ class UserController extends ActiveController
                 'is_customer' => $user->is_customer ? true : false,
                 'is_advertiser' => $user->is_advertiser ? true : false,
                 'status_confirmed' => $user->status_confirmed,
+                'status_confirmed_des' => $user->status_confirmed? ($user->status_confirmed == 1? 'Đã xác minh':'Đang chờ'): 'Tài khoản chưa xác minh'
             );
         } else {
             // Validation error
@@ -401,7 +402,8 @@ class UserController extends ActiveController
                     'user_id' => $user->id,
                     'message' => 'Successful',
                     'is_customer' => $user->is_customer,
-                    'is_advertiser' => $user->is_advertiser
+                    'is_advertiser' => $user->is_advertiser,
+                    'is_confirmed' => $user->is_confirmed,
                 ];
             } else {
                 // Validation error

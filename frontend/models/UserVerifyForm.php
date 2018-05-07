@@ -94,6 +94,9 @@ class UserVerifyForm extends Model
             }
 
             if ($updateProfile == true && $profile->save(false)) {
+                $this->_user->is_comfirmed = 2; // Pending
+                $this->_user->status_confirmed = 2; // Pending
+                $this->_user->save();
                 return true;
             } else {
                 Yii::trace("Model validation error => " . print_r($this->_user->getErrors(), true));

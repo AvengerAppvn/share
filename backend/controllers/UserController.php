@@ -81,17 +81,15 @@ class UserController extends Controller
     public function actionConfirmed($id, $cmt)
     {
         $model = UserProfile::find()->where(['user_id' => $id])->one();
-        $confirm = User::find()->where(['id' => $id])->one();
+        $user = $this->findModel($id);
         if ($cmt !== null) {
             $model->cmt = $cmt;
-            $model->save();
+            if ($model->save()) {
+                $user->status_confirmed = 1;
+                $user->is_comfirmed = 1;
+                $user->save();
+            }
         }
-
-        if ($model->save()) {
-            $confirm->status_confirmed = 1;
-            $confirm->save();
-        }
-
     }
 
     /**
