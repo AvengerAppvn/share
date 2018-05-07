@@ -55,9 +55,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Trạng thái',
                 'format' => 'html',
                 'value' => function ($model) {
-                    return $model->is_confirmed == 1 ?
-                        Html::tag("i", ' Đã xác minh', ['class' => 'fa fa-check text-success']):
-                        Html::a("Xác minh", ['confirm', 'id' => $model->id], ['target' => '_blank', 'class' => 'btn btn-success']);
+                    if(1 == $model->is_confirmed) {
+                      return  Html::tag("i", ' Đã xác minh', ['class' => 'fa fa-check text-success']);
+                    };
+                    if(2 == $model->is_confirmed) {
+                        return Html::a("Xác minh", ['confirm', 'id' => $model->id], ['target' => '_blank', 'class' => 'btn btn-success']);
+                    }
+                    return  Html::tag("i", ' Chưa xác minh', ['class' => 'fa fa-check text-danger']);
                 },
             ],
             [
