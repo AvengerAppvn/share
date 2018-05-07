@@ -169,7 +169,7 @@ class WalletController extends ActiveController
 
     public function actionInfo()
     {
-        return "Tài khoản Shareme Techcombank 123123123";
+        return \Yii::$app->keyStorage->get('config.admin-bank', 'Tài khoản ngân hàng và cú pháp nạp tiền');
     }
 
     public function actionOptions($id = null)
