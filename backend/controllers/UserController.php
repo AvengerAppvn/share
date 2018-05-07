@@ -86,7 +86,7 @@ class UserController extends Controller
             $model->cmt = $cmt;
             if ($model->save()) {
                 $user->status_confirmed = 1;
-                $user->is_comfirmed = 1;
+                $user->is_confirmed = 1;
                 $user->save();
             }
         }
