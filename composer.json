@@ -50,15 +50,15 @@
     "symfony/process": "^3.0",
     "2amigos/qrcode-library": "~1.1",
     "2amigos/2fa-library": "~1.0",
-    "2amigos/yii2-chartjs-widget": "~2.0",
+    "2amigos/yii2-chartjs-widget": "*",
     "himiklab/yii2-recaptcha-widget": "*",
-    "coinbase/coinbase": "~2.0",
     "russ666/yii2-countdown": "*",
     "borales/yii2-phone-input": "*",
     "nostop8/rest-api-doc": "^1.022",
     "firebase/php-jwt": "^4.0",
     "rocketfirm/yii2-onesignal": "^0.0.2",
-    "kartik-v/yii2-export": "*"
+    "kartik-v/yii2-export": "*",
+    "kartik-v/yii2-dialog": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "^2.0.0",
