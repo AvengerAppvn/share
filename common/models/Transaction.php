@@ -73,7 +73,7 @@ class Transaction extends \yii\db\ActiveRecord
             'amount' => Yii::t('common', 'Số tiền giao dịch'),
             'description' => Yii::t('common', 'Mô tả'),
             'type' => Yii::t('common', 'Loại giao dịch'),
-            'logtime' => Yii::t('app', 'Thời gian giao dịch'),
+            'logtime' => Yii::t('common', 'Thời gian giao dịch'),
             'status' => Yii::t('common', 'Trạng thái'),
             'created_at' => Yii::t('common', 'Ngày tạo'),
             'updated_at' => Yii::t('common', 'Ngày cập nhật'),
