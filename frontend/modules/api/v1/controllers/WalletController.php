@@ -3,19 +3,12 @@
 namespace frontend\modules\api\v1\controllers;
 
 use common\models\Transaction;
-use common\models\Wallet;
-use frontend\models\UserEditForm;
-use backend\models\LoginForm;
 use common\models\User;
-use frontend\modules\api\v1\resources\User as UserResource;
-use frontend\modules\user\models\SignupConfirmForm;
-use frontend\modules\user\models\SignupForm;
+use common\models\Wallet;
 use yii\filters\AccessControl;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;
-use yii\helpers\Url;
 use yii\rest\ActiveController;
-use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -118,9 +111,9 @@ class WalletController extends ActiveController
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(200);
             $coin = 0;
-            $wallet = Wallet::find()->where(['user_id'=>$user->id])->one();
-            if($wallet){
-                $coin = intval($wallet->amount);
+            $wallet = Wallet::find()->where(['user_id' => $user->id])->one();
+            if ($wallet) {
+                $coin = doubleval($wallet->amount);
             }
             return array(
                 'user_id' => $user->id,
@@ -131,6 +124,7 @@ class WalletController extends ActiveController
             throw new NotFoundHttpException("Object not found");
         }
     }
+
     // Khi người dùng chọn nạp tiền, hiển thị số tài khoản của admin và form thông báo cho người quản trị
     public function actionDeposit()
     {
@@ -143,35 +137,23 @@ class WalletController extends ActiveController
             $transaction->amount = 0;
             $transaction->type = Transaction::TYPE_PENDING;
 
-//            if ($this->image) {
-//                // requires php5
-//                define('UPLOAD_DIR', \Yii::getAlias('@storage') . '/web/source/shares/');
-//                $fileStorage = Instance::ensure('fileStorage', Storage::className());
-//
-//                foreach ($this->images as $image) {
-//                    $adsImage = new AdsAdvertiseImage();
-//                    $adsImage->ads_id = $primaryKey;
-//                    $img = $image;
-//                    $img = str_replace('data:image/png;base64,', '', $img);
-//                    $img = str_replace(' ', '+', $img);
-//                    $data = base64_decode($img);
-//
-//                    $filename = uniqid() . '.png';
-//                    $file = UPLOAD_DIR . $filename;
-//                    $success = file_put_contents($file, $data);
-//
-//                    $adsImage->image_base_url = $success ? $fileStorage->baseUrl : '';
-//                    $adsImage->image_path = $success ? 'shares/' . $filename : '';
-//                    $adsImage->save();
-//
-//                    if (!$model->thumbnail_base_url) {
-//                        $model->thumbnail_base_url = $fileStorage->baseUrl;
-//                        $model->thumbnail_path = 'shares/' . $filename;
-//                        $model->save(false);
-//                    }
-//                }
-//
-//            }
+            if ($this->image) {
+                // requires php5
+                define('UPLOAD_DIR', \Yii::getAlias('@storage') . '/web/source/capture/');
+                $fileStorage = Instance::ensure('fileStorage', Storage::className());
+
+                $img = $this->image;
+                $img = str_replace('data:image/png;base64,', '', $img);
+                $img = str_replace(' ', '+', $img);
+                $data = base64_decode($img);
+
+                $filename = uniqid() . '.png';
+                $file = UPLOAD_DIR . $filename;
+                $success = file_put_contents($file, $data);
+
+                $transaction->image_base_url = $success ? $fileStorage->baseUrl : '';
+                $transaction->image_path = $success ? 'shares/' . $filename : '';
+            }
 
             $transaction->description = 'Yêu cầu nạp nạp tiền';
             $transaction->status = 1;
