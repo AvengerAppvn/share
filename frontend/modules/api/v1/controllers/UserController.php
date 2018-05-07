@@ -389,13 +389,17 @@ class UserController extends ActiveController
         $user = User::findIdentity(\Yii::$app->user->getId());
 
         if ($user) {
-
+            $response = \Yii::$app->getResponse();
+            if($user->status_confirmed == 1){
+                $response->setStatusCode(422);
+                return 'Tài khoản đã xác minh';
+            }
             $model = new UserVerifyForm();
             $model->load(\Yii::$app->request->post(), '');
             $model->id = $user->id;
 
             if ($model->validate() && $model->save()) {
-                $response = \Yii::$app->getResponse();
+
                 $response->setStatusCode(200);
                 $user = $model->getUserByID();
                 return [
