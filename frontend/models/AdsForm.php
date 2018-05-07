@@ -82,11 +82,13 @@ class AdsForm extends Model
 
             if ($model->save(false)) {
                 $primaryKey = $model->getPrimaryKey();
-                foreach ($this->category as $cat){
-                    $catAds = new CategoryAds();
-                    $catAds->cat_id = $cat;
-                    $catAds->ads_id = $primaryKey;
-                    $catAds->save();
+                if($this->category) {
+                    foreach ($this->category as $cat) {
+                        $catAds = new CategoryAds();
+                        $catAds->cat_id = $cat;
+                        $catAds->ads_id = $primaryKey;
+                        $catAds->save();
+                    }
                 }
                 if ($this->images) {
                     // requires php5
