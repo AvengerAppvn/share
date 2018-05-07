@@ -162,7 +162,11 @@ class BankController extends ActiveController
             );
         } else {
             // Validation error
-            throw new HttpException(422, json_encode($model->errors));
+            $message = '';
+            foreach ($model->errors as $error) {
+                $message .= $error[0];
+            }
+            throw new HttpException(422, $message);
         }
 
 

@@ -175,7 +175,11 @@ class AdsController extends ActiveController
             );
         } else {
             // Validation error
-            throw new HttpException(422, json_encode($model->errors));
+            $message = '';
+            foreach ($model->errors as $error) {
+                $message .= $error[0];
+            }
+            throw new HttpException(422, $message);
         }
     }
 
@@ -225,7 +229,11 @@ class AdsController extends ActiveController
                 return $model;
             } else {
                 // Validation error
-                throw new HttpException(422, json_encode($model->errors));
+                $message = '';
+                foreach ($model->errors as $error) {
+                    $message .= $error[0];
+                }
+                throw new HttpException(422, $message);
             }
         }
     }
