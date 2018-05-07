@@ -100,12 +100,6 @@ class TransactionController extends ActiveController
 
     public function actionIndex()
     {
-        //TODO remove
-        $exist = Transaction::find()->one();
-        if (!$exist) {
-            $this->generate();
-        }
-
         $page_size = \Yii::$app->request->get('page_size');
         $page_index = \Yii::$app->request->get('page_index');
         if (!$page_size) {
@@ -126,12 +120,6 @@ class TransactionController extends ActiveController
 
     public function actionAdd()
     {
-        //TODO remove
-        $exist = Transaction::find()->one();
-        if (!$exist) {
-            $this->generate();
-        }
-
         $page_size = \Yii::$app->request->get('page_size');
         $page_index = \Yii::$app->request->get('page_index');
         if (!$page_size) {
