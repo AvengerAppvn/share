@@ -51,7 +51,7 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError('password', Yii::t('frontend', 'Incorrect username or password.'));
+                $this->addError('password', 'Tài khoản hoặc mật khẩu chưa chính xác');
             }
         }
     }
