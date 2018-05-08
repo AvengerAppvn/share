@@ -169,7 +169,10 @@ class WalletController extends ActiveController
 
     public function actionInfo()
     {
-        return \Yii::$app->keyStorage->get('config.admin-bank', 'Tài khoản ngân hàng và cú pháp nạp tiền');
+        $user = User::findIdentity(\Yii::$app->user->getId());
+        return \Yii::t('frontend', \Yii::$app->keyStorage->get('config.admin-bank', 'Tài khoản ngân hàng và cú pháp nạp tiền vào tài khoản {user}'), [
+                        'user'=> $user->user_id
+                    ]);
     }
 
     public function actionOptions($id = null)
