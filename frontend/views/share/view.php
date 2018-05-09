@@ -11,7 +11,7 @@ $this->title = $model->title;
             <?php echo \yii\helpers\Html::img(
                 Yii::$app->glide->createSignedUrl([
                     'glide/index',
-                    'path' => $model->thumb,
+                    'path' => $model->thumbnail_path,
                     'w' => 200
                 ], true),
                 ['class' => 'article-thumb img-rounded pull-left']
@@ -27,7 +27,7 @@ $this->title = $model->title;
                         <?php echo \yii\helpers\Html::img(
                             Yii::$app->glide->createSignedUrl([
                                 'glide/index',
-                                'path' => $image->image,
+                                'path' => $image->image_path,
                                 'w' => 200
                             ], true),
                             ['class' => 'article-thumb img-rounded pull-left']
