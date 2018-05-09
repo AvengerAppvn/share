@@ -6,7 +6,7 @@ $this->title = $model->title;
 <div class="content">
     <article class="article-item">
         <h1><?php echo $model->title ?></h1>
-
+        <div>
         <?php if ($model->thumbnail_path): ?>
             <?php echo \yii\helpers\Html::img(
                 Yii::$app->glide->createSignedUrl([
@@ -14,12 +14,14 @@ $this->title = $model->title;
                     'path' => $model->thumbnail_path,
                     'w' => 200
                 ], true),
-                ['class' => 'article-thumb img-rounded pull-left']
+                ['class' => 'article-thumb img-rounded']
             ) ?>
         <?php endif; ?>
-
+        </div>
+        <h3>
         <?php echo $model->message ?>
-
+        </h3>
+        <div>
         <?php if (!empty($model->advertiseImages)): ?>
             <ul id="ads-images">
                 <?php foreach ($model->advertiseImages as $image): ?>
@@ -30,12 +32,13 @@ $this->title = $model->title;
                                 'path' => $image->image_path,
                                 'w' => 200
                             ], true),
-                            ['class' => 'article-thumb img-rounded pull-left']
+                            ['class' => 'article-thumb img-rounded']
                         ) ?>
                     </li>
                 <?php endforeach; ?>
             </ul>
-        <?php endif; ?>
 
+        <?php endif; ?>
+        </div>
     </article>
 </div>
