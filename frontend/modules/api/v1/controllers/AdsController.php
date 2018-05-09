@@ -287,6 +287,7 @@ class AdsController extends ActiveController
             'id' => $advertise->id,
             'title' => $advertise->title,
             'description' => $advertise->description,
+            'message' => $advertise->message,
             'content' => $advertise->content,
             'thumbnail' => $advertise->thumb,
             'thumbnail_width' => $width,
