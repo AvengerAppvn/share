@@ -235,22 +235,24 @@ class HomeController extends ActiveController
         $advertisesResult = [];
 
         foreach ($advertises as $advertise) {
-            $user = User::findOne($advertise->advertise->created_by);
-            $customer_avatar = null;
-            $customer_name = null;
-            if($user){
-                $customer_avatar = $user->userProfile->avatar;
-                $customer_name = $user->userProfile->fullname;
+            if($advertise->advertise) {
+                $user = User::findOne($advertise->advertise->created_by);
+                $customer_avatar = null;
+                $customer_name = null;
+                if ($user) {
+                    $customer_avatar = $user->userProfile->avatar;
+                    $customer_name = $user->userProfile->fullname;
+                }
+                $advertisesResult[] = array(
+                    'id' => $advertise->advertise->id,
+                    'title' => $advertise->advertise->title,
+                    'description' => $advertise->advertise->description,
+                    'thumbnail' => $advertise->advertise->thumb,
+                    'created_at' => date('Y-m-d H:i:s', $advertise->advertise->created_at),
+                    'customer_avatar' => $customer_avatar ?: '',
+                    'customer_name' => $customer_name ?: '',
+                );
             }
-            $advertisesResult[] = array(
-                'id' => $advertise->advertise->id,
-                'title' => $advertise->advertise->title,
-                'description' => $advertise->advertise->description,
-                'thumbnail' => $advertise->advertise->thumb,
-                'created_at' => date('Y-m-d H:i:s',$advertise->advertise->created_at),
-                'customer_avatar' => $customer_avatar?:'',
-                'customer_name' => $customer_name?:'',
-            );
         }
         return $advertisesResult;
     }
