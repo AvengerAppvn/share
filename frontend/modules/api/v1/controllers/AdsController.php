@@ -10,6 +10,7 @@ use common\models\CriteriaProvince;
 use common\models\User;
 use common\models\Wallet;
 use frontend\models\AdsForm;
+use Intervention\Image\ImageManagerStatic as Image;
 use Yii;
 use yii\base\ErrorException;
 use yii\filters\AccessControl;
@@ -18,7 +19,8 @@ use yii\filters\auth\HttpBearerAuth;
 use yii\helpers\Url;
 use yii\rest\ActiveController;
 use yii\web\HttpException;
-
+use trntv\filekit\Storage;
+use yii\di\Instance;
 /**
  * @author Eugene Terentev <eugene@terentev.net>
  */
@@ -283,12 +285,31 @@ class AdsController extends ActiveController
         } catch (ErrorException $e) {
             $width = $height = 0;
         }
+
+        if($advertise->thumb){
+            $thumbnail_generate = '';
+        }else{
+            $fileStorage = Instance::ensure('fileStorage', Storage::className());
+            if (is_file(\Yii::getAlias('@storage') . '/web/source/shares/bg_color_'.$advertise->id.'.png')) {
+                $thumbnail_generate = $fileStorage->baseUrl.'/shares/bg_color_'.$advertise->id.'.png';
+            }else{
+                // configure with favored image driver (gd by default)
+                Image::configure(array('driver' => 'imagick'));
+                $image = Image::make(\Yii::getAlias('@storage') . '/web/source/img/bg_color.png')->text($advertise->description,100,200);
+                //
+                $image->save(\Yii::getAlias('@storage') . '/web/source/shares/bg_color_'.$advertise->id.'.png');
+
+                $thumbnail_generate = $fileStorage->baseUrl.'/shares/bg_color_'.$advertise->id.'.png';
+            }
+
+        }
         return array(
             'id' => $advertise->id,
             'title' => $advertise->title,
             'description' => $advertise->description,
             'content' => $advertise->content,
             'thumbnail' => $advertise->thumb,
+            'thumbnail_generate' => $thumbnail_generate,
             'thumbnail_width' => $width,
             'thumbnail_height' => $height,
             'images' => $images,
