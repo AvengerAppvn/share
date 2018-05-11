@@ -295,12 +295,12 @@ class AdsController extends ActiveController
             }else{
                 // configure with favored image driver (gd by default)
                 Image::configure(array('driver' => 'imagick'));
-                $image = Image::make('img/bg_color.png')->text($advertise->description,100,200,function($font) {
+                $image = Image::make('img/bg_color.png')->text($advertise->description,320,320,function($font) {
                     $font->file('font/arial.ttf');
                     $font->size(24);
                     $font->color('#fdf6e3');
                     $font->align('center');
-                    $font->valign('top');
+                    $font->valign('bottom');
                     //$font->angle(45);
                 });
                 //
