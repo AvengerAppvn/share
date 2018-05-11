@@ -4,6 +4,7 @@ namespace frontend\modules\api\v1\controllers;
 
 use common\models\AdsCategory;
 use common\models\Advertise;
+use common\models\CategoryAds;
 use common\models\User;
 use frontend\modules\api\v1\resources\User as UserResource;
 use yii\filters\AccessControl;
@@ -229,8 +230,8 @@ class HomeController extends ActiveController
         }
 
         $response->setStatusCode(200);
-
-        $advertises = Advertise::find()->where(['cat_id'=>[0,$cat_id]])->limit($page_size)->offset($index)->orderBy('id desc')->active()->all();
+        $advertises = CategoryAds::find()->where(['cat_id'=>[$cat_id]])->limit($page_size)->offset($index)->orderBy('id desc')->all();
+        //$advertises = Advertise::find()->where(['cat_id'=>[0,$cat_id]])->limit($page_size)->offset($index)->orderBy('id desc')->active()->all();
         $advertisesResult = [];
 
         foreach ($advertises as $advertise) {
@@ -242,11 +243,11 @@ class HomeController extends ActiveController
                 $customer_name = $user->userProfile->fullname;
             }
             $advertisesResult[] = array(
-                'id' => $advertise->id,
-                'title' => $advertise->title,
-                'description' => $advertise->description,
-                'thumbnail' => $advertise->thumb,
-                'created_at' => date('Y-m-d H:i:s',$advertise->created_at),
+                'id' => $advertise->advertise->id,
+                'title' => $advertise->advertise->title,
+                'description' => $advertise->advertise->description,
+                'thumbnail' => $advertise->advertise->thumb,
+                'created_at' => date('Y-m-d H:i:s',$advertise->advertise->created_at),
                 'customer_avatar' => $customer_avatar?:'',
                 'customer_name' => $customer_name?:'',
             );
