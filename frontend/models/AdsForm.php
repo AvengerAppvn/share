@@ -3,6 +3,7 @@
 namespace frontend\models;
 
 use common\models\AdsAdvertiseImage;
+use common\models\AdsCategory;
 use common\models\Advertise;
 use common\models\CategoryAds;
 use common\models\Wallet;
@@ -82,14 +83,25 @@ class AdsForm extends Model
 
             if ($model->save(false)) {
                 $primaryKey = $model->getPrimaryKey();
-                if($this->category) {
+                if($model->cat_id == 0){
+                    $this->category = AdsCategory::find()->all();
                     foreach ($this->category as $cat) {
                         $catAds = new CategoryAds();
-                        $catAds->cat_id = $cat;
+                        $catAds->cat_id = $cat->id;
                         $catAds->ads_id = $primaryKey;
                         $catAds->save();
                     }
+                }else{
+                    if($this->category) {
+                        foreach ($this->category as $cat) {
+                            $catAds = new CategoryAds();
+                            $catAds->cat_id = $cat;
+                            $catAds->ads_id = $primaryKey;
+                            $catAds->save();
+                        }
+                    }
                 }
+
                 if ($this->images) {
                     // requires php5
                     define('UPLOAD_DIR', \Yii::getAlias('@storage') . '/web/source/shares/');
