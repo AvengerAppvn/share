@@ -44,6 +44,10 @@ class CategoryAds extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getAdvertise()
+    {
+        return $this->hasOne(Advertise::className(), ['id' => 'ads_id']);
+    }
     /**
      * @inheritdoc
      * @return CategoryAdsQuery the active query used by this AR class.
