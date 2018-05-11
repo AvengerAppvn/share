@@ -295,7 +295,7 @@ class AdsController extends ActiveController
             }else{
                 // configure with favored image driver (gd by default)
                 Image::configure(array('driver' => 'imagick'));
-                $image = Image::make(\Yii::getAlias('@storage') . '/web/img/bg_color.png')->text($advertise->description,100,200);
+                $image = Image::make('img/bg_color.png')->text($advertise->description,100,200);
                 //
                 $image->save(\Yii::getAlias('@storage') . '/web/source/shares/bg_color_'.$advertise->id.'.png');
 
