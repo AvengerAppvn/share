@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'bank_id',
                 'value' => function ($model) {
-                    return $model->bank_id ? $model->bank->name : '';
+                    return $model->bank_id && $model->bank? $model->bank->name : '';
                 },
                 'filter' => ArrayHelper::map(Bank::find()->all(), 'id', 'name'),
             ],
