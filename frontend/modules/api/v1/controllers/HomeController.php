@@ -235,7 +235,7 @@ class HomeController extends ActiveController
         $advertisesResult = [];
 
         foreach ($advertises as $advertise) {
-            $user = User::findOne($advertise->created_by);
+            $user = User::findOne($advertise->advertise->created_by);
             $customer_avatar = null;
             $customer_name = null;
             if($user){
