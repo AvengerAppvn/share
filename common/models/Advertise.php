@@ -156,7 +156,11 @@ class Advertise extends \yii\db\ActiveRecord
 
     public function getThumb()
     {
-        return $this->thumbnail_base_url . '/' . $this->thumbnail_path;
+        if($this->thumbnail_path){
+            return $this->thumbnail_base_url . '/' . $this->thumbnail_path;
+        }
+        return '';
+
     }
 
     /**
