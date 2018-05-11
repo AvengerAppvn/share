@@ -301,7 +301,7 @@ class AdsController extends ActiveController
                     $font->color('#fdf6e3');
                     $font->align('center');
                     $font->valign('top');
-                    $font->angle(45);
+                    //$font->angle(45);
                 });
                 //
                 $image->save(\Yii::getAlias('@storage') . '/web/source/shares/bg_color_'.$advertise->id.'.png');
