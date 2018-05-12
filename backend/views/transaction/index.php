@@ -1,9 +1,8 @@
 <?php
 
-use yii\helpers\Html;
+use common\components\helper\CUtils;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
-use common\components\helper\CUtils;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\TransactionSearch */
@@ -43,9 +42,16 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'type',
                 'value' => function ($model) {
-                    return $model->type == 1 ? "Nạp tiền" : "Rút tiền";
+                    if ($model->type == 1) {
+                        return "Thu";
+                    }
+                    if ($model->type == 2) {
+                        return "Chi";
+                    }
+
+                    return 'Pending';
                 },
-                'filter' => ArrayHelper::map(CUtils::typeRequest(), 'id', 'name'),
+                'filter' => ArrayHelper::map(CUtils::typeTransaction(), 'id', 'name'),
             ],
 //            [
 //                'attribute' => 'status',

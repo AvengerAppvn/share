@@ -37,6 +37,15 @@ class CUtils
         return $share;
     }
 
+    public static function typeTransaction()
+    {
+        $type = array();
+        $type[] = ['id' => 1, 'name' => 'Thu'];
+        $type[] = ['id' => 2, 'name' => 'Chi'];
+        $type[] = ['id' => 3, 'name' => 'Pending'];
+        return $type;
+    }
+
     public static function typeRequest()
     {
         $type = array();
