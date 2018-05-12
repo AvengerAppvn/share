@@ -1,6 +1,7 @@
 <?php
 
 namespace frontend\modules\api\v1\controllers;
+use common\models\Notification;
 use common\models\Transaction;
 use common\models\AdsCategory;
 use common\models\AdsShare;
@@ -237,6 +238,13 @@ class AdsController extends ActiveController
                 $transaction->user_id = $user->id;
                 $transaction->type = Transaction::TYPE_DEPOSIT; // Thu
                 $transaction->save();
+
+                $notification = new Notification();
+                $notification->title = "Bạn nhận được ".$basic."k từ share ".$advertise->title;
+                $notification->description = "Chia sẻ thành công và nhận ".$basic."k từ share ".$advertise->title;
+                $notification->user_id = $user->id;
+                $notification->ads_id = $advertise->id;
+                $notification->save();
 
                 $response->setStatusCode(200);
                 $response->getHeaders()->set('Location', Url::toRoute([$model->id], true));

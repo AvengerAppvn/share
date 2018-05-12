@@ -100,10 +100,10 @@ class NotificationController extends ActiveController
 
     public function actionIndex()
     {
-        $exist = Notification::find()->one();
-        if(!$exist){
-            $this->generate();
-        }
+        //$exist = Notification::find()->one();
+        //if(!$exist){
+        //    $this->generate();
+        //}
         $page_size = \Yii::$app->request->get('page_size');
         $page_index = \Yii::$app->request->get('page_index');
         if (!$page_size) {
