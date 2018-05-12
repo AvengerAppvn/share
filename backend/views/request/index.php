@@ -9,7 +9,7 @@ use common\components\helper\CUtils;
 /* @var $searchModel common\models\search\RequestSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Danh sách giao dịch';
+$this->title = 'Yêu cầu giao dịch';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="request-index">

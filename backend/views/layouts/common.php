@@ -153,6 +153,7 @@ $bundle = BackendAsset::register($this);
                         'items' => [
                             ['label' => Yii::t('backend', 'Yêu cầu giao dịch'), 'url' => ['/request/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                             ['label' => Yii::t('backend', 'Giao dịch'), 'url' => ['/transaction/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Lịch sử'), 'url' => ['/history/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                         ]
                     ],
                     [

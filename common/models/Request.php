@@ -19,6 +19,8 @@ use yii\behaviors\BlameableBehavior;
  * @property integer $updated_at
  * @property integer $created_by
  * @property integer $updated_by
+ * @property string $image_base_url
+ * @property string $image_path
  */
 class Request extends \yii\db\ActiveRecord
 {
@@ -48,6 +50,7 @@ class Request extends \yii\db\ActiveRecord
             [['user_id', 'type', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['amount'], 'number'],
             [['description'], 'string', 'max' => 255],
+            [['image_base_url', 'image_path'], 'string', 'max' => 1024],
         ];
     }
 
