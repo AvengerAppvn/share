@@ -2,7 +2,7 @@
 
 namespace frontend\modules\api\v1\controllers;
 
-use common\models\Request;
+use common\models\History;
 use common\models\User;
 use frontend\modules\api\v1\resources\User as UserResource;
 use yii\filters\AccessControl;
@@ -19,7 +19,7 @@ class HistoryController extends ActiveController
     /**
      * @var string
      */
-    public $modelClass = 'frontend\modules\api\v1\resources\Request';
+    public $modelClass = 'frontend\modules\api\v1\resources\History';
 
     public function __construct($id, $module, $config = [])
     {
@@ -65,8 +65,8 @@ class HistoryController extends ActiveController
             'class' => \yii\filters\Cors::className(),
             'cors' => [
                 'Origin' => ['*'],
-                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-                'Access-Control-Request-Headers' => ['*'],
+                'Access-Control-History-Method' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+                'Access-Control-History-Headers' => ['*'],
             ],
         ];
 
@@ -100,10 +100,10 @@ class HistoryController extends ActiveController
     public function actionIndex()
     {
         //TODO remove
-        $exist = Request::find()->one();
-        if (!$exist) {
-            $this->generate();
-        }
+        //$exist = History::find()->one();
+        //if (!$exist) {
+        //    $this->generate();
+        //}
 
         $page_size = \Yii::$app->request->get('page_size');
         $page_index = \Yii::$app->request->get('page_index');
@@ -126,7 +126,7 @@ class HistoryController extends ActiveController
     public function actionDeposit()
     {
         //TODO remove
-        $exist = Request::find()->one();
+        $exist = History::find()->one();
         if (!$exist) {
             $this->generate();
         }
@@ -173,7 +173,7 @@ class HistoryController extends ActiveController
             return 'Thiếu tham số id';
         }
 
-        $request = Request::findOne($id);
+        $request = History::findOne($id);
         if (!$request) {
             $response->setStatusCode(404);
             return 'Không có dữ liệu với id=' . $id;
@@ -201,7 +201,7 @@ class HistoryController extends ActiveController
                     $str = 'Nạp';
                 }
 
-                $request = new Request();
+                $request = new History();
                 $request->description = "Mô tả lịch sử ". $str;
                 $request->user_id = $user->id;
                 $request->amount = 10000;
@@ -242,7 +242,7 @@ class HistoryController extends ActiveController
         $response = \Yii::$app->getResponse();
         $response->setStatusCode(200);
 
-        $requests = Request::find()->where(
+        $requests = History::find()->where(
             [
                 'user_id' => $user->id,
                 'type' => $type

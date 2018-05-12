@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use common\models\Request;
 use common\models\Transaction;
 use trntv\filekit\Storage;
 use Yii;
@@ -37,11 +38,12 @@ class DepositForm extends Model
     public function save()
     {
         if ($this->validate()) {
-            $transaction = new Transaction();
-            $transaction->user_id = $this->user_id;
-            $transaction->amount = $this->amount;
-            $transaction->type = Transaction::TYPE_PENDING;
-
+            $request = new Request();
+            $request->user_id = $this->user_id;
+            $request->amount = $this->amount;
+            $request->type = 2; // Nạp tiền
+            $request->status = 0; // Pending
+            $request->description = $this->description;
             if ($this->image) {
                 // requires php5
                 define('UPLOAD_DIR', \Yii::getAlias('@storage') . '/web/source/capture/');
@@ -56,13 +58,10 @@ class DepositForm extends Model
                 $file = UPLOAD_DIR . $filename;
                 $success = file_put_contents($file, $data);
 
-                $transaction->image_base_url = $success ? $fileStorage->baseUrl : '';
-                $transaction->image_path = $success ? 'capture/' . $filename : '';
+                $request->image_base_url = $success ? $fileStorage->baseUrl : '';
+                $request->image_path = $success ? 'capture/' . $filename : '';
             }
-
-            $transaction->description = $this->description;
-            $transaction->status = 1;
-            $transaction->save();
+            $request->save();
             return true;
         } else {
             $this->addError('generic', Yii::t('app', 'The system could not update the information.'));

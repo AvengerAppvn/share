@@ -2,6 +2,7 @@
 
 namespace frontend\modules\api\v1\controllers;
 
+use common\models\Request;
 use common\models\Transaction;
 use common\models\User;
 use frontend\modules\api\v1\resources\User as UserResource;
@@ -298,26 +299,49 @@ class TransactionController extends ActiveController
 
         $response = \Yii::$app->getResponse();
         $response->setStatusCode(200);
+        if(3 == $type){
+            $requests = Request::find()->where(
+                [
+                    'user_id' => $user->id,
+                    'type' => 2, // nạp tiền
+                    'status' => 0 // pending
+                ])
+                ->limit($page_size)
+                ->offset($index)
+                ->all();
+            $transactionsResult = [];
 
-        $transactions = Transaction::find()->where(
-            [
-                'user_id' => $user->id,
-                'type' => $type
-            ])
-            ->limit($page_size)
-            ->offset($index)
-            ->all();
-        $transactionsResult = [];
+            foreach ($requests as $request) {
 
-        foreach ($transactions as $transaction) {
+                $transactionsResult[] = array(
+                    'id' => $request->id,
+                    'description' => $request->description,
+                    'amount' => $request->amount,
+                    'created_at' => date('Y-m-d H:i:s', $request->created_at),
 
-            $transactionsResult[] = array(
-                'id' => $transaction->id,
-                'description' => $transaction->description,
-                'amount' => $transaction->amount,
-                'created_at' => date('Y-m-d H:i:s', $transaction->created_at),
+                );
+            }
+        }else{
+            $transactions = Transaction::find()->where(
+                [
+                    'user_id' => $user->id,
+                    'type' => $type
+                ])
+                ->limit($page_size)
+                ->offset($index)
+                ->all();
+            $transactionsResult = [];
 
-            );
+            foreach ($transactions as $transaction) {
+
+                $transactionsResult[] = array(
+                    'id' => $transaction->id,
+                    'description' => $transaction->description,
+                    'amount' => $transaction->amount,
+                    'created_at' => date('Y-m-d H:i:s', $transaction->created_at),
+
+                );
+            }
         }
         return $transactionsResult;
     }
