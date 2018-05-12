@@ -64,4 +64,68 @@ class UserSearch extends User
 
         return $dataProvider;
     }
+    public function searchRequest($params){
+        return $this->searchUser($params,2);
+    }
+    public function searchVerified($params){
+        return $this->searchUser($params,1);
+    }
+
+    public function searchUser($params,$status)
+    {
+        $query = User::find()->where(['status_confirmed'=>$status]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'status' => $this->status,
+            'phone' => $this->phone,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'logged_at' => $this->logged_at
+        ]);
+
+        $query->andFilterWhere(['like', 'username', $this->username])
+            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
+            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
+            ->andFilterWhere(['like', 'email', $this->email]);
+
+        return $dataProvider;
+    }
+
+    public function searchNew($params)
+    {
+        $query = User::find()->where(['status_confirmed'=>null]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'status' => $this->status,
+            'phone' => $this->phone,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'logged_at' => $this->logged_at
+        ]);
+
+        $query->andFilterWhere(['like', 'username', $this->username])
+            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
+            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
+            ->andFilterWhere(['like', 'email', $this->email]);
+
+        return $dataProvider;
+    }
 }

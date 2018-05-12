@@ -49,7 +49,48 @@ class UserController extends Controller
             'user' => $user,
         ]);
     }
+    /**
+     * Lists all User models.
+     * @return mixed
+     */
+    public function actionRequest()
+    {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->searchRequest(Yii::$app->request->queryParams);
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
+    /**
+     * Lists all User models.
+     * @return mixed
+     */
+    public function actionVerified()
+    {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->searchVerified(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Lists all User models.
+     * @return mixed
+     */
+    public function actionNew()
+    {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->searchNew(Yii::$app->request->queryParams);
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
     /**
      * Displays a single User model.
      * @param integer $id

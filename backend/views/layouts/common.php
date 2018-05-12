@@ -167,9 +167,15 @@ $bundle = BackendAsset::register($this);
                     ],
                     [
                         'label' => Yii::t('backend', 'Quản lý Người dùng'),
+                        'url' => '#',
                         'icon' => '<i class="fa fa-users"></i>',
-                        'url' => ['/user/index'],
-                        'visible' => Yii::$app->user->can('administrator')
+                        'options' => ['class' => 'treeview'],
+                        'items' => [
+                            ['label' => Yii::t('backend', 'Tất cả'), 'url' => ['/user/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Yêu cầu xác minh'), 'url' => ['/user/request'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Đã xác minh'), 'url' => ['/user/verified'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Chưa xác minh'), 'url' => ['/user/new'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                        ]
                     ],
                     [
                         'label' => Yii::t('backend', 'Tiêu chí Share'),
