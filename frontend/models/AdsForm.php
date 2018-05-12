@@ -139,6 +139,12 @@ class AdsForm extends Model
                     }
 
                 }
+
+                $message = array('en'=>'Bạn có quảng cáo phù hợp với chuyên môn của bạn');
+                $options = array( "include_player_ids"=> ["a7d48d0a-fa11-4cf8-a412-fc3f56388ad2"],"data"=> array("ads_id"=> $model->id),);
+
+                \Yii::$app->onesignal->notifications()->create($message, $options);
+
                 return $model;
             } else {
                 Yii::trace("Model validation error => " . print_r($model->getErrors(), true));
