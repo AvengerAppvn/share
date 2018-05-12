@@ -72,7 +72,7 @@ class UserController extends Controller
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->searchVerified(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('verified', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
