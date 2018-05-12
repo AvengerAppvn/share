@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'amount',
                 'format' => 'html',
                 'value' => function ($model) {
-                    if ($model->type == 1) {
+                    if ($model->type == 2) {
                         return '<span style="color: #00CC00"> + ' . $model->amount . '</span>';
                     } else {
                         return '<span style="color: red"> - ' . $model->amount . '</span>';

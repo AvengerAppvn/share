@@ -2,42 +2,37 @@
 
 namespace backend\controllers;
 
-use common\models\History;
 use Yii;
-use common\models\Request;
-use common\models\search\RequestSearch;
-use common\models\Transaction;
+use common\models\History;
+use common\models\HistorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * RequestController implements the CRUD actions for Request model.
+ * HistoryController implements the CRUD actions for History model.
  */
-class RequestController extends Controller
+class HistoryController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
     public function behaviors()
     {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['post'],
                 ],
             ],
         ];
     }
 
     /**
-     * Lists all Request models.
+     * Lists all History models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new RequestSearch();
+        $searchModel = new HistorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,7 +42,7 @@ class RequestController extends Controller
     }
 
     /**
-     * Displays a single Request model.
+     * Displays a single History model.
      * @param integer $id
      * @return mixed
      */
@@ -59,13 +54,13 @@ class RequestController extends Controller
     }
 
     /**
-     * Creates a new Request model.
+     * Creates a new History model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Request();
+        $model = new History();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -77,7 +72,7 @@ class RequestController extends Controller
     }
 
     /**
-     * Updates an existing Request model.
+     * Updates an existing History model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -86,30 +81,17 @@ class RequestController extends Controller
     {
         $model = $this->findModel($id);
 
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            return $this->redirect(['view', 'id' => $model->id]);
-//        } else {
-//            return $this->render('update', [
-//                'model' => $model,
-//            ]);
-//        }
-        $model->status = 1;
-        $model->save();
-//        var_dump($model);die;
-        $history = new History();
-
-        $history->user_id = $model->user_id;
-        $history->amount = $model->amount;
-        $history->description = $model->description;
-        $history->type = 2; // Nap tien
-        $history->status = 1;
-        $history->save();
-        return $this->redirect(['index', 'model' => $model]);
-
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
-     * Deletes an existing Request model.
+     * Deletes an existing History model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -122,15 +104,15 @@ class RequestController extends Controller
     }
 
     /**
-     * Finds the Request model based on its primary key value.
+     * Finds the History model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Request the loaded model
+     * @return History the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Request::findOne($id)) !== null) {
+        if (($model = History::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
