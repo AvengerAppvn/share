@@ -17,7 +17,10 @@ use yii\helpers\Url;
         <div class="col-md-12 image">
             <?php echo Html::img($model->image_id_2, ['class' => 'img-comfirm', 'style' => 'padding: 10px; width:500px; height: 350px']); ?>
         </div>
-
+        <div class="col-md-12 image">
+            <h3> Danh sách bạn bè:</h3>
+            <?php echo Html::img($model->image_friend_list, ['class' => 'img-comfirm', 'style' => 'padding: 10px; width:500px; height: 350px']); ?>
+        </div>
         <div class="col-md-12">
             <?php
             if ($model->user->status_confirmed == 1) { ?>
