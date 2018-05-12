@@ -2,7 +2,7 @@
 
 namespace frontend\modules\api\v1\controllers;
 
-use common\models\Transaction;
+
 use common\models\User;
 use common\models\Wallet;
 use yii\filters\AccessControl;
@@ -131,36 +131,19 @@ class WalletController extends ActiveController
         $user = User::findIdentity(\Yii::$app->user->getId());
 
         if ($user) {
+            $model = new DepositForm();
             $response = \Yii::$app->getResponse();
-            $transaction = new Transaction();
-            $transaction->user_id = $user->id;
-            $transaction->amount = 0;
-            $transaction->type = Transaction::TYPE_PENDING;
 
-            if ($this->image) {
-                // requires php5
-                define('UPLOAD_DIR', \Yii::getAlias('@storage') . '/web/source/capture/');
-                $fileStorage = Instance::ensure('fileStorage', Storage::className());
-
-                $img = $this->image;
-                $img = str_replace('data:image/png;base64,', '', $img);
-                $img = str_replace(' ', '+', $img);
-                $data = base64_decode($img);
-
-                $filename = uniqid() . '.png';
-                $file = UPLOAD_DIR . $filename;
-                $success = file_put_contents($file, $data);
-
-                $transaction->image_base_url = $success ? $fileStorage->baseUrl : '';
-                $transaction->image_path = $success ? 'shares/' . $filename : '';
+            $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
+            $model->user_id = $user->id;
+            if($model->save()){
+                $response->setStatusCode(200);
+                return array(
+                    'user_id' => $user->id,
+                    'message' => 'Gửi yêu cầu thành công',
+                );
             }
 
-            $transaction->description = 'Yêu cầu nạp nạp tiền';
-            $transaction->status = 1;
-            $transaction->save();
-            $response->setStatusCode(200);
-
-            return $transaction;
         } else {
             // Validation error
             throw new NotFoundHttpException("Object not found");
