@@ -83,12 +83,12 @@ class ArticleController extends ActiveController
      */
     public function actionTest()
     {
-        $deviceType = 1;
-        $options = array();
-        \Yii::$app->onesignal->players()->add($deviceType, $options);
+        //$deviceType = 1;
+        //$options = array();
+        //\Yii::$app->onesignal->players()->add($deviceType, $options);
         $message = array('vn'=>'Test notification OneSignal');
         $options = array(  "included_segments"=> ["Active Users"],
-                            "data"=> array("foo"=> "bar"),);
+                            "data"=> array("ads_id"=> 1),);
         \Yii::$app->onesignal->notifications()->create($message, $options);
     }
 }
