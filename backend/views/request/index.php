@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'type',
                 'value' => function ($model) {
-                    return $model->type == 1 ? "Nạp tiền" : "Rút tiền";
+                    return $model->type == 2 ? "Nạp tiền" : "Rút tiền";
                 },
                 'filter' => ArrayHelper::map(CUtils::typeRequest(), 'id', 'name'),
             ],
