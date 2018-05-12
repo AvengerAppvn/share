@@ -2,7 +2,8 @@
 
 use yii\grid\GridView;
 use yii\helpers\Html;
-
+use common\components\helper\CUtils;
+use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -63,6 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                     return  Html::tag("i", ' Chưa xác minh', ['class' => 'fa fa-check text-danger']);
                 },
+                'filter' => ArrayHelper::map(CUtils::statusUser(), 'id', 'name'),
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
