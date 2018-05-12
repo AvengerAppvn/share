@@ -49,8 +49,8 @@ class CUtils
     public static function typeRequest()
     {
         $type = array();
-        $type[] = ['id' => 1, 'name' => 'Nạp tiền'];
-        $type[] = ['id' => 0, 'name' => 'Rút tiền'];
+        $type[] = ['id' => 1, 'name' => 'Rút tiền'];
+        $type[] = ['id' => 2, 'name' => 'Nạp tiền'];
         return $type;
     }
 
@@ -58,7 +58,7 @@ class CUtils
     {
         $status = array();
         $status[] = ['id' => 1, 'name' => 'Đã duyệt'];
-        $status[] = ['id' => 0, 'name' => 'Đang chờ'];
+        $status[] = ['id' => 2, 'name' => 'Đang chờ'];
         return $status;
     }
 

@@ -42,7 +42,7 @@ class DepositForm extends Model
             $request->user_id = $this->user_id;
             $request->amount = $this->amount;
             $request->type = 2; // Nạp tiền
-            $request->status = 0; // Pending
+            $request->status = 2; // Pending
             $request->description = $this->description;
             if ($this->image) {
                 // requires php5

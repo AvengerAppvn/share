@@ -304,7 +304,7 @@ class TransactionController extends ActiveController
                 [
                     'user_id' => $user->id,
                     'type' => 2, // nạp tiền
-                    'status' => 0 // pending
+                    'status' => 2 // pending
                 ])
                 ->limit($page_size)
                 ->offset($index)
