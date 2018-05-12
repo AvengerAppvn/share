@@ -1,7 +1,7 @@
 <?php
 
 namespace frontend\modules\api\v1\controllers;
-
+use common\models\Transaction;
 use common\models\AdsCategory;
 use common\models\AdsShare;
 use common\models\Advertise;
@@ -225,6 +225,12 @@ class AdsController extends ActiveController
                     $advertise->share -= 1;
                     $advertise->save(false);
                 }
+
+                $transaction = new Transaction();
+                $transaction->description = "Share " . $advertise->title;
+                $transaction->user_id = $user->id;
+                $transaction->type = Transaction::TYPE_DEPOSIT; // Thu
+                $transaction->save();
 
                 $response->setStatusCode(200);
                 $response->getHeaders()->set('Location', Url::toRoute([$model->id], true));

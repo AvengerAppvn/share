@@ -7,6 +7,7 @@ use common\models\AdsCategory;
 use common\models\Advertise;
 use common\models\CategoryAds;
 use common\models\Wallet;
+use common\models\Transaction;
 use trntv\filekit\Storage;
 use Yii;
 use yii\base\Model;
@@ -101,6 +102,12 @@ class AdsForm extends Model
                         }
                     }
                 }
+
+                $transaction = new Transaction();
+                $transaction->description = "Chi quảng cáo " . $this->title;
+                $transaction->user_id = $this->user_id;
+                $transaction->type = Transaction::TYPE_WITHDRAW; // Chi
+                $transaction->save();
 
                 if ($this->images) {
                     // requires php5
