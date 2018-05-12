@@ -48,7 +48,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->is_advertiser ? Html::tag("i", '', ['class' => 'fa fa-check text-success']) : Html::tag("i", '', ['class' => 'fa fa-close text-danger']);
                 },
             ],
-            'cmt',
+            [
+                'label' => 'CMT',
+                'format' => 'html',
+                'value' => function ($model) {
+                    return $model->user_profile ? $model->user_profile->cmt : '';
+                },
+            ],
             //'created_at:datetime',
             //'logged_at:datetime',
             // 'updated_at',
