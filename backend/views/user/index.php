@@ -53,6 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'updated_at',
 
             [
+                'attribute' => 'status_confirmed',
                 'label' => 'Trạng thái',
                 'format' => 'html',
                 'value' => function ($model) {
