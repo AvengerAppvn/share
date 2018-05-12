@@ -297,7 +297,7 @@ class AdsController extends ActiveController
                 Image::configure(array('driver' => 'imagick'));
                 $image = Image::make('img/bg_color.png')->text($advertise->description,320,320,function($font) {
                     $font->file('font/arial.ttf');
-                    $font->size(24);
+                    $font->size(30);
                     $font->color('#fdf6e3');
                     $font->align('center');
                     $font->valign('bottom');
