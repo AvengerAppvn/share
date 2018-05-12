@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'CMT',
                 'format' => 'html',
                 'value' => function ($model) {
-                    return $model->user_profile ? $model->user_profile->cmt : '';
+                    return $model->userProfile ? $model->userProfile->cmt : '';
                 },
             ],
             //'created_at:datetime',
