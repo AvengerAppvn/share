@@ -5,6 +5,7 @@ namespace frontend\modules\api\v1\controllers;
 
 use common\models\User;
 use common\models\Wallet;
+use frontend\models\DepositForm;
 use yii\filters\AccessControl;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;
