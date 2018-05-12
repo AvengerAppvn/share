@@ -76,7 +76,7 @@ class UserVerifyForm extends Model
                 $filename = uniqid() . '.png';
                 $file = UPLOAD_DIR . $filename;
                 $success = file_put_contents($file, $data);
-                $profile->image_id_1 = $success?$fileStorage->baseUrl.'/verify/'.$filename : '' ;
+                $profile->image_id_2 = $success?$fileStorage->baseUrl.'/verify/'.$filename : '' ;
             }
 
             if ($this->image_friend_list) {
@@ -90,7 +90,7 @@ class UserVerifyForm extends Model
                 $filename = uniqid() . '.png';
                 $file = UPLOAD_DIR . $filename;
                 $success = file_put_contents($file, $data);
-                $profile->image_id_1 = $success?$fileStorage->baseUrl.'/verify/'.$filename : '' ;
+                $profile->image_friend_list = $success?$fileStorage->baseUrl.'/verify/'.$filename : '' ;
             }
 
             if ($updateProfile == true && $profile->save(false)) {
