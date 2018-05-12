@@ -314,6 +314,7 @@ class TransactionController extends ActiveController
             $transactionsResult[] = array(
                 'id' => $transaction->id,
                 'description' => $transaction->description,
+                'amount' => $transaction->amount,
                 'created_at' => date('Y-m-d H:i:s', $transaction->created_at),
 
             );
