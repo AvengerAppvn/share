@@ -106,6 +106,7 @@ class AdsForm extends Model
                 $transaction = new Transaction();
                 $transaction->description = "Chi quảng cáo " . $this->title;
                 $transaction->user_id = $this->user_id;
+                $transaction->amount = $model->budget;
                 $transaction->type = Transaction::TYPE_WITHDRAW; // Chi
                 $transaction->save();
 
