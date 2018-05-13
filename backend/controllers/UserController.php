@@ -123,9 +123,10 @@ class UserController extends Controller
                 $user->status_confirmed = 1;
                 $user->is_confirmed = 1;
                 $user->save();
+                return "Xác thực tài khoản thành công";
+            }else{
+                return "Xác thực tài khoản không thành công, bạn vui lòng kiểm tra lại.";
             }
-//            return $this->redirect(['index']);
-            return "Xác thực tài khoản thành công";
         }
         return "Xác thực tài khoản không thành công";
     }

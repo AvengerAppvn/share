@@ -37,7 +37,11 @@ use yii\helpers\Url;
 
                 <div class="col-md-6 identity-card">
                     <h4>Số chứng minh thư:</h4>
-                    <input type="text" id="cmt" value="<?php echo $model->cmt; ?>" size="50" " >
+                    <?php $form = ActiveForm::begin(); ?>
+
+                    <?= $form->field($model, 'cmt')->textInput()->label(false) ?>
+
+                    <?php ActiveForm::end(); ?>
                 </div>
 
                 <div class="col-md-12">
@@ -53,7 +57,7 @@ use yii\helpers\Url;
 $this->registerJs('
     $(document).ready(function(){
         $("#confirm").click(function(){
-            var cmt = $("#cmt").val();
+            var cmt = $("#userprofile-cmt").val();
             var user_id = $("#user_id").val();
                 $.ajax({
                     url : "' . Url::toRoute('/user/confirmed') . '",
