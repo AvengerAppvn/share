@@ -64,8 +64,10 @@ $this->registerJs('
                         id : user_id,
                     },
                     success : function(data){
+                    alert(data);
                     location.reload();
                     }
+                    
                 });
         });
     });

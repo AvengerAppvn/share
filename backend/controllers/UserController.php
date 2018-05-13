@@ -124,9 +124,10 @@ class UserController extends Controller
                 $user->is_confirmed = 1;
                 $user->save();
             }
-            return $this->redirect(['index']);
+//            return $this->redirect(['index']);
+            return "Xác thực tài khoản thành công";
         }
-
+        return "Xác thực tài khoản không thành công";
     }
 
     /**
