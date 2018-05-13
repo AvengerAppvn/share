@@ -64,16 +64,20 @@ class UserSearch extends User
 
         return $dataProvider;
     }
-    public function searchRequest($params){
-        return $this->searchUser($params,2);
-    }
-    public function searchVerified($params){
-        return $this->searchUser($params,1);
+
+    public function searchRequest($params)
+    {
+        return $this->searchUser($params, 2);
     }
 
-    public function searchUser($params,$status)
+    public function searchVerified($params)
     {
-        $query = User::find()->where(['status_confirmed'=>$status]);
+        return $this->searchUser($params, 1);
+    }
+
+    public function searchUser($params, $status)
+    {
+        $query = User::find()->where(['status_confirmed' => $status]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -102,7 +106,7 @@ class UserSearch extends User
 
     public function searchNew($params)
     {
-        $query = User::find()->where(['status_confirmed'=>null]);
+        $query = User::find()->where([ 'is_confirmed' => null]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
