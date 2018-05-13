@@ -28,7 +28,7 @@ use yii\helpers\Html;
                     <span class="info-box-text">KHÁCH HÀNG</span>
                     <span class="info-box-number">' . $customer . '</span>
                 </div>
-            </div>', ['/dashboard/list-user?is_customer=1'], ['target' => '_blank']) ?>
+            </div>', ['/dashboard/customer'], ['target' => '_blank']) ?>
         </div>
         <div class="col-md-3">
             <?= Html::a('
@@ -38,7 +38,7 @@ use yii\helpers\Html;
                     <span class="info-box-text">NGƯỜI QUẢNG CÁO</span>
                     <span class="info-box-number">' . $advertiser . '</span>
                 </div>
-            </div>', ['/dashboard/list-user?is_advertiser=1'], ['target' => '_blank']) ?>
+            </div>', ['/dashboard/advertiser'], ['target' => '_blank']) ?>
         </div>
         <div class="col-md-3">
             <?= Html::a('
@@ -49,7 +49,7 @@ use yii\helpers\Html;
                     <span class="info-box-text">+ NGƯỜI QUẢNG CÁO</span>
                     <span class="info-box-number">' . $user . '</span>
                 </div>
-            </div>', ['/dashboard/list-user?is_customer=1&is_advertiser=1'], ['target' => '_blank']) ?>
+            </div>', ['/dashboard/list-user'], ['target' => '_blank']) ?>
         </div>
     </div> <!--end user -->
 

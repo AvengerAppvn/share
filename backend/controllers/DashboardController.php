@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\search\Dashboard1Search;
 use common\models\Advertise;
 use common\models\Request;
 use common\models\search\AdvertiseSearch;
@@ -37,8 +38,8 @@ class DashboardController extends Controller
      */
     public function actionIndex()
     {
-        $customer = count(User::find()->where(['is_customer' => 1])->all());
-        $advertiser = count(User::find()->where(['is_advertiser' => 1])->all());
+        $customer = count(User::find()->where(['is_customer' => 1, 'is_advertiser' => !1])->all());
+        $advertiser = count(User::find()->where(['is_advertiser' => 1, 'is_customer' => !1])->all());
         $user = count(User::find()->where(['is_advertiser' => 1, 'is_customer' => 1])->all());
         $total_user = count(User::find()->all());
         $advertise = Advertise::find()->where(['status' => 1])->orderBy(['id' => SORT_DESC])->limit(5)->all();
@@ -55,21 +56,53 @@ class DashboardController extends Controller
             'new_user' => $new_user,
         ]);
     }
-
-    public function actionListUser($is_customer = null, $is_advertiser = null)
+    public function actionCustomer()
     {
-        if ($is_customer) {
-            if ($is_advertiser) {
-                $users = User::find()->where(['is_customer' => $is_customer, 'is_advertiser' => $is_advertiser])->all();
-            } else {
-                $users = User::find()->where(['is_customer' => $is_customer])->all();
-            }
-        } else {
-            $users = User::find()->where(['is_advertiser' => $is_advertiser])->all();
-        }
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->searchCustomer(Yii::$app->request->queryParams);
 
         return $this->render('list_user', [
-            'users' => $users,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
+
+    public function actionAdvertiser()
+    {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->searchAdvertiser(Yii::$app->request->queryParams);
+
+        return $this->render('list_user', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionListUser()
+    {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->searchListUser(Yii::$app->request->queryParams);
+
+        return $this->render('list_user', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+//    public function actionListUser($is_customer = null, $is_advertiser = null)
+//    {
+//        if ($is_customer) {
+//            if ($is_advertiser) {
+//                $users = User::find()->where(['is_customer' => $is_customer, 'is_advertiser' => $is_advertiser])->all();
+//            } else {
+//                $users = User::find()->where(['is_customer' => $is_customer])->all();
+//            }
+//        } else {
+//            $users = User::find()->where(['is_advertiser' => $is_advertiser])->all();
+//        }
+//
+//        return $this->render('list_user', [
+//            'users' => $users,
+//        ]);
+//    }
 }
