@@ -34,6 +34,7 @@ class Advertise extends \yii\db\ActiveRecord
      * @var array
      */
     public $thumbnail;
+    public $total;
 
     /**
      * @inheritdoc

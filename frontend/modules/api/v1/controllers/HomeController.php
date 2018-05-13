@@ -152,12 +152,14 @@ class HomeController extends ActiveController
         }
 
         foreach ($categories as $category) {
-
+            $advertise = Advertise::find()->select('sum(share) as total')
+                ->leftJoin('category_ads','category_ads.ads_id = advertise.id')
+                ->where(['category_ads.cat_id'=>$category->id])->one();
             $categoriesResult[] = array(
                 'id' => $category->id,
                 'name' => $category->name,
                 'thumbnail' => $category->thumbnail,
-                'new' => $category->new? : 0,
+                'new' => $advertise? (int)$advertise->total : 0,
 
             );
         }
