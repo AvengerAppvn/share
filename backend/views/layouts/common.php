@@ -74,13 +74,13 @@ $bundle = BackendAsset::register($this);
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span><?php echo Yii::$app->user->identity->username ?> <i class="caret"></i></span>
+                            <span><?php echo Yii::$app->user?Yii::$app->user->identity->username:''  ?> <i class="caret"></i></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header light-blue">
                                 <p>
-                                    <?php echo Yii::$app->user->identity?Yii::$app->user->identity->username:'' ?>
+                                    <?php echo Yii::$app->user?Yii::$app->user->identity->username:'' ?>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
