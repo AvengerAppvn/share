@@ -101,7 +101,7 @@ class UserEditForm extends Model
                 $updateProfile = true;
                 $this->_user->userProfile->strengths = json_encode($this->strengths);
                 // Get player_id
-                $player_ids = UserDeviceToken::find()->where(['user_id'=>$this->id])->all();
+                $deviceTokens = UserDeviceToken::find()->where(['user_id'=>$this->id])->all();
                 $options = array();
                 foreach($this->strengths as $cat_id){
                     $cate = AdsCategory::findOne($cat_id);
@@ -109,9 +109,9 @@ class UserEditForm extends Model
                         $options[] = array($cate->slug => 1);
                     }
                 }
-                foreach($player_ids as $player_id){
+                foreach($deviceTokens as $deviceToken){
                     // Add tag
-                    \Yii::$app->onesignal->players($player_id)->addTag($options);
+                    \Yii::$app->onesignal->players($deviceToken->player_id)->addTag($options);
                 }
             }
 
