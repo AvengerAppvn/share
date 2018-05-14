@@ -74,13 +74,20 @@ $bundle = BackendAsset::register($this);
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span><?php echo Yii::$app->user && Yii::$app->user->identity ?Yii::$app->user->identity->username:''  ?> <i class="caret"></i></span>
+                            <img src="<?php echo Yii::$app->user->identity->userProfile->getAvatar($this->assetManager->getAssetUrl($bundle, 'img/anonymous.jpg')) ?>"
+                                 class="user-image">
+                            <span><?php echo Yii::$app->user->identity->username ?> <i class="caret"></i></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header light-blue">
+                                <img src="<?php echo Yii::$app->user->identity->userProfile->getAvatar($this->assetManager->getAssetUrl($bundle, 'img/anonymous.jpg')) ?>"
+                                     class="img-circle" alt="User Image"/>
                                 <p>
-                                    <?php echo Yii::$app->user && Yii::$app->user->identity?Yii::$app->user->identity->username:'' ?>
+                                    <?php echo Yii::$app->user->identity->username ?>
+                                    <small>
+                                        <?php echo Yii::t('backend', 'Member since {0, date, short}', Yii::$app->user->identity->created_at) ?>
+                                    </small>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
@@ -146,7 +153,6 @@ $bundle = BackendAsset::register($this);
                         'items' => [
                             ['label' => Yii::t('backend', 'Yêu cầu giao dịch'), 'url' => ['/request/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                             ['label' => Yii::t('backend', 'Giao dịch'), 'url' => ['/transaction/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Lịch sử'), 'url' => ['/history/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                         ]
                     ],
                     [
