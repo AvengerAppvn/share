@@ -1,6 +1,8 @@
 <?php
 namespace frontend\models;
 
+use common\models\UserDeviceToken;
+use common\models\AdsCategory;
 use common\models\User;
 use trntv\filekit\Storage;
 use Yii;
@@ -98,6 +100,19 @@ class UserEditForm extends Model
             if ($this->strengths) {
                 $updateProfile = true;
                 $this->_user->userProfile->strengths = json_encode($this->strengths);
+                // Get player_id
+                $player_ids = UserDeviceToken::find()->where(['user_id'=>$this->id])->all();
+                $options = array();
+                foreach($this->strengths as $cat_id){
+                    $cate = AdsCategory::findOne($cat_id);
+                    if($cate){
+                        $options[] = array($cate->slug => 1);
+                    }
+                }
+                foreach($player_ids as $player_id){
+                    // Add tag
+                    \Yii::$app->onesignal->players($player_id)->addTag($options);
+                }
             }
 
             if ($this->fullname && $this->_user->is_confirmed == 0) {
