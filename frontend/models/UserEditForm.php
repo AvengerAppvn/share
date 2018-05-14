@@ -87,7 +87,7 @@ class UserEditForm extends Model
                 $this->_user->phone = $this->phone;
             }
 
-            if ($this->birthday && $this->_user->is_confirmed == 0) {
+            if ($this->birthday && $this->_user->is_confirmed != 1) {
                 $updateProfile = true;
                 $this->_user->userProfile->birthday = date('Y-m-d', strtotime($this->birthday));
             }
@@ -115,7 +115,7 @@ class UserEditForm extends Model
                 }
             }
 
-            if ($this->fullname && $this->_user->is_confirmed == 0) {
+            if ($this->fullname && $this->_user->is_confirmed != 1) {
                 $updateProfile = true;
                 $this->_user->userProfile->fullname = $this->fullname;
             }
