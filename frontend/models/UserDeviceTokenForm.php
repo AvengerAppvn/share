@@ -41,6 +41,11 @@ class UserDeviceTokenForm extends Model
     public function save()
     {
         if ($this->validate()) {
+            $deviceTokens = UserDeviceToken::find()->where(['player_id'=>$this->player_id])->all();
+            foreach ($deviceTokens as $deviceToken){
+                $deviceToken->delete();
+            }
+
             $this->getUserByID();
             $deviceToken = new UserDeviceToken();
             $deviceToken->user_id = $this->id;
