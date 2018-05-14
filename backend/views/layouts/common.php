@@ -80,10 +80,7 @@ $bundle = BackendAsset::register($this);
                             <!-- User image -->
                             <li class="user-header light-blue">
                                 <p>
-                                    <?php echo Yii::$app->user->identity->username ?>
-                                    <small>
-                                        <?php echo Yii::t('backend', 'Member since {0, date, short}', Yii::$app->user->identity->created_at) ?>
-                                    </small>
+                                    <?php echo Yii::$app->user->identity?Yii::$app->user->identity->username:'' ?>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
