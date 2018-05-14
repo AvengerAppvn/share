@@ -84,6 +84,7 @@ class AdsForm extends Model
 
             if ($model->save(false)) {
                 $primaryKey = $model->getPrimaryKey();
+                $tags = [];
                 if($model->cat_id == 0){
                     $this->category = AdsCategory::find()->all();
                     foreach ($this->category as $cat) {
@@ -91,14 +92,21 @@ class AdsForm extends Model
                         $catAds->cat_id = $cat->id;
                         $catAds->ads_id = $primaryKey;
                         $catAds->save();
+
+                        $tags[]= $cat->slug;
                     }
                 }else{
                     if($this->category) {
                         foreach ($this->category as $cat) {
-                            $catAds = new CategoryAds();
-                            $catAds->cat_id = $cat;
-                            $catAds->ads_id = $primaryKey;
-                            $catAds->save();
+                            $cate = AdsCategory::findOne($cat);
+                            if($cate){
+                                $catAds = new CategoryAds();
+                                $catAds->cat_id = $cat;
+                                $catAds->ads_id = $primaryKey;
+                                $catAds->save();
+
+                                $tags[]= $cate->slug;
+                            }
                         }
                     }
                 }
@@ -139,10 +147,14 @@ class AdsForm extends Model
                     }
 
                 }
-
+                // 3 Khi có ads phù hợp
                 $message = array('en'=>'Bạn có quảng cáo phù hợp với chuyên môn của bạn');
-                $options = array( "include_player_ids"=> ["a7d48d0a-fa11-4cf8-a412-fc3f56388ad2"],"data"=> array("ads_id"=> $model->id),);
-
+                //$options = array( "include_player_ids"=> ["a7d48d0a-fa11-4cf8-a412-fc3f56388ad2"],"data"=> array("ads_id"=> $model->id),);
+                $filters = array();
+                foreach ($tags as $tag){
+                    $filters[] = array("field" => "tag", "key" => $tag, "relation" => "=", "value" => "1");
+                }
+                $options = array( 'filters' => $filters,"data"=> array("type"=>3,"ads_id"=> $model->id));
                 \Yii::$app->onesignal->notifications()->create($message, $options);
 
                 return $model;
