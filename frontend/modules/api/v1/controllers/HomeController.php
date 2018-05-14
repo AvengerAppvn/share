@@ -135,12 +135,16 @@ class HomeController extends ActiveController
         if($user && $user->userProfile->strengths){
             $argStrengths = json_decode($user->userProfile->strengths);
             $adsCategories = AdsCategory::find()->where(['id'=>$argStrengths])->all();
+
             foreach ($adsCategories as $adsCategory){
+                $advertise = Advertise::find()->select('sum(share) as total')
+                    ->leftJoin('category_ads','category_ads.ads_id = advertise.id')
+                    ->where(['category_ads.cat_id'=>$adsCategory->id])->one();
                 $categoriesResult[] = array(
                     'id' => $adsCategory->id,
                     'name' => $adsCategory->name,
                     'thumbnail' => $adsCategory->thumbnail,
-                    'new' => $adsCategory->new? : 0,
+                    'new' => $advertise? (int)$advertise->total : 0,
 
                 );
             }
