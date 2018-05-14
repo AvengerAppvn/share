@@ -106,7 +106,7 @@ class UserEditForm extends Model
                 foreach($this->strengths as $cat_id){
                     $cate = AdsCategory::findOne($cat_id);
                     if($cate){
-                        $options[] = array($cate->slug => 1);
+                        $options[$cate->slug] = 1;
                     }
                 }
                 foreach($deviceTokens as $deviceToken){
