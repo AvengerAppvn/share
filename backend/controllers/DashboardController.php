@@ -40,17 +40,17 @@ class DashboardController extends Controller
     {
         $customer = count(User::find()->where(['is_customer' => 1, 'is_advertiser' => !1])->all());
         $advertiser = count(User::find()->where(['is_advertiser' => 1, 'is_customer' => !1])->all());
-        $user = count(User::find()->where(['is_advertiser' => 1, 'is_customer' => 1])->all());
         $total_user = count(User::find()->all());
         $advertise = Advertise::find()->where(['status' => 1])->orderBy(['id' => SORT_DESC])->limit(5)->all();
         $request = Request::find()->orderBy(['id' => SORT_DESC])->limit(5)->all();
+        $count_request = Request::find()->where(['status'=>2,'type'=>2])->count(); // Yeu cau nap tien
         $new_user = User::find()->orderBy(['id' => SORT_DESC])->limit(5)->all();
         $countRequestUser = User::find()->where(['status_confirmed'=>2])->count();
 
         return $this->render('index', [
             'customer' => $customer,
             'advertiser' => $advertiser,
-            'user' => $user,
+            'count_request' => $count_request,
             'total_user' => $total_user,
             'advertise' => $advertise,
             'request' => $request,

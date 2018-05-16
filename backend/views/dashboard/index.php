@@ -45,11 +45,10 @@ use yii\helpers\Html;
             <div class="info-box bg-yellow">
 
                 <div class="info-box-content">
-                    <span class="info-box-text">KHÁCH HÀNG</span>
-                    <span class="info-box-text">+ NGƯỜI QUẢNG CÁO</span>
-                    <span class="info-box-number">' . $user . '</span>
+                    <span class="info-box-text">Nạp tiền</span>
+                    <span class="info-box-number">' . $count_request . '</span>
                 </div>
-            </div>', ['/dashboard/list-user'], ['target' => '_blank']) ?>
+            </div>', ['/request/index'], ['target' => '_blank']) ?>
         </div>
     </div> <!--end user -->
 
