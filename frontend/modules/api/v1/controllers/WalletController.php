@@ -161,7 +161,7 @@ class WalletController extends ActiveController
             return array(
                 'message' => \Yii::t('frontend', \Yii::$app->keyStorage->get('config.admin-bank', 'Tài khoản ngân hàng và cú pháp nạp tiền vào tài khoản {user}'), [
                     'user' => \Yii::$app->user->getId()]),
-                'account_no' => \Yii::$app->keyStorage->get('config.admin-bank-account', 'Số tài khoản'),
+                'account_number' => \Yii::$app->keyStorage->get('config.admin-bank-account', 'Số tài khoản'),
                 'content' => \Yii::t('frontend', \Yii::$app->keyStorage->get('config.admin-bank-content', 'Nạp tiền vào TK{user}'), [
                     'user' => \Yii::$app->user->getId()]),
                 'account_name' => \Yii::$app->keyStorage->get('config.admin-bank-account-name', 'Tên tài khoản'),
