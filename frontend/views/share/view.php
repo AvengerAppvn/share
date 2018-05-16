@@ -7,7 +7,7 @@ $this->title = $model->title;
     <div class="row share-item">
         <div class="col-md-12">
             <h1><?php echo $model->title ?></h1>
-            <p>Đăng lúc: <?php echo date('H:i A - d/m/y', strtotime($model->created_at)); ?></p>
+            <p>Đăng lúc: <?php echo date('H:i A - d/m/y', strtotime($model->created_at*1000)); ?></p>
         </div>
         <div class="col-md-12">
             <h3>
@@ -22,7 +22,7 @@ $this->title = $model->title;
                                     Yii::$app->glide->createSignedUrl([
                                         'glide/index',
                                         'path' => $image->image_path,
-                                        'w' => 200
+                                        //'w' => 200
                                     ], true),
                                     ['class' => 'article-thumb img-rounded']
                                 ) ?>

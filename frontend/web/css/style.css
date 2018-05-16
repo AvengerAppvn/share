@@ -103,4 +103,11 @@ a.desc:after {
   color:#fff;
   border: none;
 }
+.red.navbar-inverse .navbar-brand{
+    color:#fff;
+}
+.red.navbar-inverse .navbar-toggle{
+    border: none;
+}
+
 /*# sourceMappingURL=style.map */
