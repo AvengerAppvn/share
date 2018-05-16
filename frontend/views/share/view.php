@@ -1,6 +1,21 @@
 <?php
 /* @var $this yii\web\View */
 /* @var $model common\models\Advertise */
+// The Regular Expression filter
+$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+
+// The Text you want to filter for urls
+$text = $model->message;
+
+// Check if there is a url in the text
+if(preg_match($reg_exUrl, $text, $url)) {
+    // make the urls hyper links
+    echo preg_replace($reg_exUrl, "<a href=\"{$url[0]}\" target=\"_blank\">{$url[0]}</a> ", $text);
+} else {
+    // if no urls in the text just return the text
+    echo $text;
+}
+
 $this->title = $model->title;
 ?>
 <div class="content">
@@ -11,7 +26,7 @@ $this->title = $model->title;
         </div>
         <div class="col-md-12">
             <h5>
-                <?php echo $model->message ?>
+                <?php echo $text ?>
             </h5>
 
                 <?php if ($model->advertiseImages): ?>
