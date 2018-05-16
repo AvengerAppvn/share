@@ -38,7 +38,7 @@ use yii\helpers\Html;
                     <span class="info-box-text">YÊU CẦU XÁC MINH</span>
                     <span class="info-box-number">' . $count_request_user . '</span>
                 </div>
-            </div>', ['/user/request'], ['target' => '_blank']) ?>
+            </div>', ['/user/request']) ?>
         </div>
         <div class="col-md-3">
             <?= Html::a('
