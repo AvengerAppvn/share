@@ -7,13 +7,12 @@ $this->title = $model->title;
     <div class="row share-item">
         <div class="col-md-12">
             <h1><?php echo $model->title ?></h1>
-            <p><?= $model->created_at?></p>
-            <p>Đăng lúc: <?php echo date('H:i A - d/m/y', strtotime($model->created_at*1000)); ?></p>
+            <p>Đăng lúc: <?php echo date('H:i A - d/m/y', $model->created_at); ?></p>
         </div>
         <div class="col-md-12">
-            <h3>
+            <h5>
                 <?php echo $model->message ?>
-            </h3>
+            </h5>
 
                 <?php if ($model->advertiseImages): ?>
                     <div class="row">
