@@ -14,7 +14,7 @@ $this->beginContent('@frontend/views/layouts/_clear.php')
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'red navbar-inverse navbar-fixed-top',
         ],
     ]); ?>
     <?php echo Nav::widget([

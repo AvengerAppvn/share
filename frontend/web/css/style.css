@@ -97,4 +97,10 @@ a.desc:after {
   padding: 10px 20px;
   margin: 0 0 15px 0;
 }
+
+.red.navbar-inverse{
+  background:red;
+  color:#fff;
+  border: none;
+}
 /*# sourceMappingURL=style.map */
