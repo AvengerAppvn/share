@@ -229,8 +229,16 @@ class AdsController extends ActiveController
 
                 $basic = \Yii::$app->keyStorage->get('config.price-basic', 5000);
                 $wallet = Wallet::find()->where(['user_id' => $user->id])->one();
-                $wallet->amount = $wallet->amount + $basic;
-                $wallet->save();
+                if($wallet){
+                    $wallet->amount = $wallet->amount + $basic;
+                    $wallet->save();
+                }else{
+                    $wallet = new Wallet();
+                    $wallet->user_id = $user->id;
+                    $wallet->amount = $basic;
+                    $wallet->status = 1;
+                    $wallet->save();
+                }
 
                 $transaction = new Transaction();
                 $transaction->description = "Share " . $advertise->title;
