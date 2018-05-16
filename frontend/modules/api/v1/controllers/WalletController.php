@@ -137,7 +137,7 @@ class WalletController extends ActiveController
 
             $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
             $model->user_id = $user->id;
-            if($model->save()){
+            if ($model->save()) {
                 $response->setStatusCode(200);
                 return array(
                     'user_id' => $user->id,
@@ -151,19 +151,22 @@ class WalletController extends ActiveController
         }
     }
 
-    public function actionInfo($type=1)
+    public function actionInfo($type = 1)
     {
-        if($type==1) {
+        if ($type == 1) {
             return \Yii::t('frontend', \Yii::$app->keyStorage->get('config.admin-bank', 'Tài khoản ngân hàng và cú pháp nạp tiền vào tài khoản {user}'), [
                 'user' => \Yii::$app->user->getId()
             ]);
-        }else{
+        } else {
             return array(
-                'message'=> \Yii::t('frontend', \Yii::$app->keyStorage->get('config.admin-bank', 'Tài khoản ngân hàng và cú pháp nạp tiền vào tài khoản {user}'), [
-                        'user' => \Yii::$app->user->getId()]),
-                'account_no'=> \Yii::$app->keyStorage->get('config.admin-bank-account', 'Số tài khoản'),
-                'content'=> \Yii::t('frontend', \Yii::$app->keyStorage->get('config.admin-bank-content', 'Nạp tiền vào TK{user}'), [
-                    'user' => \Yii::$app->user->getId()])
+                'message' => \Yii::t('frontend', \Yii::$app->keyStorage->get('config.admin-bank', 'Tài khoản ngân hàng và cú pháp nạp tiền vào tài khoản {user}'), [
+                    'user' => \Yii::$app->user->getId()]),
+                'account_no' => \Yii::$app->keyStorage->get('config.admin-bank-account', 'Số tài khoản'),
+                'content' => \Yii::t('frontend', \Yii::$app->keyStorage->get('config.admin-bank-content', 'Nạp tiền vào TK{user}'), [
+                    'user' => \Yii::$app->user->getId()]),
+                'account_name' => \Yii::$app->keyStorage->get('config.admin-bank-account-name', 'Tên tài khoản'),
+                'bank_name' => \Yii::$app->keyStorage->get('config.admin-bank-name', 'Tên ngân hàng'),
+                'branch_name' =>  \Yii::$app->keyStorage->get('config.admin-bank-branch', 'Tên chi nhánh'),
             );
         }
     }
