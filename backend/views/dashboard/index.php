@@ -13,7 +13,7 @@ use yii\helpers\Html;
         <div class="col-md-3">
             <?= Html::a('
             <div class="info-box bg-aqua">
-                <span class="info-box-icon"><i class="fa fa-users "></i></span>
+
                 <div class="info-box-content">
                     <span class="info-box-text">TỔNG SỐ NGƯỜI DÙNG</span>
                     <span class="info-box-number">' . $total_user . '</span>
@@ -23,7 +23,7 @@ use yii\helpers\Html;
         <div class="col-md-3">
             <?= Html::a('
             <div class="info-box bg-red">
-                <span class="info-box-icon"><i class="fa fa-user-o "></i></span>
+
                 <div class="info-box-content">
                     <span class="info-box-text">KHÁCH HÀNG: ' . $customer . '</span>
                      <span class="info-box-text">NGƯỜI QUẢNG CÁO' . $advertiser . '</span>
@@ -33,7 +33,7 @@ use yii\helpers\Html;
         <div class="col-md-3">
             <?= Html::a('
             <div class="info-box bg-green">
-                <span class="info-box-icon"><i class="fa fa-star-o "></i></span>
+
                 <div class="info-box-content">
                     <span class="info-box-text">YÊU CẦU XÁC MINH</span>
                     <span class="info-box-number">' . $count_request_user . '</span>
@@ -43,7 +43,7 @@ use yii\helpers\Html;
         <div class="col-md-3">
             <?= Html::a('
             <div class="info-box bg-yellow">
-                <span class="info-box-icon"><i class="fa fa-thumbs-o-up "></i></span>
+
                 <div class="info-box-content">
                     <span class="info-box-text">KHÁCH HÀNG</span>
                     <span class="info-box-text">+ NGƯỜI QUẢNG CÁO</span>
