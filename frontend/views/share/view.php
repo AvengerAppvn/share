@@ -7,6 +7,7 @@ $this->title = $model->title;
     <div class="row share-item">
         <div class="col-md-12">
             <h1><?php echo $model->title ?></h1>
+            <p><?= $model->created_at?></p>
             <p>Đăng lúc: <?php echo date('H:i A - d/m/y', strtotime($model->created_at*1000)); ?></p>
         </div>
         <div class="col-md-12">
@@ -14,18 +15,11 @@ $this->title = $model->title;
                 <?php echo $model->message ?>
             </h3>
 
-                <?php if (!empty($model->advertiseImages)): ?>
+                <?php if ($model->advertiseImages): ?>
                     <div class="row">
                         <?php foreach ($model->advertiseImages as $image): ?>
                         <div class="col-md-6">
-                                <?php echo \yii\helpers\Html::img(
-                                    Yii::$app->glide->createSignedUrl([
-                                        'glide/index',
-                                        'path' => $image->image_path,
-                                        //'w' => 200
-                                    ], true),
-                                    ['class' => 'article-thumb img-rounded']
-                                ) ?>
+                                <?php echo \yii\helpers\Html::img($image->image,['class' => 'img-responsive']) ?>
                             </div>
                         <?php endforeach; ?>
                     </div>
