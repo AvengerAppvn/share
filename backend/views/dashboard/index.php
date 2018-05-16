@@ -25,8 +25,8 @@ use yii\helpers\Html;
             <div class="info-box bg-red">
                 <span class="info-box-icon"><i class="fa fa-user-o "></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">KHÁCH HÀNG</span>
-                    <span class="info-box-number">' . $customer . '</span>
+                    <span class="info-box-text">KHÁCH HÀNG: ' . $customer . '</span>
+                     <span class="info-box-text">NGƯỜI QUẢNG CÁO' . $advertiser . '</span>
                 </div>
             </div>', ['/dashboard/customer'], ['target' => '_blank']) ?>
         </div>
@@ -35,10 +35,10 @@ use yii\helpers\Html;
             <div class="info-box bg-green">
                 <span class="info-box-icon"><i class="fa fa-star-o "></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">NGƯỜI QUẢNG CÁO</span>
-                    <span class="info-box-number">' . $advertiser . '</span>
+                    <span class="info-box-text">YÊU CẦU XÁC MINH</span>
+                    <span class="info-box-number">' . $count_request_user . '</span>
                 </div>
-            </div>', ['/dashboard/advertiser'], ['target' => '_blank']) ?>
+            </div>', ['/user/request'], ['target' => '_blank']) ?>
         </div>
         <div class="col-md-3">
             <?= Html::a('

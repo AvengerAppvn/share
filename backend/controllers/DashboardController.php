@@ -45,6 +45,7 @@ class DashboardController extends Controller
         $advertise = Advertise::find()->where(['status' => 1])->orderBy(['id' => SORT_DESC])->limit(5)->all();
         $request = Request::find()->orderBy(['id' => SORT_DESC])->limit(5)->all();
         $new_user = User::find()->orderBy(['id' => SORT_DESC])->limit(5)->all();
+        $countRequestUser = User::find()->where(['status_confirmed'=>2])->count();
 
         return $this->render('index', [
             'customer' => $customer,
@@ -54,6 +55,7 @@ class DashboardController extends Controller
             'advertise' => $advertise,
             'request' => $request,
             'new_user' => $new_user,
+            'count_request_user' => $countRequestUser,
         ]);
     }
     public function actionCustomer()
