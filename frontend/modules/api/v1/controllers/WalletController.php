@@ -151,11 +151,21 @@ class WalletController extends ActiveController
         }
     }
 
-    public function actionInfo()
+    public function actionInfo($type=1)
     {
-        return \Yii::t('frontend', \Yii::$app->keyStorage->get('config.admin-bank', 'Tài khoản ngân hàng và cú pháp nạp tiền vào tài khoản {user}'), [
-                        'user'=> \Yii::$app->user->getId()
-                    ]);
+        if($type==1) {
+            return \Yii::t('frontend', \Yii::$app->keyStorage->get('config.admin-bank', 'Tài khoản ngân hàng và cú pháp nạp tiền vào tài khoản {user}'), [
+                'user' => \Yii::$app->user->getId()
+            ]);
+        }else{
+            return array(
+                'message'=> \Yii::t('frontend', \Yii::$app->keyStorage->get('config.admin-bank', 'Tài khoản ngân hàng và cú pháp nạp tiền vào tài khoản {user}'), [
+                        'user' => \Yii::$app->user->getId()]),
+                'account_no'=> \Yii::$app->keyStorage->get('config.admin-bank-account', 'Số tài khoản'),
+                'content'=> \Yii::t('frontend', \Yii::$app->keyStorage->get('config.admin-bank-content', 'Nạp tiền vào TK{user}'), [
+                    'user' => \Yii::$app->user->getId()])
+            );
+        }
     }
 
     public function actionOptions($id = null)
