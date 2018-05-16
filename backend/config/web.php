@@ -41,9 +41,7 @@ $config = [
                ],
         'qrcode' => [
             'class' => 'Da\QrCode\Component\QrCodeComponent',
-            //'label' => 'Tickcoin.co',
             'size' => 320 // big and nice :D
-            // ... you can configure more properties of the component here
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
@@ -77,6 +75,47 @@ $config = [
             // 'i18n' => []
         ]
     ],
+    'as globalAccess' => [
+        'class' => common\behaviors\GlobalAccessBehavior::class,
+        'rules' => [
+            [
+                'controllers' => ['sign-in'],
+                'allow' => true,
+                'roles' => ['?'],
+                'actions' => ['login']
+            ],
+            [
+                'controllers' => ['sign-in'],
+                'allow' => true,
+                'roles' => ['@'],
+                'actions' => ['logout']
+            ],
+            [
+                'controllers' => ['site'],
+                'allow' => true,
+                'roles' => ['?', '@'],
+                'actions' => ['error']
+            ],
+            [
+                'controllers' => ['debug/default'],
+                'allow' => true,
+                'roles' => ['administrator'],
+            ],
+            [
+                'controllers' => ['user'],
+                'allow' => true,
+                'roles' => ['administrator'],
+            ],
+            [
+                'controllers' => ['user'],
+                'allow' => false,
+            ],
+            [
+                'allow' => true,
+                'roles' => ['manager'],
+            ]
+        ]
+    ]
 
 ];
 
