@@ -10,10 +10,10 @@ $text = $model->message;
 // Check if there is a url in the text
 if(preg_match($reg_exUrl, $text, $url)) {
     // make the urls hyper links
-    echo preg_replace($reg_exUrl, "<a href=\"{$url[0]}\" target=\"_blank\">{$url[0]}</a> ", $text);
+    $text = preg_replace($reg_exUrl, "<a href=\"{$url[0]}\" target=\"_blank\">{$url[0]}</a> ", $text);
 } else {
     // if no urls in the text just return the text
-    echo $text;
+    //echo $text;
 }
 
 $this->title = $model->title;
