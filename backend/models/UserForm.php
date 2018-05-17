@@ -88,6 +88,8 @@ class UserForm extends Model
         $this->email = $model->email;
         $this->status = $model->status;
         $this->model = $model;
+        $this->is_customer = $model->is_customer;
+        $this->is_advertiser = $model->is_advertiser;
         $this->roles = ArrayHelper::getColumn(
             Yii::$app->authManager->getRolesByUser($model->getId()),
             'name'
