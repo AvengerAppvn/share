@@ -93,7 +93,7 @@ class AdsController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'price-basic', 'view-guest'];
+        $behaviors['authenticator']['except'] = ['options', 'price-basic','price', 'view-guest'];
 
 
         // setup access
@@ -456,6 +456,16 @@ class AdsController extends ActiveController
         return \Yii::$app->keyStorage->get('config.price-basic', 5000);
     }
 
+    public function actionPrice()
+    {
+        $response = \Yii::$app->getResponse();
+        $response->setStatusCode(200);
+        return array(
+            'price_basic'=>   \Yii::$app->keyStorage->get('config.price-basic', 5000),
+            'service'=>   \Yii::$app->keyStorage->get('config.service', 20),
+            'option'=>   \Yii::$app->keyStorage->get('config.option', 10),
+        );
+    }
     public function actionLocation()
     {
         $response = \Yii::$app->getResponse();
