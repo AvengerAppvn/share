@@ -32,7 +32,7 @@ $this->title = $model->title;
                 <?php if ($model->advertiseImages): ?>
                     <div class="row">
                         <?php foreach ($model->advertiseImages as $image): ?>
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="padding-bottom: 20px">
                                 <?php echo \yii\helpers\Html::img($image->image,['class' => 'img-responsive']) ?>
                             </div>
                         <?php endforeach; ?>
