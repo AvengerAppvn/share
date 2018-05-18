@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 $this->title = 'Xác thực';
-$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Danh sách người dùng'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Yêu cầu xác minh'), 'url' => ['request']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
