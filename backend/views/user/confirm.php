@@ -2,10 +2,13 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use yii\helpers\Url;
+
+$this->title = 'Xác thực';
+$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Danh sách người dùng'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 
 ?>
-    <div class="row confirm-user">
+<div class="user-view">
 
         <div class="col-md-12">
             <h2> Xác thực tài khoản</h2>
