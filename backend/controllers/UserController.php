@@ -43,6 +43,7 @@ class UserController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
     /**
      * Lists all User models.
      * @return mixed
@@ -85,6 +86,7 @@ class UserController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
     /**
      * Displays a single User model.
      * @param integer $id
@@ -100,16 +102,28 @@ class UserController extends Controller
     public function actionConfirm($id)
     {
         $model = UserProfile::find()->where(['user_id' => $id])->one();
-        if ($model) {
-            return $this->render('confirm', [
-                'model' => $model,
-            ]);
-        } else {
-            $profile = new UserProfile();
-            $profile->user_id = $id;
-            $profile->save();
-            //throw new NotFoundHttpException('The requested page does not exist.');
+        if (!$model) {
+            $model = new UserProfile();
+            $model->user_id = $id;
+            $model->save();
         }
+
+        if (Yii::$app->request->post()) {
+            $profie = Yii::$app->request->post('UserProfile');
+            if ($profie && $profie['cmt']) {
+                $model->cmt = $profie['cmt'];
+                if ($model->save()) {
+                    $user = $this->findModel($id);
+                    $user->status_confirmed = 1;
+                    $user->is_confirmed = 1;
+                    $user->save();
+                }
+            }
+        }
+
+        return $this->render('confirm', [
+            'model' => $model,
+        ]);
 
     }
 
@@ -124,7 +138,7 @@ class UserController extends Controller
                 $user->is_confirmed = 1;
                 $user->save();
                 return "Xác thực tài khoản thành công";
-            }else{
+            } else {
                 return "Xác thực tài khoản không thành công, bạn vui lòng kiểm tra lại.";
             }
         }
