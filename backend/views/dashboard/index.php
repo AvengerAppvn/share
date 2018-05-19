@@ -25,8 +25,8 @@ use yii\helpers\Html;
             <div class="info-box bg-red">
 
                 <div class="info">
-                    <span class="info-box-text">KHÁCH HÀNG: ' . $customer . '</span>
-                     <span class="info-box-text">NGƯỜI QUẢNG CÁO' . $advertiser . '</span>
+                    <span class="info-box-text">KHÁCH HÀNG:       ' . $customer . '</span>
+                     <span class="info-box-text">NGƯỜI QUẢNG CÁO: ' . $advertiser . '</span>
                 </div>
             </div>', ['/dashboard/customer'], ['target' => '_blank']) ?>
         </div>
