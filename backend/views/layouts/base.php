@@ -39,4 +39,16 @@ $this->params['body-class'] = array_key_exists('body-class', $this->params) ?
     <?php $this->endBody() ?>
 <?php echo Html::endTag('body') ?>
 </html>
+<?php
+yii\bootstrap\Modal::begin([
+    'headerOptions' => ['id' => 'modalHeader'],
+    'id' => 'modal',
+    'size' => 'modal-lg',
+    //keeps from closing modal with esc key or by clicking out of the modal.
+    // user must click cancel or X to close
+    'clientOptions' => ['backdrop' => 'static', 'keyboard' => FALSE]
+]);
+echo "<div id='modalContent'></div>";
+yii\bootstrap\Modal::end();
+?>
 <?php $this->endPage() ?>

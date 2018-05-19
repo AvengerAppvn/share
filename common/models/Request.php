@@ -96,4 +96,9 @@ class Request extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
+    public function getImage()
+    {
+        return $this->image_base_url . '/' . $this->image_path;
+    }
 }

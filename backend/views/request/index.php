@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
@@ -22,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             [
                 'attribute' => 'user_id',
                 'value' => function ($model) {
@@ -57,12 +58,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => '',
-                'format' => 'html',
+                'format' => 'raw',
                 'value' => function ($model) {
-                    return $model->status == 1 ?
-                        Html::a("Xem", ['view', 'id' => $model->id], ['target' => '_blank', 'class' => 'btn btn-success']) :
-                        (Html::a("Duyệt", ['update', 'id' => $model->id], ['target' => '_blank', 'class' => 'btn btn-primary'])
-                            . ' ' . Html::a("Xem", ['view', 'id' => $model->id], ['target' => '_blank', 'class' => 'btn btn-success']));
+                    $check =  $model->status == 1 ? '' : Html::button('Duyệt', ['value' => Url::to(['request/check', 'id'=>$model->id]), 'title' => 'Xét duyệt yêu cầu', 'class' => 'showModalButton btn btn-primary']);
+
+                    return Html::a("Xem", ['view', 'id' => $model->id], ['class' => 'btn btn-success']).' '. $check;
                 },
                 'options' => [
                     'style' => 'width:150px;',

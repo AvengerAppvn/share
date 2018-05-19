@@ -1,7 +1,9 @@
 <?php
 
-use yii\helpers\Html;
+use common\components\helper\CUtils;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\HistorySearch */
@@ -24,15 +26,31 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'user_id',
+            //'id',
+            [
+                'attribute' => 'user_id',
+                'value' => function ($model) {
+                    return $model->user_id ? $model->user->username : "";
+                },
+            ],
             'amount',
             'description',
-            'type',
-            // 'status',
-            // 'created_at',
+            [
+                'attribute' => 'type',
+                'value' => function ($model) {
+                    return $model->type == 2 ? "Nạp tiền" : "Rút tiền";
+                },
+                'filter' => ArrayHelper::map(CUtils::typeRequest(), 'id', 'name'),
+            ],
+             'status',
+             'created_at:datetime',
             // 'updated_at',
-            // 'created_by',
+             [
+                'attribute' => 'created_by',
+                'value' => function ($model) {
+                    return $model->created_by ? $model->author->username : "";
+                },
+            ],
             // 'updated_by',
 
             ['class' => 'yii\grid\ActionColumn'],

@@ -3,7 +3,7 @@
 namespace common\models;
 
 use Yii;
-
+use yii\behaviors\TimestampBehavior;use yii\behaviors\BlameableBehavior;
 /**
  * This is the model class for table "history".
  *
@@ -27,7 +27,15 @@ class History extends \yii\db\ActiveRecord
     {
         return 'history';
     }
-
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),BlameableBehavior::className(),
+        ];
+    }
     /**
      * @inheritdoc
      */
@@ -67,5 +75,18 @@ class History extends \yii\db\ActiveRecord
     public static function find()
     {
         return new \common\models\query\HistoryQuery(get_called_class());
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAuthor()
+    {
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
 }

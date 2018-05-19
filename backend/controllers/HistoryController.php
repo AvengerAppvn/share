@@ -34,7 +34,7 @@ class HistoryController extends Controller
     {
         $searchModel = new HistorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $dataProvider->sort = ['defaultOrder'=>['id'=> 'desc']];
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

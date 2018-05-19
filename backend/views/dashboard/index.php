@@ -48,7 +48,7 @@ use yii\helpers\Html;
                     <span class="info-box-text">Nạp tiền</span>
                     <span class="info-box-number">' . $count_request . '</span>
                 </div>
-            </div>', ['/request/index'], ['target' => '_blank']) ?>
+            </div>', ['/request/index']) ?>
         </div>
     </div> <!--end user -->
 
