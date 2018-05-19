@@ -17,4 +17,9 @@ body .user-panel > .info {
   padding-left: 10px;
 }
 
+.info-box .info{
+  padding-left: 20px;
+  text-align: center;
+}
+
 /*# sourceMappingURL=style.map *//*# sourceMappingURL=style.map */
