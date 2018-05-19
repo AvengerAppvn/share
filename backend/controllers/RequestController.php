@@ -3,8 +3,10 @@
 namespace backend\controllers;
 
 use common\models\History;
+use common\models\Notification;
 use common\models\Request;
 use common\models\search\RequestSearch;
+use common\models\UserDeviceToken;
 use common\models\Wallet;
 use Yii;
 use yii\filters\VerbFilter;
@@ -104,8 +106,22 @@ class RequestController extends Controller
                 $history->status = 1;
                 $history->save();
 
-                // Notification
+                $notification = new Notification();
+                $notification->title = "Bạn đã được chuyển $model->amount vào ví";
+                $notification->description = "Hệ thống đã chuyển thành công số tiền $model->amount vào ví của bạn";
+                $notification->user_id = $model->user_id;
+                $notification->ads_id = 0;
+                $notification->save();
 
+                // Notification
+                $device = UserDeviceToken::findOne(['user_id'=>$model->user_id]);
+                if($device && $device->player_id) {
+                    $message = array('en' => 'Hệ thống đã nạp tiền thành công cho bạn');
+                    $options = array("include_player_ids" => [$device->player_id],
+                        "data" => array('type' => 4, 'ads_id' => 0, 'push_id' => 1, 'post_id' => ''));
+
+                    \Yii::$app->onesignal->notifications()->create($message, $options);
+                }
                 return $this->redirect(['view', 'id' => (string)$model->id]);
             } else {
                 return $this->renderAjax('_form', [
