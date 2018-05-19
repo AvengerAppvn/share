@@ -14,7 +14,7 @@ use yii\helpers\Html;
             <?= Html::a('
             <div class="info-box bg-aqua">
 
-                <div class="info-box-content">
+                <div class="info">
                     <span class="info-box-text">TỔNG SỐ NGƯỜI DÙNG</span>
                     <span class="info-box-number">' . $total_user . '</span>
                 </div>
@@ -24,7 +24,7 @@ use yii\helpers\Html;
             <?= Html::a('
             <div class="info-box bg-red">
 
-                <div class="info-box-content">
+                <div class="info">
                     <span class="info-box-text">KHÁCH HÀNG: ' . $customer . '</span>
                      <span class="info-box-text">NGƯỜI QUẢNG CÁO' . $advertiser . '</span>
                 </div>
@@ -34,7 +34,7 @@ use yii\helpers\Html;
             <?= Html::a('
             <div class="info-box bg-green">
 
-                <div class="info-box-content">
+                <div class="info">
                     <span class="info-box-text">YÊU CẦU XÁC MINH</span>
                     <span class="info-box-number">' . $count_request_user . '</span>
                 </div>
@@ -44,7 +44,7 @@ use yii\helpers\Html;
             <?= Html::a('
             <div class="info-box bg-yellow">
 
-                <div class="info-box-content">
+                <div class="info">
                     <span class="info-box-text">Nạp tiền</span>
                     <span class="info-box-number">' . $count_request . '</span>
                 </div>

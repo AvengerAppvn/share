@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 /* @var $searchModel common\models\search\TransactionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Transactions';
+$this->title = 'Giao dịch';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transaction-index">
