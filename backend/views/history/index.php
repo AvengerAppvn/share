@@ -9,16 +9,12 @@ use yii\helpers\Html;
 /* @var $searchModel common\models\HistorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Histories';
+$this->title = 'Lịch sử';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="history-index">
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?php echo Html::a('Create History', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?php echo GridView::widget([
         'dataProvider' => $dataProvider,
@@ -53,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             // 'updated_by',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            //['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 
