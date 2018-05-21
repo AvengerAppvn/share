@@ -67,7 +67,7 @@ class Advertise extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cat_id', 'title'], 'required'],
+            [['cat_id'], 'required'],
             [['province_id', 'age_id','age_min','age_max', 'speciality_id', 'cat_id', 'share', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['content'], 'string'],
             [['require', 'message'], 'string', 'max' => 500],

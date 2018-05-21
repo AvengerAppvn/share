@@ -37,7 +37,7 @@ class AdsForm extends Model
     {
         return [
             ['title', 'trim'],
-            ['title', 'required', 'message' => Yii::t('frontend', 'Missing title')],
+            //['title', 'required', 'message' => Yii::t('frontend', 'Missing title')],
             ['budget', 'required', 'message' => Yii::t('frontend', 'Missing budget')],
             ['require', 'required', 'message' => Yii::t('frontend', 'Missing require')],
             [['title', 'require', 'message'], 'string'],
