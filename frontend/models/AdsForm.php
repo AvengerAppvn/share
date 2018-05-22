@@ -172,6 +172,7 @@ class AdsForm extends Model
 
         if ($this->budget) {
             $share = 0;
+            $this->budget = $this->budget - ($this->budget * 0.2);
             $price_unit = $price_base;
             if ($this->location && $this->location > 0) {
                 $price_unit += $price_base * 0.1;
