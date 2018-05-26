@@ -60,7 +60,7 @@ class SignupForm extends Model
             ['email', 'email'],
             ['email', 'unique',
                 'targetClass'=> '\common\models\User',
-                'message' => Yii::t('frontend', 'This email address has already been taken.')
+                'message' => Yii::t('frontend', 'Email đã được sử dụng.')
             ],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
@@ -69,7 +69,7 @@ class SignupForm extends Model
 
             ['is_customer', function ($attribute, $params) {
                 if (!$this->is_customer && !$this->is_advertiser) {
-                    $this->addError($attribute, Yii::t('frontend', 'Missing field is_customer or is_advertiser.'));
+                    $this->addError($attribute, Yii::t('frontend', 'Thiếu thông tin khách hàng hoặc nhà quảng cáo.'));
                 }
             }, 'skipOnEmpty' => false, 'skipOnError' => false],
 
@@ -138,7 +138,7 @@ class SignupForm extends Model
             $user->status = $shouldBeActivated ? User::STATUS_NOT_ACTIVE : User::STATUS_ACTIVE;
             $user->setPassword($this->password);
             if(!$user->save()) {
-                throw new Exception("User couldn't be  saved");
+                throw new Exception("Chưa tạo được tài khoản");
             };
             $user->afterSignup();
             if ($shouldBeActivated) {
@@ -148,7 +148,7 @@ class SignupForm extends Model
                     Time::SECONDS_IN_A_DAY
                 );
                 Yii::$app->commandBus->handle(new SendEmailCommand([
-                    'subject' => Yii::t('frontend', 'Activation email'),
+                    'subject' => Yii::t('frontend', 'Email kích hoạt'),
                     'view' => 'activation',
                     'to' => $this->email,
                     'params' => [
