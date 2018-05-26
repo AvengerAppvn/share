@@ -35,6 +35,7 @@ class Wallet extends \yii\db\ActiveRecord
     {
         return [
             [['user_id'], 'required'],
+            [['user_id'], 'unique'],
             [['user_id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['amount'], 'number'],
         ];
