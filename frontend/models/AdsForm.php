@@ -168,7 +168,7 @@ class AdsForm extends Model
 
     private function calculateShare()
     {
-        $price_base = 5000; //TODO get in config
+        $price_base = \Yii::$app->keyStorage->get('config.price-basic', 5000);
 
         if ($this->budget) {
             $share = 0;
