@@ -279,7 +279,7 @@ class AdsController extends ActiveController
         }
 
         $advertise = Advertise::findOne($ads_id);
-        if (!$advertise) {
+        if (!$advertise || Advertise::STATUS_ACTIVE != $advertise->status) {
             $response->setStatusCode(404);
             return 'Không có dữ liệu với id=' . $ads_id;
         }

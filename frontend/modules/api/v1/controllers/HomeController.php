@@ -139,7 +139,7 @@ class HomeController extends ActiveController
             foreach ($adsCategories as $adsCategory){
                 $advertise = Advertise::find()->select('sum(share) as total')
                     ->leftJoin('category_ads','category_ads.ads_id = advertise.id')
-                    ->where(['category_ads.cat_id'=>$adsCategory->id])->one();
+                    ->where(['category_ads.cat_id'=>$adsCategory->id])->active()->one();
                 $categoriesResult[] = array(
                     'id' => $adsCategory->id,
                     'name' => $adsCategory->name,
@@ -158,7 +158,7 @@ class HomeController extends ActiveController
         foreach ($categories as $category) {
             $advertise = Advertise::find()->select('sum(share) as total')
                 ->leftJoin('category_ads','category_ads.ads_id = advertise.id')
-                ->where(['category_ads.cat_id'=>$category->id])->one();
+                ->where(['category_ads.cat_id'=>$category->id])->active()->one();
             $categoriesResult[] = array(
                 'id' => $category->id,
                 'name' => $category->name,
@@ -241,7 +241,7 @@ class HomeController extends ActiveController
         $advertisesResult = [];
 
         foreach ($advertises as $advertise) {
-            if($advertise->advertise) {
+            if($advertise->advertise && Advertise::STATUS_ACTIVE == $advertise->advertise->status) {
                 $user = User::findOne($advertise->advertise->created_by);
                 $customer_avatar = null;
                 $customer_name = null;
@@ -280,7 +280,7 @@ class HomeController extends ActiveController
 
 
         $advertise = Advertise::findOne($ads_id);
-        if(!$advertise){
+        if(!$advertise || Advertise::STATUS_ACTIVE != $advertise->status){
             $response->setStatusCode(404);
             return array(
                 'name'=> 'Không có dữ liệu',
