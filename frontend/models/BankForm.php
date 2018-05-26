@@ -21,6 +21,7 @@ class BankForm extends Model
     public $account_number;
     public $bank_id;
     public $province_id;
+    public $province;
     public $branch_name;
 
     /**
@@ -33,8 +34,9 @@ class BankForm extends Model
             ['account_name', 'required', 'message' => Yii::t('frontend', 'Missing account_name')],
             ['account_number', 'required', 'message' => Yii::t('frontend', 'Missing account_number')],
             ['bank_id', 'required', 'message' => Yii::t('frontend', 'Missing bank_id')],
-            ['province_id', 'required', 'message' => Yii::t('frontend', 'Missing province_id')],
+           // ['province_id', 'required', 'message' => Yii::t('frontend', 'Missing province_id')],
             ['branch_name', 'string'],
+            ['province', 'string'],
             ['branch_name', 'trim'],
             ['user_id', 'safe'],
         ];
@@ -51,7 +53,7 @@ class BankForm extends Model
             $model->account_name = $this->account_name;
             $model->account_number = $this->account_number;
             $model->bank_id = $this->bank_id;
-            $model->province_id = $this->province_id;
+            $model->province_id = $this->province_id? : 0;
             $model->branch_name = $this->branch_name;
             $model->user_id = $this->user_id;
 
@@ -60,9 +62,9 @@ class BankForm extends Model
                 $model->bank_name = $bank->name;
             }
 
-            $province = CriteriaProvince::findOne($this->province_id);
-            if ($province) {
-                $model->province_name = $province->name;
+            //$province = CriteriaProvince::findOne($this->province_id);
+            if ($this->province) {
+                $model->province_name = $this->province;
             }
 
             if ($model->save(false)) {
