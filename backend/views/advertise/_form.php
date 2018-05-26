@@ -29,7 +29,6 @@ $cats =  ArrayHelper::map(AdsCategory::find()->where(['status' => 1])->all(), 'i
             <div class="col-md-12">
                 <?php
                 echo $form->field($model, 'cat_id')->checkboxList($cats, [
-//                    'separator' => '<br>',
                     'itemOptions' => [
                         'class' => 'checkbox-category'
                     ]
@@ -121,7 +120,7 @@ $cats =  ArrayHelper::map(AdsCategory::find()->where(['status' => 1])->all(), 'i
             </div>
             <div class="col-md-3">
                 <?php echo $form->field($model, 'status')->dropdownList(
-                    ArrayHelper::map(CUtils::status(), 'id', 'name'),
+                    ArrayHelper::map(CUtils::statusAds(), 'id', 'name'),
                     ['prompt' => 'Chọn Trạng thái']
                 ) ?>
             </div>

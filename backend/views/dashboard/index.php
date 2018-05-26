@@ -25,10 +25,10 @@ use yii\helpers\Html;
             <div class="info-box bg-red">
 
                 <div class="info">
-                    <span class="info-box-text">KHÁCH HÀNG:       ' . $customer . '</span>
-                     <span class="info-box-text">NGƯỜI QUẢNG CÁO: ' . $advertiser . '</span>
+                     <span class="info-box-text">QUẢNG CÁO CHỜ DUYỆT</span>
+                     <span class="info-box-number">' . $advertiser . '</span>
                 </div>
-            </div>', ['/dashboard/customer'], ['target' => '_blank']) ?>
+            </div>', ['/advertise/pending']) ?>
         </div>
         <div class="col-md-3">
             <?= Html::a('

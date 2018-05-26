@@ -2,6 +2,8 @@
 
 namespace common\models\query;
 
+use common\models\Advertise;
+
 /**
  * This is the ActiveQuery class for [[Advertise]].
  *
@@ -13,7 +15,10 @@ class AdvertiseQuery extends \yii\db\ActiveQuery
     {
         return $this->andWhere('[[status]]=1');
     }
-
+    public function pending()
+    {
+        return $this->andWhere(['status'=>Advertise::STATUS_PENDING]);
+    }
     /**
      * @inheritdoc
      * @return Advertise[]|array

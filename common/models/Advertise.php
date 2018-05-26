@@ -30,6 +30,9 @@ use common\models\query\AdvertiseQuery;
  */
 class Advertise extends \yii\db\ActiveRecord
 {
+    const STATUS_PENDING = 0;
+    const STATUS_ACTIVE = 1;
+    const STATUS_IGNORE = 2;
     /**
      * @var array
      */
@@ -67,13 +70,14 @@ class Advertise extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cat_id'], 'required'],
-            [['province_id', 'age_id','age_min','age_max', 'speciality_id', 'cat_id', 'share', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            //[['cat_id'], 'required'],
+            [['province_id', 'age_id','age_min','age_max', 'speciality_id', 'share', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['content'], 'string'],
             [['require', 'message'], 'string', 'max' => 500],
             [['title', 'slug', 'description'], 'string', 'max' => 255],
             [['thumbnail_base_url', 'thumbnail_path'], 'string', 'max' => 1024],
-            ['thumbnail', 'safe']
+            ['thumbnail', 'safe'],
+            ['cat_id', 'safe'],
         ];
     }
 

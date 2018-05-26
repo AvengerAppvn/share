@@ -81,6 +81,7 @@ class AdsForm extends Model
             }
             // TODO fix share
             $model->share = $this->calculateShare();
+            $model->status = Advertise::STATUS_PENDING;
 
             if ($model->save(false)) {
                 $primaryKey = $model->getPrimaryKey();

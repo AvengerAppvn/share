@@ -1,11 +1,10 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\DetailView;
-use yii\helpers\ArrayHelper;
 use common\components\helper\CUtils;
 use common\models\AdsCategory;
-use common\models\AdsShare;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Advertise */
@@ -67,7 +66,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'status',
                         'value' => function ($model) {
-                            return $model->status == 1 ? "Hoạt động" : "Ngưng";
+
+                            if ($model->status == 1) return "Quảng cáo đã duyệt";
+
+                            if ($model->status == 2) return "Quảng cáo bị từ chối";
+                            return "Chờ duyệt";
                         },
                         'filter' => ArrayHelper::map(CUtils::status(), 'id', 'name'),
                     ],
@@ -91,9 +94,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-8">
             <h2>Ảnh của quảng cáo</h2>
             <?php
-                foreach($images as $image){
-                    echo Html::img($image,['width'=>240]);
-                }
+            foreach ($images as $image) {
+                echo Html::img($image, ['width' => 240]);
+            }
             ?>
         </div>
     </div>

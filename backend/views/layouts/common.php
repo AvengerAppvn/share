@@ -128,18 +128,31 @@ $bundle = BackendAsset::register($this);
                         'url' => ['/dashboard/index'],
                         'visible' => Yii::$app->user->can('administrator')
                     ],
-                    [
-                        'label' => Yii::t('backend', 'Quản lý Danh Mục'),
-                        'icon' => '<i class="fa fa-edit"></i>',
-                        'url' => ['/ads-category/index'],
-                        'visible' => Yii::$app->user->can('administrator')
-                    ],
+//                    [
+//                        'label' => Yii::t('backend', 'Quản lý Quảng cáo'),
+//                        'icon' => '<i class="fa fa-edit"></i>',
+//                        'url' => ['/ads-category/index'],
+//                        'visible' => Yii::$app->user->can('administrator')
+//                    ],
                     [
                         'label' => Yii::t('backend', 'Quản lý Quảng cáo'),
-                        'url' => ['/advertise/index'],
-                        'icon' => '<i class="fa fa-edit"></i>',
+                        'url' => '#',
+                        'icon' => '<i class="fa fa-exchange"></i>',
+                        'options' => ['class' => 'treeview'],
+                        'items' => [
+                            ['label' => Yii::t('backend', 'Quảng cáo chờ duyệt'), 'url' => ['/advertise/pending'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Danh sách quảng cáo'), 'url' => ['/advertise/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Danh mục quảng cáo'), 'url' => ['/ads-category/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                        ],
                         'visible' => Yii::$app->user->can('administrator')
                     ],
+
+//                    [
+//                        'label' => Yii::t('backend', 'Quản lý Quảng cáo'),
+//                        'url' => ['/advertise/index'],
+//                        'icon' => '<i class="fa fa-edit"></i>',
+//                        'visible' => Yii::$app->user->can('administrator')
+//                    ],
                     [
                         'label' => Yii::t('backend', 'Quản lý Ví'),
                         'icon' => '<i class="fa fa-money"></i>',

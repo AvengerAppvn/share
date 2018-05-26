@@ -39,7 +39,7 @@ class DashboardController extends Controller
     public function actionIndex()
     {
         $customer = count(User::find()->where(['is_customer' => 1, 'is_advertiser' => !1])->all());
-        $advertiser = count(User::find()->where(['is_advertiser' => 1, 'is_customer' => !1])->all());
+        $advertiser = count(Advertise::find()->where(['status' => Advertise::STATUS_PENDING])->all());
         $total_user = count(User::find()->all());
         $advertise = Advertise::find()->where(['status' => 1])->orderBy(['id' => SORT_DESC])->limit(5)->all();
         $request = Request::find()->orderBy(['id' => SORT_DESC])->limit(5)->all();

@@ -62,6 +62,21 @@ class CUtils
         return $status;
     }
 
+    public static function statusAds()
+    {
+        $status = array();
+        $status[] = ['id' => 0, 'name' => 'Chờ duyệt'];
+        $status[] = ['id' => 1, 'name' => 'Đã duyệt'];
+        $status[] = ['id' => 2, 'name' => 'Từ chối'];
+        return $status;
+    }
+    public static function statusCheck()
+    {
+        $status = array();
+        $status[] = ['id' => 1, 'name' => 'Duyệt quảng cáo'];
+        $status[] = ['id' => 2, 'name' => 'Từ chối'];
+        return $status;
+    }
     public static function statusUser()
     {
         $status = array(
