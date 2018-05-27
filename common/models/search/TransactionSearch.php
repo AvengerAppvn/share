@@ -2,10 +2,9 @@
 
 namespace common\models\search;
 
-use Yii;
+use common\models\Transaction;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Transaction;
 
 /**
  * TransactionSearch represents the model behind the search form about `common\models\Transaction`.
@@ -14,6 +13,7 @@ class TransactionSearch extends Transaction
 {
     public $max_date;
     public $min_date;
+
     /**
      * @inheritdoc
      */
@@ -78,7 +78,9 @@ class TransactionSearch extends Transaction
 
         return $dataProvider;
     }
-    public function searchTransaction($params){
+
+    public function searchTransaction($params)
+    {
         if (!($this->load($params) && $this->validate())) {
             return new ActiveDataProvider([
                 'query' => Transaction::find()->where(['user_id' => $this->user_id])->orderBy('logtime DESC'),

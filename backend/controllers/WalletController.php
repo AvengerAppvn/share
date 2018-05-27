@@ -56,6 +56,7 @@ class WalletController extends Controller
         $model = $this->findModel($id);
         $searchModel = new TransactionSearch();
         $searchModel->user_id = $model->user_id;
+        $searchModel->id = $id;
 
         $dataProvider = $searchModel->searchTransaction(Yii::$app->request->queryParams);
 
