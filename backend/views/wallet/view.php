@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Wallet */
 
-$this->title = 'Tài khoản: '.$model->user->username;
+$this->title = 'Chi tiết ví '.$model->user->username;
 $this->params['breadcrumbs'][] = ['label' => 'Danh sách Ví', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
