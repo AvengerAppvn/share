@@ -8,6 +8,7 @@ use common\models\Advertise;
 use common\models\CategoryAds;
 use common\models\History;
 use common\models\search\AdvertiseSearch;
+use common\models\UserDeviceToken;
 use common\models\Wallet;
 use Yii;
 use yii\filters\VerbFilter;
@@ -109,7 +110,7 @@ class AdvertiseController extends Controller
                     if ($device && $device->player_id) {
                         $message = array('en' => 'Chúc mừng! Quảng cáo của bạn đã được phê duyệt.');
                         $options = array("include_player_ids" => [$device->player_id],
-                            "data" => array('type' => 5, 'ads_id' => $model->id, 'push_id' => 0, 'post_id' => ''));
+                            "data" => array('type' => 5, 'ads_id' => $model->id, 'push_id' => 0, 'post_id' => ''),"buttons"=>[array("id"=> "1", "text"=> "View","icon"=>"")]);
 
                         \Yii::$app->onesignal->notifications()->create($message, $options);
                     }
