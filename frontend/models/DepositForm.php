@@ -43,7 +43,7 @@ class DepositForm extends Model
             $request->amount = $this->amount;
             $request->type = 2; // Nạp tiền
             $request->status = 2; // Pending
-            $request->description = $this->description;
+            $request->description = 'Nạp tiền';//$this->description;
             if ($this->image) {
                 // requires php5
                 define('UPLOAD_DIR', \Yii::getAlias('@storage') . '/web/source/capture/');
