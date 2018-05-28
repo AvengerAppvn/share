@@ -336,7 +336,9 @@ class UserController extends ActiveController
                 'is_customer' => $user->is_customer ? true : false,
                 'is_advertiser' => $user->is_advertiser ? true : false,
                 'status_confirmed' => $user->status_confirmed,
-                'status_confirmed_des' => $user->status_confirmed ? ($user->status_confirmed == 1 ? 'Đã xác minh' : 'Đang chờ') : 'Tài khoản chưa xác minh'
+                'image_id_1' => $user->userProfile->image_id_1 ? : '',
+                'image_id_2' => $user->userProfile->image_id_2 ? : '',
+                'image_friend_list' => $user->userProfile->image_friend_list ? : '',
             );
         } else {
             // Validation error
