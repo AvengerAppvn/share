@@ -392,13 +392,13 @@ class UserController extends ActiveController
 
         if ($user) {
             $response = \Yii::$app->getResponse();
-            if ($user->status_confirmed == 1) {
-                $response->setStatusCode(422);
-                return array(
-                    'message' => 'Tài khoản đã xác minh',
-                    'code' => 422,
-                    'status' => false);
-            }
+//            if ($user->status_confirmed == 1) {
+//                $response->setStatusCode(422);
+//                return array(
+//                    'message' => 'Tài khoản đã xác minh',
+//                    'code' => 422,
+//                    'status' => false);
+//            }
             $model = new UserVerifyForm();
             $model->load(\Yii::$app->request->post(), '');
             $model->id = $user->id;
