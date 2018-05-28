@@ -306,6 +306,7 @@ class TransactionController extends ActiveController
                     'type' => 2, // nạp tiền
                     'status' => 2 // pending
                 ])
+                ->orderBy('id desc')
                 ->limit($page_size)
                 ->offset($index)
                 ->all();

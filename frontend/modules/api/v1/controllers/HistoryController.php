@@ -247,6 +247,7 @@ class HistoryController extends ActiveController
                 'user_id' => $user->id,
                 'type' => $type
             ])
+            ->orderBy('id desc')
             ->limit($page_size)
             ->offset($index)
             ->all();
