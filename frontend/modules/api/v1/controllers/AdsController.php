@@ -1,27 +1,29 @@
 <?php
 
 namespace frontend\modules\api\v1\controllers;
-use common\models\Notification;
-use common\models\Transaction;
+
 use common\models\AdsCategory;
 use common\models\AdsShare;
 use common\models\Advertise;
 use common\models\CriteriaAge;
 use common\models\CriteriaProvince;
+use common\models\Notification;
+use common\models\Transaction;
 use common\models\User;
 use common\models\Wallet;
 use frontend\models\AdsForm;
 use Intervention\Image\ImageManagerStatic as Image;
+use trntv\filekit\Storage;
 use Yii;
 use yii\base\ErrorException;
+use yii\di\Instance;
 use yii\filters\AccessControl;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\helpers\Url;
 use yii\rest\ActiveController;
 use yii\web\HttpException;
-use trntv\filekit\Storage;
-use yii\di\Instance;
+
 /**
  * @author Eugene Terentev <eugene@terentev.net>
  */
@@ -93,7 +95,7 @@ class AdsController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'price-basic','price', 'view-guest'];
+        $behaviors['authenticator']['except'] = ['options', 'price-basic', 'price', 'view-guest'];
 
 
         // setup access
@@ -156,26 +158,38 @@ class AdsController extends ActiveController
         $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
         $model->user_id = $user->id;
         $wallet = Wallet::find()->where(['user_id' => $user->id])->one();
+
         if (!$wallet || intval($wallet->amount) < $model->budget) {
             // Validation error
             $response->setStatusCode(402);
             return 'Tài khoản không đủ tiền';
         }
-        if ($model->validate() && ($ads = $model->save())) {
-            $response->setStatusCode(200);
-            $response->getHeaders()->set('Location', Url::toRoute([$ads->id], true));
-            return array(
-                'id' => $ads->id,
-                'title' => $ads->title,
-                'require' => $ads->content,
-                'message' => $ads->description,
-                'budget' => $ads->budget,
-                'cat_id' => $ads->cat_id,
-                'age_min' => $ads->age_min,
-                'age_max' => $ads->age_max,
-                'created_at' => date('Y-m-d H:i:s', $ads->created_at),
-                'thumbnail' => $ads->thumb,
-            );
+
+        if ($model->validate()) {
+            if ($model->calculateShare() <= 0) {
+                $response->setStatusCode(402);
+                return 'Ngân sách không đủ để quảng cáo';
+            }
+
+            if (($ads = $model->save())) {
+                $response->setStatusCode(200);
+                $response->getHeaders()->set('Location', Url::toRoute([$ads->id], true));
+                return array(
+                    'id' => $ads->id,
+                    'title' => $ads->title,
+                    'require' => $ads->content,
+                    'message' => $ads->description,
+                    'budget' => $ads->budget,
+                    'cat_id' => $ads->cat_id,
+                    'age_min' => $ads->age_min,
+                    'age_max' => $ads->age_max,
+                    'created_at' => date('Y-m-d H:i:s', $ads->created_at),
+                    'thumbnail' => $ads->thumb,
+                );
+            }else{
+                $response->setStatusCode(402);
+                return 'Không tạo được quảng cáo';
+            }
         } else {
             // Validation error
             $message = '';
@@ -229,10 +243,10 @@ class AdsController extends ActiveController
 
                 $basic = \Yii::$app->keyStorage->get('config.price-basic', 5000);
                 $wallet = Wallet::find()->where(['user_id' => $user->id])->one();
-                if($wallet){
+                if ($wallet) {
                     $wallet->amount = $wallet->amount + $basic;
                     $wallet->save();
-                }else{
+                } else {
                     $wallet = new Wallet();
                     $wallet->user_id = $user->id;
                     $wallet->amount = $basic;
@@ -248,8 +262,8 @@ class AdsController extends ActiveController
                 $transaction->save();
 
                 $notification = new Notification();
-                $notification->title = "Bạn nhận được ".$basic."k từ share ".$advertise->title;
-                $notification->description = "Chia sẻ thành công và nhận ".$basic."k từ share ".$advertise->title;
+                $notification->title = "Bạn nhận được " . $basic . "k từ share " . $advertise->title;
+                $notification->description = "Chia sẻ thành công và nhận " . $basic . "k từ share " . $advertise->title;
                 $notification->user_id = $user->id;
                 $notification->ads_id = $advertise->id;
                 $notification->save();
@@ -314,16 +328,16 @@ class AdsController extends ActiveController
             $width = $height = 0;
         }
 
-        if($advertise->thumb){
+        if ($advertise->thumb) {
             $thumbnail_generate = '';
-        }else{
+        } else {
             $fileStorage = Instance::ensure('fileStorage', Storage::className());
-            if (is_file(\Yii::getAlias('@storage') . '/web/source/shares/bg_color_'.$advertise->id.'.png')) {
-                $thumbnail_generate = $fileStorage->baseUrl.'/shares/bg_color_'.$advertise->id.'.png';
-            }else{
+            if (is_file(\Yii::getAlias('@storage') . '/web/source/shares/bg_color_' . $advertise->id . '.png')) {
+                $thumbnail_generate = $fileStorage->baseUrl . '/shares/bg_color_' . $advertise->id . '.png';
+            } else {
                 // configure with favored image driver (gd by default)
                 Image::configure(array('driver' => 'imagick'));
-                $image = Image::make('img/bg_color.png')->text($advertise->description,320,320,function($font) {
+                $image = Image::make('img/bg_color.png')->text($advertise->description, 320, 320, function ($font) {
                     $font->file('font/arial.ttf');
                     $font->size(30);
                     $font->color('#fdf6e3');
@@ -332,9 +346,9 @@ class AdsController extends ActiveController
                     //$font->angle(45);
                 });
                 //
-                $image->save(\Yii::getAlias('@storage') . '/web/source/shares/bg_color_'.$advertise->id.'.png');
+                $image->save(\Yii::getAlias('@storage') . '/web/source/shares/bg_color_' . $advertise->id . '.png');
 
-                $thumbnail_generate = $fileStorage->baseUrl.'/shares/bg_color_'.$advertise->id.'.png';
+                $thumbnail_generate = $fileStorage->baseUrl . '/shares/bg_color_' . $advertise->id . '.png';
             }
 
         }
@@ -461,11 +475,12 @@ class AdsController extends ActiveController
         $response = \Yii::$app->getResponse();
         $response->setStatusCode(200);
         return array(
-            'price_basic'=>   \Yii::$app->keyStorage->get('config.price-basic', 5000),
-            'service'=>   \Yii::$app->keyStorage->get('config.service', 20),
-            'option'=>   \Yii::$app->keyStorage->get('config.option', 10),
+            'price_basic' => \Yii::$app->keyStorage->get('config.price-basic', 5000),
+            'service' => \Yii::$app->keyStorage->get('config.service', 20),
+            'option' => \Yii::$app->keyStorage->get('config.option', 10),
         );
     }
+
     public function actionLocation()
     {
         $response = \Yii::$app->getResponse();
