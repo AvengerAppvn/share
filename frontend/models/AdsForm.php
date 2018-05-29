@@ -191,26 +191,27 @@ class AdsForm extends Model
     // Lấy tiền mà đã trừ phần trăm của hệ thống
     private function getRealBudget()
     {
+        $percent = \Yii::$app->keyStorage->get('config.service', 20);
         if ($this->budget) {
-            return $this->budget - ($this->budget * 0.2);
+            return $this->budget - ($this->budget * $percent/100);
         }
         return 0;
     }
 
     private function getPriceUnit()
     {
-        $price_base = \Yii::$app->keyStorage->get('config.price-basic', 5000);
-
+        $price_base = (int)\Yii::$app->keyStorage->get('config.price-basic', 5000);
+        $option = (int)\Yii::$app->keyStorage->get('config.option', 10);
         $price_unit = $price_base;
         if ($this->location && $this->location > 0) {
-            $price_unit += $price_base * 0.1;
+            $price_unit += $price_base * $option/100;
         }
         if ($this->age && $this->age > 0) {
-            $price_unit += $price_base * 0.1;
+            $price_unit += $price_base * $option/100;
         }
 
         if ($this->category && $this->category > 0) {
-            $price_unit += $price_base * 0.1;
+            $price_unit += $price_base * $option/100;
         }
 
         return $price_unit;
