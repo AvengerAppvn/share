@@ -172,10 +172,9 @@ class AdsForm extends Model
 
     public function calculateShare()
     {
-        $budget = $this->getRealBudget();
-        if ($budget) {
+        if ($this->budget) {
             $price_unit = $this->getPriceUnit();
-            return intval($budget / $price_unit);
+            return intval($this->budget / $price_unit);
         }
 
         return 0;
@@ -188,18 +187,9 @@ class AdsForm extends Model
         return $share * $price;
     }
 
-    // Lấy tiền mà đã trừ phần trăm của hệ thống
-    private function getRealBudget()
-    {
-        $percent = \Yii::$app->keyStorage->get('config.service', 20);
-        if ($this->budget) {
-            return $this->budget - ($this->budget * $percent/100);
-        }
-        return 0;
-    }
-
     private function getPriceUnit()
     {
+        $percent = \Yii::$app->keyStorage->get('config.service', 20);
         $price_base = (int)\Yii::$app->keyStorage->get('config.price-basic', 5000);
         $option = (int)\Yii::$app->keyStorage->get('config.option', 10);
         $price_unit = $price_base;
@@ -213,7 +203,7 @@ class AdsForm extends Model
         if ($this->category && $this->category > 0) {
             $price_unit += $price_base * $option/100;
         }
-
+        $price_unit += $price_base * $percent/100;
         return $price_unit;
     }
 }
