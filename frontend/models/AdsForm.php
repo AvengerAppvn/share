@@ -61,7 +61,6 @@ class AdsForm extends Model
             $model->require = $this->require;
             $model->message = $this->message;
             $model->description = $this->message;
-            $model->budget = $this->budget;
             if ($this->category) {
                 $model->cat_id = $this->category[0];
             } else {
@@ -75,6 +74,7 @@ class AdsForm extends Model
             $price = $this->getPriceUnit();
             $share = $this->calculateShare();
             $realMoney = $this->getRealMoney($share,$price);
+            $model->budget = $realMoney;
             $wallet = Wallet::find()->where(['user_id' => $this->user_id])->one();
             if ($wallet && $wallet->amount >= $model->budget) {
                 $wallet->amount = $wallet->amount - $realMoney;
