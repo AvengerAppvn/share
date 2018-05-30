@@ -93,15 +93,6 @@ return array (
       '@yii/authclient' => $vendorDir . '/yiisoft/yii2-authclient/src',
     ),
   ),
-  'trntv/yii2-file-kit' => 
-  array (
-    'name' => 'trntv/yii2-file-kit',
-    'version' => '1.3.0.0',
-    'alias' => 
-    array (
-      '@trntv/filekit' => $vendorDir . '/trntv/yii2-file-kit/src',
-    ),
-  ),
   'trntv/yii2-datetime-widget' => 
   array (
     'name' => 'trntv/yii2-datetime-widget',
@@ -127,15 +118,6 @@ return array (
     'alias' => 
     array (
       '@yii/debug' => $vendorDir . '/yiisoft/yii2-debug',
-    ),
-  ),
-  'yiisoft/yii2-gii' => 
-  array (
-    'name' => 'yiisoft/yii2-gii',
-    'version' => '2.0.6.0',
-    'alias' => 
-    array (
-      '@yii/gii' => $vendorDir . '/yiisoft/yii2-gii',
     ),
   ),
   'yiisoft/yii2-faker' => 
@@ -172,24 +154,6 @@ return array (
     'alias' => 
     array (
       '@yii/imperavi' => $vendorDir . '/asofter/yii2-imperavi-redactor/yii/imperavi',
-    ),
-  ),
-  'trntv/yii2-aceeditor' => 
-  array (
-    'name' => 'trntv/yii2-aceeditor',
-    'version' => '2.1.1.0',
-    'alias' => 
-    array (
-      '@trntv/aceeditor' => $vendorDir . '/trntv/yii2-aceeditor/src',
-    ),
-  ),
-  'trntv/yii2-glide' => 
-  array (
-    'name' => 'trntv/yii2-glide',
-    'version' => '1.2.1.0',
-    'alias' => 
-    array (
-      '@trntv/glide' => $vendorDir . '/trntv/yii2-glide/src',
     ),
   ),
   'himiklab/yii2-recaptcha-widget' => 
@@ -237,15 +201,6 @@ return array (
       '@kartik/sortable' => $vendorDir . '/kartik-v/yii2-sortable',
     ),
   ),
-  'kartik-v/yii2-grid' => 
-  array (
-    'name' => 'kartik-v/yii2-grid',
-    'version' => '3.1.1.0',
-    'alias' => 
-    array (
-      '@kartik/grid' => $vendorDir . '/kartik-v/yii2-grid',
-    ),
-  ),
   'kartik-v/yii2-dynagrid' => 
   array (
     'name' => 'kartik-v/yii2-dynagrid',
@@ -255,13 +210,76 @@ return array (
       '@kartik/dynagrid' => $vendorDir . '/kartik-v/yii2-dynagrid',
     ),
   ),
+  'trntv/yii2-aceeditor' => 
+  array (
+    'name' => 'trntv/yii2-aceeditor',
+    'version' => '2.1.2.0',
+    'alias' => 
+    array (
+      '@trntv/aceeditor' => $vendorDir . '/trntv/yii2-aceeditor/src',
+    ),
+  ),
+  'trntv/yii2-file-kit' => 
+  array (
+    'name' => 'trntv/yii2-file-kit',
+    'version' => '1.3.1.0',
+    'alias' => 
+    array (
+      '@trntv/filekit' => $vendorDir . '/trntv/yii2-file-kit/src',
+    ),
+  ),
+  'trntv/yii2-glide' => 
+  array (
+    'name' => 'trntv/yii2-glide',
+    'version' => '1.2.2.0',
+    'alias' => 
+    array (
+      '@trntv/glide' => $vendorDir . '/trntv/yii2-glide/src',
+    ),
+  ),
+  'kartik-v/yii2-mpdf' => 
+  array (
+    'name' => 'kartik-v/yii2-mpdf',
+    'version' => '1.0.2.0',
+    'alias' => 
+    array (
+      '@kartik/mpdf' => $vendorDir . '/kartik-v/yii2-mpdf',
+    ),
+  ),
+  'kartik-v/yii2-dialog' => 
+  array (
+    'name' => 'kartik-v/yii2-dialog',
+    'version' => '1.0.3.0',
+    'alias' => 
+    array (
+      '@kartik/dialog' => $vendorDir . '/kartik-v/yii2-dialog',
+    ),
+  ),
+  'kartik-v/yii2-grid' => 
+  array (
+    'name' => 'kartik-v/yii2-grid',
+    'version' => '3.1.7.0',
+    'alias' => 
+    array (
+      '@kartik/grid' => $vendorDir . '/kartik-v/yii2-grid',
+    ),
+  ),
   'kartik-v/yii2-export' => 
   array (
     'name' => 'kartik-v/yii2-export',
-    'version' => '1.2.6.0',
+    'version' => '1.2.9.0',
     'alias' => 
     array (
       '@kartik/export' => $vendorDir . '/kartik-v/yii2-export',
+    ),
+  ),
+  'yiisoft/yii2-gii' => 
+  array (
+    'name' => 'yiisoft/yii2-gii',
+    'version' => '2.0.7.0',
+    'alias' => 
+    array (
+      '@yii/gii' => $vendorDir . '/yiisoft/yii2-gii/src',
     ),
   ),
 );

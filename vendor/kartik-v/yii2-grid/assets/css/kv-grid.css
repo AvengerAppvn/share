@@ -1,8 +1,8 @@
 /*!
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2016
- * @version   3.1.1
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2017
+ * @version   3.1.7
  *
  * Gridview widget styling and enhancements for Bootstrap.
  * Built for Yii Framework 2.0
@@ -68,7 +68,7 @@
 }
 
 .kv-merged-header {
-    border-bottom: 2px solid #ddd !important;
+    border-bottom-width: 2px;
 }
 
 .kv-page-summary {
@@ -95,16 +95,32 @@
 }
 
 .kv-grid-loading {
-    opacity: 0.5;
-    background: #ffffff url('../img/loading.gif') center center no-repeat !important;
+    position: relative;
+    overflow: hidden;
 }
 
-.kv-grid-loading tr, .kv-grid-loading td {
-    background: transparent !important;
+.kv-grid-loading .kv-loader-overlay {
+    display: block;
 }
 
-.kv-grid-loading td {
-    border-color: #efefef !important;
+.kv-loader-overlay {
+    background: #fff;
+    position: absolute;
+    opacity: 0.6;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.kv-loader {
+    position: absolute;
+    background: #fff url('../img/loading.gif') center center no-repeat!important;
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: 50%;
 }
 
 .kv-grid-hide {
@@ -334,8 +350,10 @@ td.kv-group-odd {
 }
 
 /**
- * Fix overflow and make responsive for mobile/small devices
+ * Fix overflow and make layout responsive for mobile/small devices
  */
-.grid-view .rc-handle-container {
-    overflow: hidden;
+@media (max-width:768px) {
+    .hide-resize .rc-handle-container {
+        overflow: hidden;
+    }
 }

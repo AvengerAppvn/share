@@ -1,23 +1,64 @@
 <?php
 
-use yii\grid\GridView;
-use yii\helpers\Html;
 use common\components\helper\CUtils;
+use kartik\export\ExportMenu;
+use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('backend', 'Danh sách người dùng');
 $this->params['breadcrumbs'][] = $this->title;
+
+
 ?>
 <div class="user-index">
+    <div class="row">
+        <div class="col-md-12">
 
-    <p>
-        <?php echo Html::a(Yii::t('backend', 'Tạo {modelClass}', [
-            'modelClass' => 'Người dùng',
-        ]), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+            <?php
+            $gridColumns = [
+                ['class' => 'yii\grid\SerialColumn'],
+                //'id',
+                [
+                    'label' => 'Họ và tên',
+                    'value' => function ($model) {
+                        return $model->userProfile ? $model->userProfile->fullname : $model->username;
+                    },
+                ],
+                'phone',
+                'email',
+                [
+                    'label' => 'Địa chỉ',
+                    'value' => function ($model) {
+                        return $model->userProfile ? $model->userProfile->address : '';
+                    },
+                ],
+                [
+                    'label' => 'Thế mạnh',
+                    'value' => function ($model) {
+                        //$model->userProfile->strengths;
+                        return $model->userProfile ? $model->userProfile->strengths : '';
+                    },
+                ],
+                //['class' => 'yii\grid\ActionColumn'],
+            ];
+
+            // Renders a export dropdown menu
+            echo ExportMenu::widget([
+                'dataProvider' => $dataProvider,
+                'columns' => $gridColumns,
+            ]);
+            ?>
+            <?php echo Html::a(Yii::t('backend', 'Tạo {modelClass}', [
+                'modelClass' => 'Người dùng',
+            ]), ['create'], ['class' => 'btn btn-success']) ?>
+        </div>
+    </div>
+
 
     <?php echo GridView::widget([
         'dataProvider' => $dataProvider,
@@ -57,13 +98,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Trạng thái',
                 'format' => 'html',
                 'value' => function ($model) {
-                    if(1 == $model->is_confirmed) {
-                      return  Html::tag("i", ' Đã xác minh', ['class' => 'fa fa-check text-success']);
+                    if (1 == $model->is_confirmed) {
+                        return Html::tag("i", ' Đã xác minh', ['class' => 'fa fa-check text-success']);
                     };
-                    if(2 == $model->is_confirmed) {
+                    if (2 == $model->is_confirmed) {
                         return Html::a("Xác minh", ['confirm', 'id' => $model->id], ['target' => '_blank', 'class' => 'btn btn-success']);
                     }
-                    return  Html::tag("i", ' Chưa xác minh', ['class' => 'fa fa-check text-danger']);
+                    return Html::tag("i", ' Chưa xác minh', ['class' => 'fa fa-check text-danger']);
                 },
                 'filter' => ArrayHelper::map(CUtils::statusUser(), 'id', 'name'),
             ],

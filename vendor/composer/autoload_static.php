@@ -9,16 +9,20 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
     public static $files = array (
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
+        '20f378a8a84881cf108b4428c19cf452' => __DIR__ . '/..' . '/league/uri-hostname-parser/src/functions_include.php',
+        'e1e8b49c332434256b5df11b0f0c2a62' => __DIR__ . '/..' . '/league/uri-parser/src/functions_include.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        '48197193621c5ab80fbc196827e806d1' => __DIR__ . '/..' . '/league/uri-components/src/functions_include.php',
+        '244240de28ad61783068aef6c6b63aea' => __DIR__ . '/..' . '/league/uri-schemes/src/functions_include.php',
         '180092cfc969a12e06f2132a203a3184' => __DIR__ . '/..' . '/codeception/verify/src/Codeception/function.php',
-        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
-        '50b81ffc01da30f98e463592787d7917' => __DIR__ . '/..' . '/jeremykendall/php-domain-parser/src/pdp-parse-url.php',
         'a9ed0d27b5a698798a89181429f162c5' => __DIR__ . '/..' . '/khanamiryan/qrcode-detector-decoder/lib/Common/customFunctions.php',
+        'eadffebc88609f262c6ec51faebeac60' => __DIR__ . '/..' . '/league/uri-manipulations/src/functions_include.php',
         '023d27dca8066ef29e6739335ea73bad' => __DIR__ . '/..' . '/symfony/polyfill-php70/bootstrap.php',
-        'ee05f3eb6cd106ac99bfaf4d0d9829d8' => __DIR__ . '/..' . '/league/uri/src/functions_include.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
     );
 
@@ -72,10 +76,12 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         array (
             'kartik\\sortable\\' => 16,
             'kartik\\select2\\' => 15,
+            'kartik\\mpdf\\' => 12,
             'kartik\\grid\\' => 12,
             'kartik\\form\\' => 12,
             'kartik\\export\\' => 14,
             'kartik\\dynagrid\\' => 16,
+            'kartik\\dialog\\' => 14,
             'kartik\\base\\' => 12,
         ),
         'h' => 
@@ -107,6 +113,7 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         array (
             'Symfony\\Polyfill\\Php70\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Polyfill\\Ctype\\' => 23,
             'Symfony\\Component\\Yaml\\' => 23,
             'Symfony\\Component\\Process\\' => 26,
             'Symfony\\Component\\HttpFoundation\\' => 33,
@@ -119,9 +126,15 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         ),
         'P' => 
         array (
+            'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
+            'PhpOffice\\PhpSpreadsheet\\' => 25,
             'ParagonIE\\ConstantTime\\' => 23,
+        ),
+        'M' => 
+        array (
+            'Mpdf\\' => 5,
         ),
         'L' => 
         array (
@@ -160,7 +173,6 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         ),
         'C' => 
         array (
-            'Coinbase\\Wallet\\' => 16,
             'Codeception\\PHPUnit\\' => 20,
             'Codeception\\Extension\\' => 22,
             'Codeception\\' => 12,
@@ -182,7 +194,7 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         ),
         'yii\\gii\\' => 
         array (
-            0 => __DIR__ . '/..' . '/yiisoft/yii2-gii',
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-gii/src',
         ),
         'yii\\faker\\' => 
         array (
@@ -274,6 +286,10 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-select2',
         ),
+        'kartik\\mpdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-mpdf',
+        ),
         'kartik\\grid\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-grid',
@@ -289,6 +305,10 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         'kartik\\dynagrid\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-dynagrid',
+        ),
+        'kartik\\dialog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-dialog',
         ),
         'kartik\\base\\' => 
         array (
@@ -330,6 +350,10 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
         'Symfony\\Component\\Yaml\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/yaml',
@@ -366,6 +390,10 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         array (
             0 => __DIR__ . '/..' . '/symfony/browser-kit',
         ),
+        'Psr\\SimpleCache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
@@ -374,13 +402,26 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
+        'PhpOffice\\PhpSpreadsheet\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
+        ),
         'ParagonIE\\ConstantTime\\' => 
         array (
             0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
         ),
+        'Mpdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
+        ),
         'League\\Uri\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/uri/src',
+            0 => __DIR__ . '/..' . '/league/uri-components/src',
+            1 => __DIR__ . '/..' . '/league/uri-hostname-parser/src',
+            2 => __DIR__ . '/..' . '/league/uri-interfaces/src',
+            3 => __DIR__ . '/..' . '/league/uri-manipulations/src',
+            4 => __DIR__ . '/..' . '/league/uri-parser/src',
+            5 => __DIR__ . '/..' . '/league/uri-schemes/src',
         ),
         'League\\Glide\\' => 
         array (
@@ -446,10 +487,6 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         array (
             0 => __DIR__ . '/..' . '/2amigos/qrcode-library/src',
         ),
-        'Coinbase\\Wallet\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/coinbase/coinbase/src',
-        ),
         'Codeception\\PHPUnit\\' => 
         array (
             0 => __DIR__ . '/..' . '/codeception/phpunit-wrapper/src',
@@ -478,14 +515,6 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
             'Prophecy\\' => 
             array (
                 0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
-            ),
-            'Pdp\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/jeremykendall/php-domain-parser/src',
-            ),
-            'PHPExcel' => 
-            array (
-                0 => __DIR__ . '/..' . '/phpoffice/phpexcel/Classes',
             ),
         ),
         'H' => 
@@ -531,9 +560,14 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         'AssertionError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/AssertionError.php',
         'DivisionByZeroError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/DivisionByZeroError.php',
         'Error' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/Error.php',
+        'FPDF_TPL' => __DIR__ . '/..' . '/setasign/fpdi/fpdf_tpl.php',
+        'FPDI' => __DIR__ . '/..' . '/setasign/fpdi/fpdi.php',
         'File_Iterator' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Iterator.php',
         'File_Iterator_Facade' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Facade.php',
         'File_Iterator_Factory' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Factory.php',
+        'FilterASCII85' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterASCII85.php',
+        'FilterASCIIHexDecode' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterASCIIHexDecode.php',
+        'FilterLZW' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterLZW.php',
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert.php',
         'PHPUnit\\Framework\\AssertionFailedError' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/AssertionFailedError.php',
@@ -1097,6 +1131,8 @@ class ComposerStaticInit5572f4033462106ee19f0d22c15cf7a6
         'elFinderVolumeOneDrive' => __DIR__ . '/..' . '/studio-42/elfinder/php/elFinderVolumeOneDrive.class.php',
         'elFinderVolumeTrash' => __DIR__ . '/..' . '/studio-42/elfinder/php/elFinderVolumeTrash.class.php',
         'elFinderVolumeTrashMySQL' => __DIR__ . '/..' . '/studio-42/elfinder/php/elFinderVolumeTrashMySQL.class.php',
+        'fpdi_pdf_parser' => __DIR__ . '/..' . '/setasign/fpdi/fpdi_pdf_parser.php',
+        'pdf_context' => __DIR__ . '/..' . '/setasign/fpdi/pdf_context.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
