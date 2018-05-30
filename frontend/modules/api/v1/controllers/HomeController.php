@@ -236,7 +236,7 @@ class HomeController extends ActiveController
         }
 
         $response->setStatusCode(200);
-        $advertises = CategoryAds::find()->where(['cat_id'=>[0,$cat_id]])->limit($page_size)->offset($index)->orderBy('id desc')->all();
+        $advertises = CategoryAds::find()->where(['cat_id'=>[$cat_id]])->limit($page_size)->offset($index)->orderBy('id desc')->all();
         //$advertises = Advertise::find()->where(['cat_id'=>[0,$cat_id]])->limit($page_size)->offset($index)->orderBy('id desc')->active()->all();
         $advertisesResult = [];
 
