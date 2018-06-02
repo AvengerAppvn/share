@@ -304,9 +304,13 @@ class AdsController extends ActiveController
         $owner = User::findOne($advertise->created_by);
         $customer_avatar = null;
         $customer_name = null;
+        $customer_phone = null;
+        $customer_email = null;
         if ($user) {
             $customer_avatar = $owner->userProfile->avatar;
             $customer_name = $owner->userProfile->fullname;
+            $customer_email = $owner->email;
+            $customer_phone = $owner->phone;
         }
 
         $images = [];
@@ -367,6 +371,8 @@ class AdsController extends ActiveController
             'shared_count' => intval(AdsShare::find()->where(['ads_id' => $advertise->id])->count()),
             'customer_avatar' => $customer_avatar ?: '',
             'customer_name' => $customer_name ?: '',
+            'customer_phone' => $customer_phone ?: '',
+            'customer_email' => $customer_email ?: '',
             'is_shared' => AdsShare::find()->where(['ads_id' => $advertise->id, 'user_id' => $user->id])->exists() ? 1 : 0,
         );
     }
@@ -515,5 +521,33 @@ class AdsController extends ActiveController
             );
         }
         return $agesResult;
+    }
+
+    public function actionCancel()
+    {
+        $response = \Yii::$app->getResponse();
+        // ads_id
+        $ads_id = Yii::$app->request->post('ads_id');
+        if (!$ads_id) {
+            $response->setStatusCode(422);
+            return 'Thiếu tham số ads_id';
+        }
+
+        $advertise = Advertise::findOne($ads_id);
+        if (!$advertise) {
+            $response->setStatusCode(404);
+            return 'Không có dữ liệu với id=' . $ads_id;
+        }
+
+        $response->setStatusCode(200);
+
+        $shares = AdsShare::find()->where(['ads_id' => $ads_id])->all();
+        $sharesResult = [];
+        $advertise->status = Advertise::STATUS_CANCEL;
+        $advertise->save();
+        return  array(
+            'id' => $advertise->id,
+            'return' => 2000,
+        );
     }
 }
