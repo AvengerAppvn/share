@@ -90,7 +90,7 @@ class HomeController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'guest','category-guest'];
+        $behaviors['authenticator']['except'] = ['options', 'guest','category-guest','email','phone'];
 
 
         // setup access
@@ -310,6 +310,26 @@ class HomeController extends ActiveController
             'share' => $advertise->share ?: 0,
             'customer_avatar' => $customer_avatar?:'',
             'customer_name' => $customer_name?:'',
+        );
+    }
+
+    public function actionEmail()
+    {
+        $response = \Yii::$app->getResponse();
+        $response->setStatusCode(200);
+        return array(
+            'email' => \Yii::$app->keyStorage->get('config.email', ''),
+            'description' => 'Email hỗ trợ khách hàng',
+        );
+    }
+
+    public function actionPhone()
+    {
+        $response = \Yii::$app->getResponse();
+        $response->setStatusCode(200);
+        return array(
+            'phone' => \Yii::$app->keyStorage->get('config.phone', ''),
+            'description' => 'Số điện thoại hỗ trợ khách hàng',
         );
     }
 }
