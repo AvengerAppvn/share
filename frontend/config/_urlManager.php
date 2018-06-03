@@ -21,5 +21,6 @@ return [
 
         $domain.'chinh-sach' => 'site/privacy',
         $domain.'dieu-khoan' => 'site/term',
+        $domain.'about' => 'site/about',
     ]
 ];
