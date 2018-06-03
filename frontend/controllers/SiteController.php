@@ -81,4 +81,15 @@ class SiteController extends Controller
         $viewFile = $model->view ?: 'view';
         return $this->render($viewFile, ['model' => $model]);
     }
+
+    public function actionAbout()
+    {
+        $model = Page::find()->where(['slug' => 'about', 'status' => Page::STATUS_PUBLISHED])->one();
+        if (!$model) {
+            throw new NotFoundHttpException(Yii::t('frontend', 'Page not found'));
+        }
+
+        $viewFile = $model->view ?: 'view';
+        return $this->render($viewFile, ['model' => $model]);
+    }
 }
