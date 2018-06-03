@@ -332,4 +332,15 @@ class HomeController extends ActiveController
             'description' => 'Số điện thoại hỗ trợ khách hàng',
         );
     }
+
+    public function actionAbout()
+    {
+        $response = \Yii::$app->getResponse();
+        $response->setStatusCode(200);
+        return array(
+            'about' => \Yii::$app->keyStorage->get('config.about', ''),
+            'description' => 'Trang giới thiệu dịch vụ',
+        );
+    }
+
 }
