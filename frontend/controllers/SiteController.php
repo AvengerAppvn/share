@@ -94,7 +94,7 @@ class SiteController extends Controller
             throw new NotFoundHttpException(Yii::t('frontend', 'Page not found'));
         }
 
-        $viewFile = $model->view ?: 'view';
+        $viewFile = 'page';
         return $this->render($viewFile, ['model' => $model]);
     }
 }
