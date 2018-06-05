@@ -7,6 +7,7 @@ return [
     'rules'=> [
         // Pages
         ['pattern'=>'page/<slug>', 'route'=>'page/view'],
+        ['pattern'=>'<slug>', 'route'=>'page/view'],
 
         // Articles
         ['pattern'=>'article/index', 'route'=>'article/index'],
@@ -21,6 +22,5 @@ return [
 
         $domain.'chinh-sach' => 'site/privacy',
         $domain.'dieu-khoan' => 'site/term',
-        $domain.'about' => 'site/about',
     ]
 ];

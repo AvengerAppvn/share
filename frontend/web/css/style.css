@@ -111,6 +111,8 @@ a.desc:after {
     border: none;
 }
 
-
-
+.landing{
+  background: url("../img/background_app.jpg");
+}
+.navbar-brand a{color:#fff;}
 /*# sourceMappingURL=style.map */

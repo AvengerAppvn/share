@@ -34,11 +34,13 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+        $this->layout = 'main-landing';
         return $this->render('index');
     }
 
     public function actionContact()
     {
+        $this->layout = 'main-landing';
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($model->contact(Yii::$app->params['adminEmail'])) {
@@ -62,6 +64,7 @@ class SiteController extends Controller
 
     public function actionPrivacy()
     {
+        $this->layout = 'main-landing';
         $model = Page::find()->where(['slug' => 'privacy', 'status' => Page::STATUS_PUBLISHED])->one();
         if (!$model) {
             throw new NotFoundHttpException(Yii::t('frontend', 'Page not found'));
@@ -73,6 +76,7 @@ class SiteController extends Controller
 
     public function actionTerm()
     {
+        $this->layout = 'main-landing';
         $model = Page::find()->where(['slug' => 'term', 'status' => Page::STATUS_PUBLISHED])->one();
         if (!$model) {
             throw new NotFoundHttpException(Yii::t('frontend', 'Page not found'));
@@ -84,6 +88,7 @@ class SiteController extends Controller
 
     public function actionAbout()
     {
+        $this->layout = 'main-landing';
         $model = Page::find()->where(['slug' => 'about', 'status' => Page::STATUS_PUBLISHED])->one();
         if (!$model) {
             throw new NotFoundHttpException(Yii::t('frontend', 'Page not found'));
