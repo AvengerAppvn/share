@@ -23,10 +23,4 @@ $this->beginContent('@frontend/views/layouts/_clear.php')
 
     </div>
 
-    <footer class="footer">
-        <div class="container">
-            <p class="pull-left">&copy; <?php echo date('Y') ?> Shareme. All rights reserved. Privacy Policy </p>
-
-        </div>
-    </footer>
 <?php $this->endContent() ?>
