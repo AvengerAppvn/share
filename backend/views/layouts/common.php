@@ -235,6 +235,7 @@ $bundle = BackendAsset::register($this);
                         'icon' => '<i class="fa fa-cogs"></i>',
                         'options' => ['class' => 'treeview'],
                         'items' => [
+                            ['label' => Yii::t('backend', 'Compare'), 'url' => ['/tool/compare'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                             [
                                 'label' => Yii::t('backend', 'i18n'),
                                 'url' => '#',
