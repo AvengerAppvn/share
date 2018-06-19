@@ -12,8 +12,6 @@ use common\models\Transaction;
 use common\models\User;
 use common\models\Wallet;
 use frontend\models\AdsForm;
-use frontend\modules\api\v1\resources\RequireCustomer;
-use frontend\modules\api\v1\resources\Time;
 use Intervention\Image\ImageManagerStatic as Image;
 use trntv\filekit\Storage;
 use Yii;
@@ -27,13 +25,14 @@ use yii\rest\ActiveController;
 use yii\web\HttpException;
 
 /**
+ * @author Eugene Terentev <eugene@terentev.net>
  */
-class AdsController extends ActiveController
+class CampaignController extends ActiveController
 {
     /**
      * @var string
      */
-    public $modelClass = 'frontend\modules\api\v1\resources\Advertise';
+    public $modelClass = 'frontend\modules\api\v1\resources\Campaign';
 
     public function __construct($id, $module, $config = [])
     {
@@ -96,17 +95,17 @@ class AdsController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'price-basic', 'price', 'view-guest', 'requires', 'time'];
+        $behaviors['authenticator']['except'] = ['options', 'price-basic', 'price', 'view-guest'];
 
 
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['view', 'location', 'age', 'share', 'shared','change-avatar'], //only be applied to
+            'only' => ['view', 'location', 'age', 'share', 'shared'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['view', 'location', 'age', 'share', 'shared','change-avatar'],
+                    'actions' => ['view', 'location', 'age', 'share', 'shared'],
                     'roles' => ['@']
                 ]
             ],
@@ -115,41 +114,27 @@ class AdsController extends ActiveController
         return $behaviors;
     }
 
-    public function actionIndex()
+    public function actionPause()
     {
-        $page_size = Yii::$app->request->get('page_size');
-        $page_index = Yii::$app->request->get('page_index');
-        if (!$page_size) {
-            $page_size = 8;
-        }
 
-        if (!$page_index) {
-            $page_index = 1;
-        }
+    }
+    public function actionStop()
+    {
 
-        $index = $page_size * ($page_index - 1);
+    }
+    public function actionDeposit()
+    {
 
-        $response = \Yii::$app->getResponse();
-        $response->setStatusCode(200);
-
-        $categories = AdsCategory::find()->limit($page_size)->offset($index)
-            ->orderBy('id desc')
-            ->all();
-        $categoriesResult = [];
-
-        foreach ($categories as $category) {
-
-            $categoriesResult[] = array(
-                'id' => $category->id,
-                'name' => $category->name,
-                'thumbnail' => $category->thumbnail,
-                'new' => 0,
-
-            );
-        }
-        return $categoriesResult;
     }
 
+    public function actionMe()
+    {
+
+    }
+    public function actionReport()
+    {
+
+    }
     public function actionCreate()
     {
         $user = User::findIdentity(\Yii::$app->user->getId());
@@ -187,7 +172,7 @@ class AdsController extends ActiveController
                     'created_at' => date('Y-m-d H:i:s', $ads->created_at),
                     'thumbnail' => $ads->thumb,
                 );
-            } else {
+            }else{
                 $response->setStatusCode(402);
                 return 'Không tạo được quảng cáo';
             }
@@ -546,71 +531,9 @@ class AdsController extends ActiveController
         $sharesResult = [];
         $advertise->status = Advertise::STATUS_CANCEL;
         $advertise->save();
-        return array(
+        return  array(
             'id' => $advertise->id,
             'return' => 2000,
-        );
-    }
-
-
-    public function actionRequires()
-    {
-        //$response = \Yii::$app->getResponse();
-        //$response->setStatusCode(200);
-        return RequireCustomer::find()->all();
-    }
-
-    public function actionTime()
-    {
-        //$response = \Yii::$app->getResponse();
-        //$response->setStatusCode(200);
-        return Time::find()->all();
-    }
-
-
-    public function actionChangeAvatar()
-    {
-        $user = User::findIdentity(\Yii::$app->user->getId());
-        $response = \Yii::$app->getResponse();
-        // ads_id
-        $ads_id = Yii::$app->request->post('ads_id');
-        $fbid = Yii::$app->request->post('fbid');
-        if (!$ads_id) {
-            $response->setStatusCode(422);
-            return 'Thiếu tham số ads_id';
-        }
-
-        if (!$fbid) {
-            $response->setStatusCode(422);
-            return 'Thiếu tham số fbid';
-        }
-
-        $advertise = Advertise::findOne($ads_id);
-        if (!$advertise) {
-            $response->setStatusCode(404);
-            return 'Không có dữ liệu với id=' . $ads_id;
-        }
-
-        // TODO
-        // Get avatar facebook
-
-        // Compare with image
-        $advertise->getAdvertiseImages();
-
-        $compare = 100;
-        // Chọn cái nào để đăng avatar facebook
-
-        if ($compare > 95) {
-            $status = true;
-            $description = 'Da thanh cong';
-        } else {
-            $status = true;
-            $description = 'Da thanh cong';
-        }
-        return array(
-            'status' => $status,
-            'point' => $compare,
-            'description' => $description
         );
     }
 }
