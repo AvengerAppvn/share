@@ -36,6 +36,7 @@ class Advertise extends \yii\db\ActiveRecord
     const STATUS_CANCEL = 3;
     const STATUS_PAUSE = 4;
     const STATUS_STOP = 5;
+    const STATUS_FINISH = 6;
     /**
      * @var array
      */

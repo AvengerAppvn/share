@@ -12,6 +12,7 @@ use common\models\Transaction;
 use common\models\User;
 use common\models\Wallet;
 use frontend\models\AdsForm;
+use frontend\modules\api\v1\resources\Campaign;
 use Intervention\Image\ImageManagerStatic as Image;
 use trntv\filekit\Storage;
 use Yii;
@@ -125,7 +126,7 @@ class CampaignController extends ActiveController
             return 'Thiếu tham số ads_id';
         }
 
-        $ads = Advertise::findOne(['ads_id' => $ads_id, 'user_id' => $user->id]);
+        $ads = Advertise::findOne(['id' => $ads_id, 'user_id' => $user->id]);
         if (!$ads) {
             $response->setStatusCode(422);
             return 'Không tồn tại quảng cáo';
@@ -155,7 +156,7 @@ class CampaignController extends ActiveController
             return 'Thiếu tham số ads_id';
         }
 
-        $ads = Advertise::findOne(['ads_id' => $ads_id, 'user_id' => $user->id]);
+        $ads = Advertise::findOne(['id' => $ads_id, 'user_id' => $user->id]);
         if (!$ads) {
             $response->setStatusCode(422);
             return 'Không tồn tại quảng cáo';
@@ -179,6 +180,10 @@ class CampaignController extends ActiveController
 
     public function actionMe()
     {
+        $user = User::findIdentity(\Yii::$app->user->getId());
+        return new ActiveDataProvider(array(
+            'query' => Campaign::find(['user_id'=>$user->getId()])->active()
+        ));
 
     }
     public function actionReport()
