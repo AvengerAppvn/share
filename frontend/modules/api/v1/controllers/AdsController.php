@@ -102,11 +102,11 @@ class AdsController extends ActiveController
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['view', 'location', 'age', 'share', 'shared','change-avatar'], //only be applied to
+            'only' => ['view', 'location', 'age', 'share', 'shared', 'change-avatar'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['view', 'location', 'age', 'share', 'shared','change-avatar'],
+                    'actions' => ['view', 'location', 'age', 'share', 'shared', 'change-avatar'],
                     'roles' => ['@']
                 ]
             ],
@@ -602,14 +602,14 @@ class AdsController extends ActiveController
 
         if ($compare > 95) {
             $status = true;
-            $description = 'Da thanh cong';
+            $description = 'Thành công';
         } else {
-            $status = true;
-            $description = 'Da thanh cong';
+            $status = false;
+            $description = 'Không hợp lệ';
         }
         return array(
             'status' => $status,
-            'point' => $compare,
+            'point' => (string)$compare,
             'description' => $description
         );
     }
