@@ -187,9 +187,9 @@ class CampaignController extends ActiveController
         $tab = Yii::$app->request->get('tab');
         switch ($tab){
             case 1: $query = Campaign::find(['user_id'=>$user->getId()])->active();break;
-            case 2: $query = CampaignUpdate::find(['user_id'=>$user->getId()])->pauseAndPending();break;
-            case 3: $query = CampaignUpdate::find(['user_id'=>$user->getId()])->finish();break;
-            case 4: $query = CampaignUpdate::find(['user_id'=>$user->getId()])->stop();break;
+            case 2: $query = Campaign::find(['user_id'=>$user->getId()])->pauseAndPending();break;
+            case 3: $query = Campaign::find(['user_id'=>$user->getId()])->finish();break;
+            case 4: $query = Campaign::find(['user_id'=>$user->getId()])->stop();break;
             default:$query = Campaign::find(['user_id'=>$user->getId()])->active();break;
         }
         return new ActiveDataProvider(array(
