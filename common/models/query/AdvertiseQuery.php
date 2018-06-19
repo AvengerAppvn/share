@@ -29,6 +29,15 @@ class AdvertiseQuery extends \yii\db\ActiveQuery
     {
         return $this->andWhere(['status'=>Advertise::STATUS_STOP]);
     }
+    public function finish()
+    {
+        return $this->andWhere(['status'=>Advertise::STATUS_FINISH]);
+    }
+
+    public function pauseAndPending()
+    {
+        return $this->andWhere(['status'=>[Advertise::STATUS_PAUSE,Advertise::STATUS_PENDING]]);
+    }
     /**
      * @inheritdoc
      * @return Advertise[]|array

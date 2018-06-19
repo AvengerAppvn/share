@@ -104,11 +104,11 @@ class CampaignController extends ActiveController
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['view', 'location', 'age', 'share', 'shared'], //only be applied to
+            'only' => ['view', 'report', 'deposit', 'pause', 'stop','me'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['view', 'location', 'age', 'share', 'shared'],
+                    'actions' => ['view', 'report', 'deposit', 'pause', 'stop','me'],
                     'roles' => ['@']
                 ]
             ],
@@ -186,11 +186,11 @@ class CampaignController extends ActiveController
         // tab
         $tab = Yii::$app->request->get('tab');
         switch ($tab){
-            case 1: $query = Campaign::find(['user_id'=>$user->getId()])->active();break;
-            case 2: $query = Campaign::find(['user_id'=>$user->getId()])->pauseAndPending();break;
-            case 3: $query = Campaign::find(['user_id'=>$user->getId()])->finish();break;
-            case 4: $query = Campaign::find(['user_id'=>$user->getId()])->stop();break;
-            default:$query = Campaign::find(['user_id'=>$user->getId()])->active();break;
+            case 1: $query = Campaign::find(['user_id'=>\Yii::$app->user->getId()])->active();break;
+            case 2: $query = Campaign::find(['user_id'=>\Yii::$app->user->getId()])->pauseAndPending();break;
+            case 3: $query = Campaign::find(['user_id'=>\Yii::$app->user->getId()])->finish();break;
+            case 4: $query = Campaign::find(['user_id'=>\Yii::$app->user->getId()])->stop();break;
+            default:$query = Campaign::find(['user_id'=>\Yii::$app->user->getId()])->active();break;
         }
         return new ActiveDataProvider(array(
             'query' => $query
