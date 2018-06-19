@@ -22,6 +22,7 @@ use yii\filters\AccessControl;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\helpers\Url;
+use yii\data\ActiveDataProvider;
 use yii\rest\ActiveController;
 use yii\web\HttpException;
 
