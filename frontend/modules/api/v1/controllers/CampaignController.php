@@ -116,11 +116,61 @@ class CampaignController extends ActiveController
 
     public function actionPause()
     {
+        $user = User::findIdentity(\Yii::$app->user->getId());
+        $response = \Yii::$app->getResponse();
+        // ads_id
+        $ads_id = Yii::$app->request->post('ads_id');
+        if (!$ads_id) {
+            $response->setStatusCode(422);
+            return 'Thiếu tham số ads_id';
+        }
+
+        $ads = Advertise::findOne(['ads_id' => $ads_id, 'user_id' => $user->id]);
+        if (!$ads) {
+            $response->setStatusCode(422);
+            return 'Không tồn tại quảng cáo';
+        }
+
+        if (Advertise::STATUS_ACTIVE == $ads->status) {
+            $ads->status = Advertise::STATUS_PAUSE;
+            $ads->save();
+            // TODO notification
+            $response->setStatusCode(200);
+            return 'Bạn đã dừng chiến dịch thành công';
+        }else{
+            $response->setStatusCode(422);
+            return 'Không thể dừng quảng cáo này';
+        }
 
     }
+
     public function actionStop()
     {
+        $user = User::findIdentity(\Yii::$app->user->getId());
+        $response = \Yii::$app->getResponse();
+        // ads_id
+        $ads_id = Yii::$app->request->post('ads_id');
+        if (!$ads_id) {
+            $response->setStatusCode(422);
+            return 'Thiếu tham số ads_id';
+        }
 
+        $ads = Advertise::findOne(['ads_id' => $ads_id, 'user_id' => $user->id]);
+        if (!$ads) {
+            $response->setStatusCode(422);
+            return 'Không tồn tại quảng cáo';
+        }
+
+        if (Advertise::STATUS_PAUSE == $ads->status) {
+            $ads->status = Advertise::STATUS_STOP;
+            $ads->save();
+            // TODO notification
+            $response->setStatusCode(200);
+            return 'Bạn đã hủy chiến dịch thành công';
+        }else{
+            $response->setStatusCode(422);
+            return 'Không thể hủy quảng cáo này';
+        }
     }
     public function actionDeposit()
     {
