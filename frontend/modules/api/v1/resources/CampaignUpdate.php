@@ -9,15 +9,15 @@ use yii\web\Link;
 /**
  * @author Eugene Terentev <eugene@terentev.net>
  */
-class Campaign extends \common\models\Advertise
+class CampaignUpdate extends \common\models\Advertise
 {
     public function fields()
     {
-        return ['id','title','description','thumb','created_at','status',];
+        return ['id','title','description','thumb','updated_at','status'];
     }
 
     public function extraFields()
     {
-        return ['thumb'];
+        return [];
     }
 }

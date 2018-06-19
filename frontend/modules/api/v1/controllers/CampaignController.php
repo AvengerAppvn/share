@@ -13,6 +13,7 @@ use common\models\User;
 use common\models\Wallet;
 use frontend\models\AdsForm;
 use frontend\modules\api\v1\resources\Campaign;
+use frontend\modules\api\v1\resources\CampaignUpdate;
 use Intervention\Image\ImageManagerStatic as Image;
 use trntv\filekit\Storage;
 use Yii;
@@ -181,9 +182,18 @@ class CampaignController extends ActiveController
 
     public function actionMe()
     {
-        $user = User::findIdentity(\Yii::$app->user->getId());
+        $user = User::findIdentity(\Yii::$app->user->getId()); //$user->getId()
+        // tab
+        $tab = Yii::$app->request->get('tab');
+        switch ($tab){
+            case 1: $query = Campaign::find(['user_id'=>$user->getId()])->active();break;
+            case 2: $query = CampaignUpdate::find(['user_id'=>$user->getId()])->pauseAndPending();break;
+            case 3: $query = CampaignUpdate::find(['user_id'=>$user->getId()])->finish();break;
+            case 4: $query = CampaignUpdate::find(['user_id'=>$user->getId()])->stop();break;
+            default:$query = Campaign::find(['user_id'=>$user->getId()])->active();break;
+        }
         return new ActiveDataProvider(array(
-            'query' => Campaign::find(['user_id'=>$user->getId()])->active()
+            'query' => $query
         ));
 
     }
