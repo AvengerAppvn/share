@@ -264,18 +264,23 @@ class CampaignController extends ActiveController
         switch ($tab) {
             case 1:
                 $query->active();
+                $query->orderBy('created_at desc');
                 break;
             case 2:
                 $query->pauseAndPending();
+                $query->orderBy('updated_at desc');
                 break;
             case 3:
                 $query->finish();
+                $query->orderBy('updated_at desc');
                 break;
             case 4:
                 $query->stop();
+                $query->orderBy('updated_at desc');
                 break;
             default:
                 $query->active();
+                $query->orderBy('created_at desc');
                 break;
         }
         return new ActiveDataProvider(array(
