@@ -258,6 +258,7 @@ class CampaignController extends ActiveController
 
     public function actionMe()
     {
+        Yii::error(\Yii::$app->user->getId());
         $user = User::findIdentity(\Yii::$app->user->getId()); //$user->getId()
         // tab
         $tab = Yii::$app->request->get('tab');
