@@ -2,7 +2,6 @@
 
 namespace frontend\modules\api\v1\controllers;
 
-use common\models\AdsCategory;
 use common\models\AdsShare;
 use common\models\Advertise;
 use common\models\CriteriaAge;
@@ -14,17 +13,16 @@ use common\models\Wallet;
 use frontend\models\AdsDepositForm;
 use frontend\models\AdsForm;
 use frontend\modules\api\v1\resources\Campaign;
-use frontend\modules\api\v1\resources\CampaignUpdate;
 use Intervention\Image\ImageManagerStatic as Image;
 use trntv\filekit\Storage;
 use Yii;
 use yii\base\ErrorException;
+use yii\data\ActiveDataProvider;
 use yii\di\Instance;
 use yii\filters\AccessControl;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\helpers\Url;
-use yii\data\ActiveDataProvider;
 use yii\rest\ActiveController;
 use yii\web\HttpException;
 
@@ -105,11 +103,11 @@ class CampaignController extends ActiveController
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['view', 'report', 'deposit', 'pause', 'stop','me'], //only be applied to
+            'only' => ['view', 'report', 'deposit', 'pause', 'stop', 'me'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['view', 'report', 'deposit', 'pause', 'stop','me'],
+                    'actions' => ['view', 'report', 'deposit', 'pause', 'stop', 'me'],
                     'roles' => ['@']
                 ]
             ],
@@ -141,13 +139,13 @@ class CampaignController extends ActiveController
             // TODO notification
             $response->setStatusCode(200);
             return array(
-                'ads_id'=>$ads->id,
-                'message'=>'Bạn đã dừng chiến dịch thành công',
-                'status'=>$ads->status,
-                'status_description'=>'Chiến dịch tạm dừng',
+                'ads_id' => $ads->id,
+                'message' => 'Bạn đã dừng chiến dịch thành công',
+                'status' => $ads->status,
+                'status_description' => 'Chiến dịch tạm dừng',
             );
-           // return 'Bạn đã dừng chiến dịch thành công';
-        }else{
+            // return 'Bạn đã dừng chiến dịch thành công';
+        } else {
             $response->setStatusCode(422);
             return 'Không thể dừng quảng cáo này';
         }
@@ -177,16 +175,17 @@ class CampaignController extends ActiveController
             // TODO notification
             $response->setStatusCode(200);
             return array(
-                'ads_id'=>$ads->id,
-                'message'=>'Bạn đã hủy chiến dịch thành công',
-                'status'=>$ads->status,
-                'status_description'=>'Chiến dịch đã hủy',
+                'ads_id' => $ads->id,
+                'message' => 'Bạn đã hủy chiến dịch thành công',
+                'status' => $ads->status,
+                'status_description' => 'Chiến dịch đã hủy',
             );
-        }else{
+        } else {
             $response->setStatusCode(422);
             return 'Không thể hủy chiến dịch này';
         }
     }
+
     public function actionDeposit()
     {
         $user = User::findIdentity(\Yii::$app->user->getId());
@@ -242,7 +241,7 @@ class CampaignController extends ActiveController
                     'created_at' => date('Y-m-d H:i:s', $ads->created_at),
                     'thumbnail' => $ads->thumb,
                 );
-            }else{
+            } else {
                 $response->setStatusCode(402);
                 return 'Không nạp được tiền cho quảng cáo';
             }
@@ -258,26 +257,38 @@ class CampaignController extends ActiveController
 
     public function actionMe()
     {
-        Yii::error(\Yii::$app->user->getId());
-        $user = User::findIdentity(\Yii::$app->user->getId()); //$user->getId()
+        $user_id = \Yii::$app->user->getId(); //$user->getId()
         // tab
         $tab = Yii::$app->request->get('tab');
-        switch ($tab){
-            case 1: $query = Campaign::find(['created_by'=>\Yii::$app->user->getId()])->active();break;
-            case 2: $query = Campaign::find(['created_by'=>\Yii::$app->user->getId()])->pauseAndPending();break;
-            case 3: $query = Campaign::find(['created_by'=>\Yii::$app->user->getId()])->finish();break;
-            case 4: $query = Campaign::find(['created_by'=>\Yii::$app->user->getId()])->stop();break;
-            default:$query = Campaign::find(['created_by'=>\Yii::$app->user->getId()])->active();break;
+        $query = Campaign::find()->where(['created_by' => $user_id]);
+        switch ($tab) {
+            case 1:
+                $query->active();
+                break;
+            case 2:
+                $query->pauseAndPending();
+                break;
+            case 3:
+                $query->finish();
+                break;
+            case 4:
+                $query->stop();
+                break;
+            default:
+                $query->active();
+                break;
         }
         return new ActiveDataProvider(array(
             'query' => $query
         ));
 
     }
+
     public function actionReport()
     {
 
     }
+
     public function actionCreate()
     {
         $user = User::findIdentity(\Yii::$app->user->getId());
@@ -315,7 +326,7 @@ class CampaignController extends ActiveController
                     'created_at' => date('Y-m-d H:i:s', $ads->created_at),
                     'thumbnail' => $ads->thumb,
                 );
-            }else{
+            } else {
                 $response->setStatusCode(402);
                 return 'Không tạo được quảng cáo';
             }
@@ -674,7 +685,7 @@ class CampaignController extends ActiveController
         $sharesResult = [];
         $advertise->status = Advertise::STATUS_CANCEL;
         $advertise->save();
-        return  array(
+        return array(
             'id' => $advertise->id,
             'return' => 2000,
         );
