@@ -13,7 +13,7 @@ class AdvertiseQuery extends \yii\db\ActiveQuery
 {
     public function active()
     {
-        return $this->andWhere('[[status]]=1');
+        return $this->andWhere(['status'=>Advertise::STATUS_ACTIVE]);
     }
     public function pending()
     {
