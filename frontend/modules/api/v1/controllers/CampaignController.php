@@ -11,6 +11,7 @@ use common\models\Notification;
 use common\models\Transaction;
 use common\models\User;
 use common\models\Wallet;
+use frontend\models\AdsDepositForm;
 use frontend\models\AdsForm;
 use frontend\modules\api\v1\resources\Campaign;
 use frontend\modules\api\v1\resources\CampaignUpdate;
@@ -128,7 +129,7 @@ class CampaignController extends ActiveController
             return 'Thiếu tham số ads_id';
         }
 
-        $ads = Advertise::findOne(['id' => $ads_id, 'user_id' => $user->id]);
+        $ads = Advertise::findOne(['id' => $ads_id, 'created_by' => $user->id]);
         if (!$ads) {
             $response->setStatusCode(422);
             return 'Không tồn tại quảng cáo';
@@ -139,7 +140,13 @@ class CampaignController extends ActiveController
             $ads->save();
             // TODO notification
             $response->setStatusCode(200);
-            return 'Bạn đã dừng chiến dịch thành công';
+            return array(
+                'ads_id'=>$ads->id,
+                'message'=>'Bạn đã dừng chiến dịch thành công',
+                'status'=>$ads->status,
+                'status_description'=>'Chiến dịch tạm dừng',
+            );
+           // return 'Bạn đã dừng chiến dịch thành công';
         }else{
             $response->setStatusCode(422);
             return 'Không thể dừng quảng cáo này';
@@ -158,7 +165,7 @@ class CampaignController extends ActiveController
             return 'Thiếu tham số ads_id';
         }
 
-        $ads = Advertise::findOne(['id' => $ads_id, 'user_id' => $user->id]);
+        $ads = Advertise::findOne(['id' => $ads_id, 'created_by' => $user->id]);
         if (!$ads) {
             $response->setStatusCode(422);
             return 'Không tồn tại quảng cáo';
@@ -169,15 +176,84 @@ class CampaignController extends ActiveController
             $ads->save();
             // TODO notification
             $response->setStatusCode(200);
-            return 'Bạn đã hủy chiến dịch thành công';
+            return array(
+                'ads_id'=>$ads->id,
+                'message'=>'Bạn đã hủy chiến dịch thành công',
+                'status'=>$ads->status,
+                'status_description'=>'Chiến dịch đã hủy',
+            );
         }else{
             $response->setStatusCode(422);
-            return 'Không thể hủy quảng cáo này';
+            return 'Không thể hủy chiến dịch này';
         }
     }
     public function actionDeposit()
     {
+        $user = User::findIdentity(\Yii::$app->user->getId());
+        $response = \Yii::$app->getResponse();
+        // ads_id
+        $ads_id = Yii::$app->request->post('ads_id');
+        if (!$ads_id) {
+            $response->setStatusCode(422);
+            return 'Thiếu tham số ads_id';
+        }
 
+        $ads = Advertise::findOne(['id' => $ads_id, 'created_by' => $user->id]);
+        if (!$ads) {
+            $response->setStatusCode(422);
+            return 'Không tồn tại quảng cáo';
+        }
+
+        $budget = Yii::$app->request->post('budget');
+        if (!$budget) {
+            $response->setStatusCode(422);
+            return 'Thiếu tham số budget';
+        }
+        $model = new AdsDepositForm();
+        $response = \Yii::$app->getResponse();
+
+        $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
+        $model->user_id = $user->id;
+        $wallet = Wallet::find()->where(['user_id' => $user->id])->one();
+
+        if (!$wallet || intval($wallet->amount) < $model->budget) {
+            // Validation error
+            $response->setStatusCode(402);
+            return 'Tài khoản không đủ tiền';
+        }
+
+        if ($model->validate()) {
+            if ($model->calculateShare($ads) <= 0) {
+                $response->setStatusCode(402);
+                return 'Ngân sách không đủ để quảng cáo';
+            }
+
+            if (($ads = $model->save())) {
+                $response->setStatusCode(200);
+                return array(
+                    'id' => $ads->id,
+                    'title' => $ads->title,
+                    'require' => $ads->content,
+                    'message' => $ads->description,
+                    'budget' => $ads->budget,
+                    'cat_id' => $ads->cat_id,
+                    'age_min' => $ads->age_min,
+                    'age_max' => $ads->age_max,
+                    'created_at' => date('Y-m-d H:i:s', $ads->created_at),
+                    'thumbnail' => $ads->thumb,
+                );
+            }else{
+                $response->setStatusCode(402);
+                return 'Không nạp được tiền cho quảng cáo';
+            }
+        } else {
+            // Validation error
+            $message = '';
+            foreach ($model->errors as $error) {
+                $message .= $error[0];
+            }
+            throw new HttpException(422, $message);
+        }
     }
 
     public function actionMe()
@@ -186,11 +262,11 @@ class CampaignController extends ActiveController
         // tab
         $tab = Yii::$app->request->get('tab');
         switch ($tab){
-            case 1: $query = Campaign::find(['user_id'=>\Yii::$app->user->getId()])->active();break;
-            case 2: $query = Campaign::find(['user_id'=>\Yii::$app->user->getId()])->pauseAndPending();break;
-            case 3: $query = Campaign::find(['user_id'=>\Yii::$app->user->getId()])->finish();break;
-            case 4: $query = Campaign::find(['user_id'=>\Yii::$app->user->getId()])->stop();break;
-            default:$query = Campaign::find(['user_id'=>\Yii::$app->user->getId()])->active();break;
+            case 1: $query = Campaign::find(['created_by'=>\Yii::$app->user->getId()])->active();break;
+            case 2: $query = Campaign::find(['created_by'=>\Yii::$app->user->getId()])->pauseAndPending();break;
+            case 3: $query = Campaign::find(['created_by'=>\Yii::$app->user->getId()])->finish();break;
+            case 4: $query = Campaign::find(['created_by'=>\Yii::$app->user->getId()])->stop();break;
+            default:$query = Campaign::find(['created_by'=>\Yii::$app->user->getId()])->active();break;
         }
         return new ActiveDataProvider(array(
             'query' => $query

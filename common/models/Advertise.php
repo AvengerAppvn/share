@@ -28,7 +28,7 @@ use common\models\query\AdvertiseQuery;
  * @property string $thumbnail_base_url
  * @property string $thumbnail_path
  */
-class Advertise extends \yii\db\ActiveRecord
+class  Advertise extends \yii\db\ActiveRecord
 {
     const STATUS_PENDING = 0;
     const STATUS_ACTIVE = 1;

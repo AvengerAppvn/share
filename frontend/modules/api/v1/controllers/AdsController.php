@@ -375,6 +375,7 @@ class AdsController extends ActiveController
             'customer_phone' => $customer_phone ?: '',
             'customer_email' => $customer_email ?: '',
             'is_shared' => AdsShare::find()->where(['ads_id' => $advertise->id, 'user_id' => $user->id])->exists() ? 1 : 0,
+            'user_id' => $advertise->created_by,
         );
     }
 

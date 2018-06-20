@@ -13,7 +13,7 @@ class Campaign extends \common\models\Advertise
 {
     public function fields()
     {
-        return ['id','title','description','thumb',
+        return ['id','title','description','thumb', 'created_by',
 
             'created_at'=> function($model){
                 return date('Y-m-d H:i:s', $model->created_at);
