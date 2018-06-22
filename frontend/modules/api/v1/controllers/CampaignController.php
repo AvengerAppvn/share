@@ -239,7 +239,9 @@ class CampaignController extends ActiveController
                     'cat_id' => $ads->cat_id,
                     'age_min' => $ads->age_min,
                     'age_max' => $ads->age_max,
+                    'share' => $ads->share,
                     'created_at' => date('Y-m-d H:i:s', $ads->created_at),
+                    'updated_at' => date('Y-m-d H:i:s', $ads->updated_at),
                     'thumbnail' => $ads->thumb,
                 );
             } else {

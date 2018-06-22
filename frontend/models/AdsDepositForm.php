@@ -64,9 +64,9 @@ class AdsDepositForm extends Model
                 $primaryKey = $model->getPrimaryKey();
 
                 $transaction = new Transaction();
-                $transaction->description = "Nạp tiền cho quảng cáo " . $this->title;
+                $transaction->description = "Nạp tiền cho quảng cáo " . $model->title;
                 $transaction->user_id = $this->user_id;
-                $transaction->amount = $model->realMoney;
+                $transaction->amount = $realMoney;
                 $transaction->type = Transaction::TYPE_WITHDRAW; // Chi
                 $transaction->save();
 
