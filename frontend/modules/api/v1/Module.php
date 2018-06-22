@@ -20,7 +20,7 @@ class Module extends \frontend\modules\api\Module
 
     public function beforeAction($action)
     {
-        $log_endpoint = Yii::$app->keyStorage->get('log_endpoint', true);
+        $log_endpoint = Yii::$app->keyStorage->get('log_endpoint', false);
         if ($log_endpoint) {
             $requests = \yii::$app->getRequest();
             $this->log = new SystemLogEndpoint();
@@ -40,7 +40,7 @@ class Module extends \frontend\modules\api\Module
 
     public function afterAction($action, $result)
     {
-        $log_endpoint = Yii::$app->keyStorage->get('log_endpoint', true);
+        $log_endpoint = Yii::$app->keyStorage->get('log_endpoint', false);
         if ($log_endpoint && $this->log) {
             if(is_array($result)){
                 $this->log->result = json_encode($result);
