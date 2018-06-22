@@ -2,16 +2,11 @@
 
 namespace frontend\models;
 
-use common\models\AdsAdvertiseImage;
-use common\models\AdsCategory;
 use common\models\Advertise;
-use common\models\CategoryAds;
 use common\models\Transaction;
 use common\models\Wallet;
-use trntv\filekit\Storage;
 use Yii;
 use yii\base\Model;
-use yii\di\Instance;
 
 /**
  * Ads form
@@ -42,9 +37,8 @@ class AdsDepositForm extends Model
         if ($this->validate()) {
             $model = Advertise::findOne($this->ads_id);
 
-            $price = $this->getPriceUnit($model);
-            $share = intval($this->budget / $price);
-            $realMoney = $this->getRealMoney($share,$price);
+            $share = intval($this->budget / $model->price_on_share);
+            $realMoney = $this->getRealMoney($share, $model->price_on_share);
 
             $wallet = Wallet::find()->where(['user_id' => $this->user_id])->one();
             if ($wallet && $wallet->amount >= $realMoney) {
@@ -53,7 +47,14 @@ class AdsDepositForm extends Model
             } else {
                 return false; // Out of money
             }
-            // TODO fix share
+
+            if ($model->log) {
+                $logs = json_decode($model->log);
+            } else {
+                $logs = array();
+            }
+            $logs[] = array('time' => time(), 'Deposit' => $this->budget);
+            $model->log = $logs;
             $model->share += $share;
             $model->budget += $realMoney;
             $model->save();
@@ -81,8 +82,7 @@ class AdsDepositForm extends Model
     public function calculateShare($ads)
     {
         if ($this->budget) {
-            $price_unit = $this->getPriceUnit($ads);
-            return intval($this->budget / $price_unit);
+            return intval($this->budget / $ads->price_on_share);
         }
 
         return 0;
@@ -90,7 +90,7 @@ class AdsDepositForm extends Model
     }
 
     // Lấy tiền mà đã trừ phần trăm của hệ thống
-    private function getRealMoney($share,$price)
+    private function getRealMoney($share, $price)
     {
         return $share * $price;
     }
@@ -102,16 +102,16 @@ class AdsDepositForm extends Model
         $option = (int)\Yii::$app->keyStorage->get('config.option', 10);
         $price_unit = $price_base;
         if ($model->location && $model->location > 0) {
-            $price_unit += $price_base * $option/100;
+            $price_unit += $price_base * $option / 100;
         }
         if ($model->age && $model->age > 0) {
-            $price_unit += $price_base * $option/100;
+            $price_unit += $price_base * $option / 100;
         }
 
         if ($model->category && $model->category > 0) {
-            $price_unit += $price_base * $option/100;
+            $price_unit += $price_base * $option / 100;
         }
-        $price_unit += $price_base * $percent/100;
+        $price_unit += $price_base * $percent / 100;
         return $price_unit;
     }
 }

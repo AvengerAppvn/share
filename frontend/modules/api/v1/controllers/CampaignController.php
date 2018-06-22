@@ -222,9 +222,10 @@ class CampaignController extends ActiveController
         }
 
         if ($model->validate()) {
+
             if ($model->calculateShare($ads) <= 0) {
                 $response->setStatusCode(402);
-                return 'Ngân sách không đủ để quảng cáo';
+                return 'Ngân sách không đủ để nạp tiền';
             }
 
             if (($ads = $model->save())) {
