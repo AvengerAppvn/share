@@ -81,7 +81,7 @@ class AdsDepositForm extends Model
 
     public function calculateShare($ads)
     {
-        if ($this->budget) {
+        if ($this->budget && $ads->price_on_share) {
             return intval($this->budget / $ads->price_on_share);
         }
 
