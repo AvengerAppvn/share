@@ -48,8 +48,8 @@ class AdsDepositForm extends Model
                 return false; // Out of money
             }
 
-            if ($model->log) {
-                $logs = json_decode($model->log);
+            if ($model->logs) {
+                $logs = json_decode($model->logs);
             } else {
                 $logs = array();
             }
