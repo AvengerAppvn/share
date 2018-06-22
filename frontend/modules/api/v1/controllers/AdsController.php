@@ -362,7 +362,9 @@ class AdsController extends ActiveController
             $price_on_share = $advertise->price_on_share;
         } else {
             // Tính giá share
-            $price_on_share = $this->getPriceUnit();;
+            $price_on_share = $this->getPriceUnit();
+            $advertise->price_on_share = $this->getPriceUnit();
+            $advertise->save();
         }
 
         if ($advertise->budget_remain) {
@@ -370,6 +372,8 @@ class AdsController extends ActiveController
         } else {
             //
             $budget_remain = $advertise->share * $price_on_share;
+            $advertise->budget_remain = $advertise->share * $price_on_share;
+            $advertise->save();
         }
 
 
