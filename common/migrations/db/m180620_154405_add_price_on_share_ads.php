@@ -24,7 +24,7 @@ class m180620_154405_add_price_on_share_ads extends Migration
     {
         $this->dropColumn('advertise', 'price_on_share');
         $this->dropColumn('advertise', 'budget_remain');
-        //$this->dropColumn('advertise', 'criteria');
+        $this->dropColumn('advertise', 'criteria');
     }
 
     /*
