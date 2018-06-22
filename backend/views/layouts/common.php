@@ -264,6 +264,13 @@ $bundle = BackendAsset::register($this);
                                 'badge' => SystemLog::find()->count(),
                                 'badgeBgClass' => 'label-danger',
                             ],
+                            [
+                                'label' => Yii::t('backend', 'Logs Endpoint'),
+                                'url' => ['/log-endpoint/index'],
+                                'icon' => '<i class="fa fa-angle-double-right"></i>',
+                                'badge' => \common\models\SystemLogEndpoint::find()->count(),
+                                'badgeBgClass' => 'label-success',
+                            ],
                         ]
                     ]
                 ]

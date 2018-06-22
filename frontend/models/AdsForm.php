@@ -72,9 +72,27 @@ class AdsForm extends Model
             $model->age_max = $this->age_max;
 
             $price = $this->getPriceUnit();
+
+            // Gán giá 1 lần share cho
+            $model->price_on_share = $price;
+
+            $model->criteria = json_encode(array(
+                'location' => $this->location,
+                'category' => $this->location,
+                'age_min' => $this->age_min,
+                'age_max' => $this->age_max,
+                'age' => $this->age,
+                'budget' => $this->budget,
+
+            ));
+
             $share = $this->calculateShare();
-            $realMoney = $this->getRealMoney($share,$price);
+            $realMoney = $this->getRealMoney($share, $price);
             $model->budget = $realMoney;
+
+            // Gán ngân sách
+            $model->budget_remain = $realMoney;
+
             $wallet = Wallet::find()->where(['user_id' => $this->user_id])->one();
             if ($wallet && $wallet->amount >= $model->budget) {
                 $wallet->amount = $wallet->amount - $realMoney;
@@ -83,7 +101,7 @@ class AdsForm extends Model
                 return false; // Out of money
             }
             // TODO fix share
-            $model->share =$share;
+            $model->share = $share;
             $model->status = Advertise::STATUS_PENDING;
 
             if ($model->save(false)) {
@@ -182,7 +200,7 @@ class AdsForm extends Model
     }
 
     // Lấy tiền mà đã trừ phần trăm của hệ thống
-    private function getRealMoney($share,$price)
+    private function getRealMoney($share, $price)
     {
         return $share * $price;
     }
@@ -194,16 +212,16 @@ class AdsForm extends Model
         $option = (int)\Yii::$app->keyStorage->get('config.option', 10);
         $price_unit = $price_base;
         if ($this->location && $this->location > 0) {
-            $price_unit += $price_base * $option/100;
+            $price_unit += $price_base * $option / 100;
         }
         if ($this->age && $this->age > 0) {
-            $price_unit += $price_base * $option/100;
+            $price_unit += $price_base * $option / 100;
         }
 
         if ($this->category && $this->category > 0) {
-            $price_unit += $price_base * $option/100;
+            $price_unit += $price_base * $option / 100;
         }
-        $price_unit += $price_base * $percent/100;
+        $price_unit += $price_base * $percent / 100;
         return $price_unit;
     }
 }

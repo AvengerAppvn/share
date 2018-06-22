@@ -357,6 +357,23 @@ class AdsController extends ActiveController
             }
 
         }
+
+        if ($advertise->price_on_share) {
+            $price_on_share = $advertise->price_on_share;
+        } else {
+            // Tính giá share
+            $price_on_share = $this->getPriceUnit();;
+        }
+
+        if ($advertise->budget_remain) {
+            $budget_remain = $advertise->budget_remain;
+        } else {
+            //
+            $budget_remain = $advertise->share * $price_on_share;
+        }
+
+
+
         return array(
             'id' => $advertise->id,
             'title' => $advertise->title,
@@ -376,8 +393,8 @@ class AdsController extends ActiveController
             'customer_email' => $customer_email ?: '',
             'is_shared' => AdsShare::find()->where(['ads_id' => $advertise->id, 'user_id' => $user->id])->exists() ? 1 : 0,
             'user_id' => $advertise->created_by,
-            'budget_remain' => $advertise->budget_remain,
-            'price_on_share' => $advertise->price_on_share,
+            'budget_remain' => $budget_remain,
+            'price_on_share' => $price_on_share,
         );
     }
 
@@ -615,5 +632,26 @@ class AdsController extends ActiveController
             'point' => (string)$compare,
             'description' => $description
         );
+    }
+
+
+    private function getPriceUnit()
+    {
+        $percent = \Yii::$app->keyStorage->get('config.service', 20);
+        $price_base = (int)\Yii::$app->keyStorage->get('config.price-basic', 5000);
+        $option = (int)\Yii::$app->keyStorage->get('config.option', 10);
+        $price_unit = $price_base;
+//        if ($this->location && $this->location > 0) {
+//            $price_unit += $price_base * $option/100;
+//        }
+//        if ($this->age && $this->age > 0) {
+//            $price_unit += $price_base * $option/100;
+//        }
+//
+//        if ($this->category && $this->category > 0) {
+//            $price_unit += $price_base * $option/100;
+//        }
+        $price_unit += $price_base * $percent/100;
+        return $price_unit;
     }
 }
