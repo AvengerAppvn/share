@@ -54,7 +54,7 @@ class AdsDepositForm extends Model
                 $logs = array();
             }
             $logs[] = array('time' => time(), 'Deposit' => $this->budget);
-            $model->logs = $logs;
+            $model->logs = json_encode($logs);
             $model->share += $share;
             $model->budget += $realMoney;
             $model->save();
