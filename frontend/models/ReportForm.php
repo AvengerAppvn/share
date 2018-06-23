@@ -12,6 +12,7 @@ class ReportForm extends Model
 {
     public $email;
     public $user_id;
+    public $ads_id;
 
     /**
      * @return array the validation rules.
@@ -20,7 +21,7 @@ class ReportForm extends Model
     {
         return [
             // name, email, subject and body are required
-            [['email','user_id'], 'required'],
+            [['email','user_id','ads_id'], 'required'],
             // We need to sanitize them
             ['email', 'email'],
             // verifyCode needs to be entered correctly
