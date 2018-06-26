@@ -43,7 +43,7 @@ class AdsForm extends Model {
 			[ [ 'title', 'require', 'message' ], 'string' ],
 			[ 'age_max', 'integer', 'max' => 80 ],
 			[ 'age_min', 'integer', 'min' => 18 ],
-			[ 'ads_type','time_type', 'integer'],
+			[ ['ads_type','time_type'], 'integer'],
 			[ [ 'age_max' ], 'compare', 'compareAttribute' => 'age_min', 'operator' => '>=', 'skipOnEmpty' => true ],
 			[ [ 'images', 'location', 'age', 'category' ], 'safe' ]
 		];
