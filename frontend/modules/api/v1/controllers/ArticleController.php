@@ -76,7 +76,7 @@ class ArticleController extends ActiveController
     }
 
     /**
-     * Rest Description: Your endpoint description.
+     * Rest Description: Your endpoint description.l
      * Rest Fields: ['field1', 'field2'].
      * Rest Filters: ['filter1', 'filter2'].
      * Rest Expand: ['expandRelation1', 'expandRelation2'].
@@ -90,5 +90,17 @@ class ArticleController extends ActiveController
         $options = array(  "included_segments"=> ["Active Users"],
                             "data"=> array("ads_id"=> 1),);
         \Yii::$app->onesignal->notifications()->create($message, $options);
+    }
+
+    public function actionPush()
+    {
+        //$deviceType = 1;
+        //$options = array();
+        //\Yii::$app->onesignal->players()->add($deviceType, $options);
+        \Yii::$app->onesignal->players()->view();
+        //$message = array('vn'=>'Test notification OneSignal');
+        //$options = array(  "included_segments"=> ["Active Users"],
+        //    "data"=> array("ads_id"=> 1),);
+        //\Yii::$app->onesignal->notifications()->create($message, $options);
     }
 }

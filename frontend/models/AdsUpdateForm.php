@@ -45,7 +45,7 @@ class AdsUpdateForm extends Model {
 			[ 'age_min', 'integer', 'min' => 18 ],
 			[ ['ads_type','time_type'], 'integer'],
 			[ [ 'age_max' ], 'compare', 'compareAttribute' => 'age_min', 'operator' => '>=', 'skipOnEmpty' => true ],
-			[ [ 'images', 'location', 'age', 'category' ], 'safe' ]
+			[ [ 'images', 'location', 'age', 'category','ads_id' ], 'safe' ]
 		];
 	}
 
@@ -96,9 +96,8 @@ class AdsUpdateForm extends Model {
 
 					)
 				);
-				$criteria          = json_encode( $criteria_origin );
 
-				$model->criteria =
+				$model->criteria =json_encode( $criteria_origin );
 
 				$share = $this->calculateShare();
 				$realMoney       = $this->getRealMoney( $share, $price );
@@ -195,11 +194,10 @@ class AdsUpdateForm extends Model {
 
 					return $model;
 				} else {
-					Yii::trace( "Model validation error => " . print_r( $model->getErrors(), true ) );
-					$this->addError( 'generic', Yii::t( 'app', 'The system could not update the information.' ) );
+					$this->addError( 'generic', Yii::t( 'app', 'Không cập nhật được quảng cáo' ) );
 				}
 			} else {
-				$this->addError( 'generic', Yii::t( 'app', 'The system could not update the information.' ) );
+				$this->addError( 'generic', Yii::t( 'app', 'Không tìm thấy quảng cáo' ) );
 			}
 		}
 
