@@ -14,6 +14,7 @@ class m180622_150104_add_logs_ads extends Migration
     {
         $this->addColumn('advertise', 'logs', $this->text());
         $this->addColumn('advertise', 'ads_type', $this->integer());
+        $this->addColumn('advertise', 'time_type', $this->integer());
     }
 
     /**
@@ -23,6 +24,7 @@ class m180622_150104_add_logs_ads extends Migration
     {
         $this->dropColumn('advertise', 'logs');
         $this->dropColumn('advertise', 'ads_type');
+        $this->dropColumn('advertise', 'time_type');
     }
 
     /*

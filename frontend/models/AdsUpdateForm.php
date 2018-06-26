@@ -42,7 +42,7 @@ class AdsUpdateForm extends Model {
 			[ [ 'title', 'require', 'message' ], 'string' ],
 			[ 'age_max', 'integer', 'max' => 80 ],
 			[ 'age_min', 'integer', 'min' => 18 ],
-			[ 'ads_type', 'integer'],
+			[ 'ads_type','time_type', 'integer'],
 			[ [ 'age_max' ], 'compare', 'compareAttribute' => 'age_min', 'operator' => '>=', 'skipOnEmpty' => true ],
 			[ [ 'images', 'location', 'age', 'category' ], 'safe' ]
 		];
@@ -62,6 +62,7 @@ class AdsUpdateForm extends Model {
 				$model->message     = $this->message;
 				$model->description = $this->message;
 				$model->ads_type = $this->ads_type;
+				$model->time_type = $this->time_type;
 				if ( $this->category ) {
 					$model->cat_id = $this->category[0];
 				} else {
