@@ -224,7 +224,7 @@ class AdsController extends ActiveController
 				return 'Ngân sách không đủ để cập nhật quảng cáo';
 			}
 
-			if (($ads = $model->save())) {
+			if (($ads = $model->update())) {
 				$response->setStatusCode(200);
 				$response->getHeaders()->set('Location', Url::toRoute([$ads->id], true));
 				return array(
