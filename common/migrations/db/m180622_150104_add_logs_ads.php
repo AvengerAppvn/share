@@ -13,6 +13,7 @@ class m180622_150104_add_logs_ads extends Migration
     public function safeUp()
     {
         $this->addColumn('advertise', 'logs', $this->text());
+        $this->addColumn('advertise', 'ads_type', $this->integer());
     }
 
     /**
@@ -21,6 +22,7 @@ class m180622_150104_add_logs_ads extends Migration
     public function safeDown()
     {
         $this->dropColumn('advertise', 'logs');
+        $this->dropColumn('advertise', 'ads_type');
     }
 
     /*

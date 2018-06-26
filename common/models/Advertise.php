@@ -75,7 +75,7 @@ class  Advertise extends \yii\db\ActiveRecord
     {
         return [
             //[['cat_id'], 'required'],
-            [['province_id', 'age_id','age_min','age_max', 'speciality_id', 'share', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['province_id', 'age_id','age_min','age_max', 'speciality_id', 'share', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by','ads_type'], 'integer'],
             [['content'], 'string'],
             [['require', 'message'], 'string', 'max' => 500],
             [['title', 'slug', 'description'], 'string', 'max' => 255],
@@ -113,6 +113,7 @@ class  Advertise extends \yii\db\ActiveRecord
             'age_id' => Yii::t('common', ' Độ tuổi'),
             'speciality_id' => Yii::t('common', ' Chuyên ngành'),
             'budget' => Yii::t('common', ' Ngân sách'),
+            'ads_type' => Yii::t('common', ' Kiểu quảng cáo'),
         ];
     }
 
