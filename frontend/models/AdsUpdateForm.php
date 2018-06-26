@@ -30,6 +30,7 @@ class AdsUpdateForm extends Model {
 	public $age_max;
 	public $ads_id;
 	public $ads_type;
+	public $time_type;
 	/**
 	 * @inheritdoc
 	 */
