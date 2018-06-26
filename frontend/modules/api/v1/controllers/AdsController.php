@@ -12,6 +12,7 @@ use common\models\Transaction;
 use common\models\User;
 use common\models\Wallet;
 use frontend\models\AdsForm;
+use frontend\models\AdsUpdateForm;
 use frontend\modules\api\v1\resources\RequireCustomer;
 use frontend\modules\api\v1\resources\Time;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -201,6 +202,56 @@ class AdsController extends ActiveController
         }
     }
 
+	public function actionUpdate()
+	{
+		$user = User::findIdentity(\Yii::$app->user->getId());
+		$model = new AdsUpdateForm();
+		$response = \Yii::$app->getResponse();
+
+		$model->load(\Yii::$app->getRequest()->getBodyParams(), '');
+		$model->user_id = $user->id;
+		$wallet = Wallet::find()->where(['user_id' => $user->id])->one();
+
+		if (!$wallet || intval($wallet->amount) < $model->budget) {
+			// Validation error
+			$response->setStatusCode(402);
+			return 'Tài khoản không đủ tiền';
+		}
+
+		if ($model->validate()) {
+			if ($model->calculateShare() <= 0) {
+				$response->setStatusCode(402);
+				return 'Ngân sách không đủ để cập nhật quảng cáo';
+			}
+
+			if (($ads = $model->save())) {
+				$response->setStatusCode(200);
+				$response->getHeaders()->set('Location', Url::toRoute([$ads->id], true));
+				return array(
+					'id' => $ads->id,
+					'title' => $ads->title,
+					'require' => $ads->content,
+					'message' => $ads->description,
+					'budget' => $ads->budget,
+					'cat_id' => $ads->cat_id,
+					'age_min' => $ads->age_min,
+					'age_max' => $ads->age_max,
+					'created_at' => date('Y-m-d H:i:s', $ads->created_at),
+					'thumbnail' => $ads->thumb,
+				);
+			} else {
+				$response->setStatusCode(402);
+				return 'Không cập nhật được quảng cáo';
+			}
+		} else {
+			// Validation error
+			$message = '';
+			foreach ($model->errors as $error) {
+				$message .= $error[0];
+			}
+			throw new HttpException(422, $message);
+		}
+	}
 
     public function actionShare()
     {
