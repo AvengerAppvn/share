@@ -119,7 +119,7 @@ class AdvertiseController extends Controller
 
                     $categories = CategoryAds::findAll(['ads_id'=>$id]);
                     foreach ($categories as $category) {
-                        $tags[]= $category->slug;
+                        $tags[]= $category->category->slug;
                     }
 
                     $message = array('en' => 'Bạn có quảng cáo phù hợp với chuyên môn của bạn');
