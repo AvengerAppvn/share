@@ -452,7 +452,7 @@ class AdsController extends ActiveController
             'price_on_share' => $price_on_share,
             'ads_type' => $advertise->ads_type,
             'time_type' => $advertise->time_type,
-            'criteria' => $advertise->criteria,
+            'criteria' => json_decode($advertise->criteria),
         );
     }
 
