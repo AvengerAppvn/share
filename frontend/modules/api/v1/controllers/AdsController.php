@@ -560,10 +560,10 @@ class AdsController extends ActiveController
         $response = \Yii::$app->getResponse();
         $response->setStatusCode(200);
         return array(
-            'price_basic' => \Yii::$app->keyStorage->get('config.price-basic', 5000),
-            'service' => \Yii::$app->keyStorage->get('config.service', 20),
-            'option' => \Yii::$app->keyStorage->get('config.option', 10),
-            'price_avatar' => \Yii::$app->keyStorage->get('config.price-avatar', 100000),
+            'price_basic' => (int)\Yii::$app->keyStorage->get('config.price-basic', 5000),
+            'service' => (int)\Yii::$app->keyStorage->get('config.service', 20),
+            'option' => (int)\Yii::$app->keyStorage->get('config.option', 10),
+            'price_avatar' => (int)\Yii::$app->keyStorage->get('config.price-avatar', 100000),
         );
     }
 
