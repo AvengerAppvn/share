@@ -450,6 +450,9 @@ class AdsController extends ActiveController
             'user_id' => $advertise->created_by,
             'budget_remain' => $budget_remain,
             'price_on_share' => $price_on_share,
+            'ads_type' => $advertise->ads_type,
+            'time_type' => $advertise->time_type,
+            'criteria' => $advertise->criteria,
         );
     }
 
