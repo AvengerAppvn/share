@@ -135,4 +135,44 @@ class AdvertiseSearch extends Advertise
 
         return $dataProvider;
     }
+
+    public function searchPause($params)
+    {
+        $query = Advertise::find()->pause();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'user_id' => $this->user_id,
+            'cat_id' => $this->cat_id,
+            'share' => $this->share,
+            'status' => $this->status,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'created_by' => $this->created_by,
+            'updated_by' => $this->updated_by,
+        ]);
+
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'slug', $this->slug])
+            ->andFilterWhere(['like', 'content', $this->content])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'message', $this->message]);
+
+        return $dataProvider;
+    }
 }

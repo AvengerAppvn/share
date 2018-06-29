@@ -65,6 +65,21 @@ class AdvertiseController extends Controller
         ]);
     }
 
+	/**
+	 * Lists all Advertise models.
+	 * @return mixed
+	 */
+	public function actionPause()
+	{
+		$searchModel = new AdvertiseSearch();
+		$dataProvider = $searchModel->searchPause(Yii::$app->request->queryParams);
+		$dataProvider->sort = ['defaultOrder' => ['id' => SORT_DESC]];
+		return $this->render('pending', [
+			'searchModel' => $searchModel,
+			'dataProvider' => $dataProvider,
+		]);
+	}
+
     public function actionCheck($id)
     {
         $model = $this->findModel($id);
