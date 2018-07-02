@@ -144,7 +144,7 @@ class AdvertiseController extends Controller
                         $filters[] = array("field" => "tag", "key" => $tag, "relation" => "=", "value" => "1");
                     }
                     $options = array('filters' => $filters, "data" => array("type" => 3, "ads_id" => $model->id), "buttons" => [array("id" => "1", "text" => "View", "icon" => "")]);
-                    \Yii::$app->onesignal->notifications()->create($message, $options);
+                    //\Yii::$app->onesignal->notifications()->create($message, $options);
                 }
                 return $this->redirect(['view', 'id' => (string)$model->id]);
             } else {

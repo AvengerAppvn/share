@@ -11,7 +11,7 @@ use common\models\Notification;
 use common\models\Transaction;
 use common\models\User;
 use common\models\Wallet;
-use frontend\models\AdsForm;
+use frontend\models\AdsCreateForm;
 use frontend\models\AdsUpdateForm;
 use frontend\modules\api\v1\resources\RequireCustomer;
 use frontend\modules\api\v1\resources\Time;
@@ -151,31 +151,45 @@ class AdsController extends ActiveController
         return $categoriesResult;
     }
 
+	/**
+	 * #9 api/v1/ads/create
+	 * @return array
+	 */
     public function actionCreate()
     {
         $user = User::findIdentity(\Yii::$app->user->getId());
-        $model = new AdsForm();
+        $model = new AdsCreateForm();
         $response = \Yii::$app->getResponse();
 
         $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
         $model->user_id = $user->id;
-        $wallet = Wallet::find()->where(['user_id' => $user->id])->one();
-
-        if (!$wallet || intval($wallet->amount) < $model->budget) {
+	    $wallet = Wallet::findOrCreate($user->id);
+        if (intval($wallet->amount) < $model->budget) {
             // Validation error
             $response->setStatusCode(402);
             return 'Tài khoản không đủ tiền';
         }
 
         if ($model->validate()) {
-            if ($model->calculateShare() <= 0) {
+	        $result = $model->save();
+            if (2 == $result) {
                 $response->setStatusCode(402);
-                return 'Ngân sách không đủ để quảng cáo';
+                return 'Giá đề suất nhỏ hơn giá quy định';
             }
 
-            if (($ads = $model->save())) {
+	        if (3 == $result) {
+		        $response->setStatusCode(402);
+		        return 'Ngân sách không đủ để quảng cáo';
+	        }
+
+	        if (4 == $result) {
+		        $response->setStatusCode(402);
+		        return 'Hết tiền, vui lòng nạp thêm tiền';
+	        }
+
+	        $ads = $model->_ads;
+            if (1 == $result) {
                 $response->setStatusCode(200);
-                $response->getHeaders()->set('Location', Url::toRoute([$ads->id], true));
                 return array(
                     'id' => $ads->id,
                     'title' => $ads->title,
@@ -210,23 +224,33 @@ class AdsController extends ActiveController
 
 		$model->load(\Yii::$app->getRequest()->getBodyParams(), '');
 		$model->user_id = $user->id;
-		$wallet = Wallet::find()->where(['user_id' => $user->id])->one();
-
-		if (!$wallet || intval($wallet->amount) < $model->budget) {
+		$wallet = Wallet::findOrCreate($user->id);
+		if (intval($wallet->amount) < $model->budget) {
 			// Validation error
 			$response->setStatusCode(402);
 			return 'Tài khoản không đủ tiền';
 		}
 
 		if ($model->validate()) {
-			if ($model->calculateShare() <= 0) {
+			$result = $model->update();
+			if (2 == $result) {
+				$response->setStatusCode(402);
+				return 'Giá đề suất nhỏ hơn giá quy định';
+			}
+
+			if (3 == $result) {
 				$response->setStatusCode(402);
 				return 'Ngân sách không đủ để cập nhật quảng cáo';
 			}
 
-			if (($ads = $model->update())) {
+			if (4 == $result) {
+				$response->setStatusCode(402);
+				return 'Hết tiền, vui lòng nạp thêm tiền';
+			}
+
+			$ads = $model->_ads;
+			if (1 == $result) {
 				$response->setStatusCode(200);
-				$response->getHeaders()->set('Location', Url::toRoute([$ads->id], true));
 				return array(
 					'id' => $ads->id,
 					'title' => $ads->title,

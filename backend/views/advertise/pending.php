@@ -41,7 +41,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     $cats = \common\models\CategoryAds::findAll(['ads_id' => $model->id]);
                     $cates = '';
                     foreach ($cats as $cat) {
-                        $cates .= $cat->category->name . ',<br/>';
+                        if($cat->category) {
+	                        $cates .= $cat->category->name . ',<br/>';
+                        }
                     }
                     return $cates;
                 },
