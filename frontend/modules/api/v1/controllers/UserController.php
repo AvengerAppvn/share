@@ -324,6 +324,7 @@ class UserController extends ActiveController
                 $coin = doubleval($wallet->amount);
             }
             return array(
+                'user_id' => $user->getId(),
                 'fullname' => $user->userProfile->fullname,
                 'address' => $user->userProfile->address ?: '',
                 'email' => $user->email,
