@@ -23,6 +23,7 @@ class UserEditForm extends Model
     public $fullname;
     public $birthday;
     public $strengths;
+    public $facebook;
 
     /** @var User */
     private $_user = false;
@@ -50,6 +51,7 @@ class UserEditForm extends Model
             ['strengths', 'safe'],
             ['birthday', 'safe'],
             ['avatar', 'safe'],
+            ['facebook', 'safe'],
             ['password', 'string', 'min' => 6],
         ];
     }
@@ -81,7 +83,10 @@ class UserEditForm extends Model
 //                $updateIndicator = true;
 //                $this->_user->setPassword($this->password);
 //            }
-
+	        if ($this->facebook) {
+		        $updateIndicator = true;
+		        $this->_user->facebook = $this->facebook;
+	        }
             if ($this->phone) {
                 $updateIndicator = true;
                 $this->_user->phone = $this->phone;

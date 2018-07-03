@@ -340,6 +340,7 @@ class UserController extends ActiveController
                 'image_id_1' => $user->userProfile->image_id_1 ? : '',
                 'image_id_2' => $user->userProfile->image_id_2 ? : '',
                 'image_friend_list' => $user->userProfile->image_friend_list ? : '',
+                'facebook' => $user->facebook,
             );
         } else {
             // Validation error
