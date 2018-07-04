@@ -74,7 +74,37 @@ class AdvertiseController extends Controller
 		$searchModel = new AdvertiseSearch();
 		$dataProvider = $searchModel->searchPause(Yii::$app->request->queryParams);
 		$dataProvider->sort = ['defaultOrder' => ['id' => SORT_DESC]];
-		return $this->render('pending', [
+		return $this->render('pause', [
+			'searchModel' => $searchModel,
+			'dataProvider' => $dataProvider,
+		]);
+	}
+
+	/**
+	 * Lists all Advertise models.
+	 * @return mixed
+	 */
+	public function actionStop()
+	{
+		$searchModel = new AdvertiseSearch();
+		$dataProvider = $searchModel->searchFinish(Yii::$app->request->queryParams);
+		$dataProvider->sort = ['defaultOrder' => ['id' => SORT_DESC]];
+		return $this->render('finish', [
+			'searchModel' => $searchModel,
+			'dataProvider' => $dataProvider,
+		]);
+	}
+
+	/**
+	 * Lists all Advertise models.
+	 * @return mixed
+	 */
+	public function actionFinish()
+	{
+		$searchModel = new AdvertiseSearch();
+		$dataProvider = $searchModel->searchStop(Yii::$app->request->queryParams);
+		$dataProvider->sort = ['defaultOrder' => ['id' => SORT_DESC]];
+		return $this->render('finish', [
 			'searchModel' => $searchModel,
 			'dataProvider' => $dataProvider,
 		]);

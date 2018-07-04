@@ -10,7 +10,7 @@ use yii\helpers\Url;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $model common\models\Advertise */
 
-$this->title                   = 'Danh sách Quảng cáo tạm dừng';
+$this->title                   = 'Danh sách Quảng cáo đã hoàn thành';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
