@@ -112,7 +112,7 @@ a.desc:after {
 }
 
 .landing{
-  background: url("../img/background_app.jpg");
+/* background: url("../img/background_app.jpg");*/
 }
 .navbar-brand a{color:#fff;}
 /*# sourceMappingURL=style.map */
