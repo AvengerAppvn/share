@@ -48,10 +48,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ];
 
             // Renders a export dropdown menu
-            // ExportMenu::widget([
-             //   'dataProvider' => $dataProvider,
-             //   'columns' => $gridColumns,
-            //]);
+             echo ExportMenu::widget([
+                'dataProvider' => $dataProvider,
+                'columns' => $gridColumns,
+            ]);
             ?>
             <?php echo Html::a(Yii::t('backend', 'Tạo {modelClass}', [
                 'modelClass' => 'Người dùng',
