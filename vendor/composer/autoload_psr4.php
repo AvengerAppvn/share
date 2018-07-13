@@ -44,7 +44,7 @@ return array(
     'cheatsheet\\' => array($vendorDir . '/trntv/cheatsheet/src'),
     'cebe\\markdown\\' => array($vendorDir . '/cebe/markdown'),
     'borales\\extensions\\phoneInput\\' => array($vendorDir . '/borales/yii2-phone-input/src'),
-    'Zxing\\' => array($vendorDir . '/khanamiryan/qrcode-detector-decoder/lib'),
+    //'Zxing\\' => array($vendorDir . '/khanamiryan/qrcode-detector-decoder/lib'),
     'Webmozart\\Assert\\' => array($vendorDir . '/webmozart/assert/src'),
     'Symfony\\Polyfill\\Php70\\' => array($vendorDir . '/symfony/polyfill-php70'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
